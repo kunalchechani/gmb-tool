@@ -35,6 +35,14 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 CORS(app)
 
+@app.template_filter('format_date')
+def format_date_filter(val):
+    if not val:
+        return ''
+    if hasattr(val, 'strftime'):
+        return val.strftime('%Y-%m-%d')
+    return str(val)[:10]
+
 DB_PATH = os.environ.get("SQLITE_PATH", "gbp.db")
 DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 if DATABASE_URL.startswith("postgres://"):

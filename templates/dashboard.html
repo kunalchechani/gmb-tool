@@ -334,7 +334,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent); }
             <div class="reviewer-avatar">{{ (r.reviewer or 'C')[0].upper() }}</div>
             <div>
               <div class="reviewer-name">{{ r.reviewer or 'Customer' }}</div>
-              <div class="review-date">{{ r.created_at[:10] if r.created_at else '' }}</div>
+              <div class="review-date">{{ r.created_at | format_date }}</div>
             </div>
             <div style="margin-left:auto">
               <div class="stars-display">{{ '⭐' * (r.stars or 0) }}</div>
@@ -427,7 +427,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent); }
         <div class="profile-pic-section">
           <div class="profile-pic-preview" id="picPreview">
             {% if business.profile_pic %}
-              <img src="{{ business.profile_pic }}" alt="{{ business.name }}" id="picImg">
+              <img src="{{ business.profile_pic }}" alt="{{ business.name }}" id="picImg" onerror="this.style.display='none'; document.getElementById('picLetter').style.display='inline';">
+              <span id="picLetter" style="display:none">{{ business.name[0].upper() }}</span>
             {% else %}
               <span id="picLetter">{{ business.name[0].upper() }}</span>
             {% endif %}

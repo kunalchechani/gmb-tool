@@ -791,7 +791,8 @@ body {
     <div class="biz-logo-wrap">
       <div class="biz-logo">
         {% if business.profile_pic %}
-          <img src="{{ business.profile_pic }}" alt="{{ business.name }}">
+          <img src="{{ business.profile_pic }}" alt="{{ business.name }}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+          <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">{{ business.name[0].upper() }}</span>
         {% else %}
           {{ business.name[0].upper() }}
         {% endif %}
