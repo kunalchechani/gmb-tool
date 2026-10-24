@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort, send_from_directory, Response
 from flask_cors import CORS
-import sqlite3, hashlib, os, json, requests, csv, io, random, secrets, re
+import sqlite3, hashlib, os, json, requests, csv, io, random, secrets, re, urllib.parse
 from datetime import datetime
 from functools import wraps
 from werkzeug.utils import secure_filename
@@ -193,6 +193,7 @@ def init_db():
                     profile_pic TEXT,
                     website_url TEXT,
                     keywords    TEXT,
+                    whatsapp_number TEXT,
                     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
 
@@ -226,7 +227,7 @@ def init_db():
                     FOREIGN KEY(business_id) REFERENCES businesses(id)
                 );
                 """)
-                for col in ["profile_pic", "website_url", "keywords"]:
+                for col in ["profile_pic", "website_url", "keywords", "whatsapp_number"]:
                     try:
                         cur.execute(f"ALTER TABLE businesses ADD COLUMN IF NOT EXISTS {col} TEXT")
                     except Exception:
@@ -256,6 +257,7 @@ def init_db():
             profile_pic TEXT,
             website_url TEXT,
             keywords    TEXT,
+            whatsapp_number TEXT,
             created_at  TEXT DEFAULT (datetime('now'))
         );
 
@@ -289,7 +291,7 @@ def init_db():
             FOREIGN KEY(business_id) REFERENCES businesses(id)
         );
         """)
-        for col_name in ["profile_pic", "website_url", "keywords"]:
+        for col_name in ["profile_pic", "website_url", "keywords", "whatsapp_number"]:
             try:
                 db.execute(f"ALTER TABLE businesses ADD COLUMN {col_name} TEXT")
             except Exception:
@@ -461,6 +463,7 @@ def classify_product_domain(product_name="", product_desc="", product_keywords="
     full_text = f"{prod_text} {business_info}".lower()
 
     # Domain keyword maps
+    pest_home_keywords = ['ant', 'repellent', 'repel', 'spray', 'mosquito', 'pest', 'insect', 'cockroach', 'bug', 'cleaner', 'floor cleaner', 'disinfectant']
     body_keywords = ['body wash', 'soap', 'body lotion', 'ubtan', 'scrub', 'shower', 'bath', 'body butter', 'body oil', 'moisturizer', 'hand cream', 'foot cream']
     skin_face_keywords = ['face', 'serum', 'glow', 'acne', 'pimple', 'pigmentation', 'skin', 'blemish', 'cream', 'face wash', 'sunscreen', 'anti aging', 'toner', 'facial', 'kumkumadi']
     hair_keywords = ['hair', 'hairfall', 'shampoo', 'conditioner', 'scalp', 'dandruff', 'kesh', 'follicle', 'shedding', 'hair oil', 'anti hairfall']
@@ -469,6 +472,8 @@ def classify_product_domain(product_name="", product_desc="", product_keywords="
     tech_keywords = ['software', 'website', 'app', 'crm', 'web development', 'ui/ux', 'seo', 'cloud']
 
     # Priority 1: Match specific product fields
+    if any(k in prod_text for k in pest_home_keywords):
+        return 'pest_home'
     if any(k in prod_text for k in body_keywords):
         return 'body_bath'
     if any(k in prod_text for k in skin_face_keywords):
@@ -483,6 +488,8 @@ def classify_product_domain(product_name="", product_desc="", product_keywords="
         return 'tech'
 
     # Priority 2: Match broader context
+    if any(k in full_text for k in pest_home_keywords):
+        return 'pest_home'
     if any(k in full_text for k in body_keywords):
         return 'body_bath'
     if any(k in full_text for k in skin_face_keywords):
@@ -517,6 +524,7 @@ def generate_review_suggestions(business, stars, product=None, groq_key=None):
     )
 
     domain_guidance = {
+        'pest_home': "This is a NATURAL / HERBAL HOME CARE & PEST REPELLENT product (e.g. Herbal Ant Repellent Spray, mosquito repellent, natural floor cleaner). Strictly focus on: highly effective at repelling ants/pests safely, 100% safe around kids and pets, pleasant natural botanical smell (NO toxic chemical fumes or choking pesticide smell), easy spray bottle, clean home protection. ABSOLUTE RULE: DO NOT mention hair, scalp, skin, hairfall, or body wash!",
         'body_bath': "This is a BODY CARE / BATH product (e.g. body wash, soap, body lotion, scrub). Strictly focus on: refreshing shower feel, skin hydration, gentle natural lather, all-day softness, botanical aroma, zero chemical dryness. ABSOLUTE RULE: DO NOT mention hair, scalp, hairfall, or facial acne!",
         'skin_face': "This is a FACIAL SKINCARE product (e.g. face serum, face wash, cream, glow pack). Strictly focus on: radiant glowing skin, clearer complexion, smooth skin texture, fast absorption, calming redness/blemishes. ABSOLUTE RULE: DO NOT mention hair fall or scalp!",
         'hair': "This is a HAIR CARE product (e.g. hairfall kit, hair oil, shampoo). Strictly focus on: healthy nourished scalp, reduced hair shedding/breakage, stronger roots, natural shine, non-greasy feel. ABSOLUTE RULE: DO NOT mention body wash lather or facial acne!",
@@ -612,7 +620,17 @@ def get_fallback_suggestions(business, stars, product=None):
         f"{business.get('name', '')} {business.get('category', '')} {business.get('tagline', '')} {business.get('description', '')}"
     )
 
-    if domain == 'body_bath':
+    if domain == 'pest_home':
+        pool = [
+            f"Tried {biz_name}'s {p} in our kitchen and balcony. Worked like magic on ants within hours, and the best part is it has zero toxic fumes!",
+            f"Finally a genuine 100% natural pest repellent that actually works! {biz_name} {p} is completely safe around our kids and pets. Highly recommended.",
+            f"No strong, suffocating pesticide smell at all — just a fresh, pleasant botanical aroma. {biz_name} {p} cleared out ants effortlessly.",
+            f"Super effective and eco-friendly! Applied {biz_name}'s {p} along the window sills and ant trails; haven't seen a single ant since. Great spray mechanism too.",
+            f"Much safer and better than harsh chemical insect sprays. The herbal formulation of {biz_name}'s {p} gives total peace of mind for home hygiene.",
+            f"Fast delivery and leak-proof packaging. {biz_name} {p} is an absolute must-have for every home looking for safe, chemical-free pest control.",
+            f"Highly impressed by the effectiveness of {p}. Safe around the dining area, pleasant herbal scent, and completely eradicated our ant problem."
+        ]
+    elif domain == 'body_bath':
         pool = [
             f"Started using {biz_name}'s {p} in my daily shower routine. Leaves my skin feeling deeply hydrated, refreshed, and soft without any chemical dryness!",
             f"Truly refreshing natural body care. The botanical herbal fragrance of {biz_name}'s {p} is soothing and feels luxurious on the skin.",
@@ -693,6 +711,20 @@ def uploaded_file(filename):
 # PUBLIC — CUSTOMER REVIEW PAGE (LIGHT THEME)
 # ─────────────────────────────────────────
 
+def format_whatsapp_url(val, biz_name=""):
+    if not val:
+        return ""
+    val = str(val).strip()
+    if val.startswith("http://") or val.startswith("https://"):
+        return val
+    digits = re.sub(r'\D', '', val)
+    if not digits:
+        return ""
+    if len(digits) == 10:
+        digits = "91" + digits
+    text = f"Hi {biz_name}, I wanted to share feedback regarding my recent experience."
+    return f"https://wa.me/{digits}?text={urllib.parse.quote(text)}"
+
 @app.route("/review/<slug>")
 def review_page(slug):
     db = get_db()
@@ -700,11 +732,15 @@ def review_page(slug):
     if not biz:
         abort(404)
         
-    products = db.execute("SELECT * FROM products WHERE business_id=? ORDER BY id ASC", (biz['id'],)).fetchall()
+    biz_dict = dict(biz)
+    products = db.execute("SELECT * FROM products WHERE business_id=? ORDER BY id ASC", (biz_dict['id'],)).fetchall()
+    wa_num = biz_dict.get('whatsapp_number', '')
+    wa_url = format_whatsapp_url(wa_num, biz_dict.get('name', ''))
     
     return render_template("review.html", 
-        business=dict(biz),
-        products=[dict(p) for p in products]
+        business=biz_dict,
+        products=[dict(p) for p in products],
+        whatsapp_url=wa_url
     )
 
 @app.route("/api/suggestions/<slug>")
@@ -868,12 +904,13 @@ def update_business():
     db = get_db()
     db.execute("""UPDATE businesses SET
         name=?, tagline=?, maps_url=?, category=?, description=?,
-        website_url=?, keywords=?,
+        website_url=?, keywords=?, whatsapp_number=?,
         auto_reply=?, theme_color=?, groq_key=?
         WHERE id=?""",
         (data.get('name'), data.get('tagline'), data.get('maps_url'),
          data.get('category'), data.get('description'),
          data.get('website_url', ''), data.get('keywords', ''),
+         data.get('whatsapp_number', '').strip(),
          1 if data.get('auto_reply') else 0,
          data.get('theme_color','#3A2CCB'),
          data.get('groq_key',''),
@@ -1072,6 +1109,7 @@ def register():
         maps_url = data.get("maps_url","").strip()
         website_url = data.get("website_url","").strip()
         keywords = data.get("keywords","").strip()
+        whatsapp_number = data.get("whatsapp_number","").strip()
         
         if not all([name, slug, passcode, maps_url]):
             return jsonify({"ok": False, "error": "All required fields must be filled"}), 400
@@ -1083,10 +1121,10 @@ def register():
             
         bid = secrets.token_urlsafe(8)
         db.execute("""INSERT INTO businesses
-            (id,name,slug,tagline,maps_url,category,description,website_url,keywords,passcode,auto_reply,theme_color)
-            VALUES (?,?,?,?,?,?,?,?,?,?,1,'#3A2CCB')""",
+            (id,name,slug,tagline,maps_url,category,description,website_url,keywords,whatsapp_number,passcode,auto_reply,theme_color)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,1,'#3A2CCB')""",
             (bid, name, slug, data.get("tagline",""), maps_url,
-             data.get("category",""), data.get("description",""), website_url, keywords, hash_pass(passcode))
+             data.get("category",""), data.get("description",""), website_url, keywords, whatsapp_number, hash_pass(passcode))
         )
         db.commit()
         
@@ -1191,7 +1229,7 @@ def admin_update_business(bid):
 
     db.execute("""UPDATE businesses SET
         name=?, tagline=?, maps_url=?, category=?, description=?,
-        website_url=?, keywords=?,
+        website_url=?, keywords=?, whatsapp_number=?,
         auto_reply=?, groq_key=?
         WHERE id=?""",
         (data.get('name', biz['name']),
@@ -1201,6 +1239,7 @@ def admin_update_business(bid):
          data.get('description', biz['description']),
          data.get('website_url', biz['website_url'] or ''),
          data.get('keywords', biz['keywords'] or ''),
+         data.get('whatsapp_number', (biz['whatsapp_number'] if 'whatsapp_number' in biz and biz['whatsapp_number'] else '') or '').strip(),
          1 if data.get('auto_reply') else 0,
          data.get('groq_key', biz['groq_key'] or ''),
          bid)

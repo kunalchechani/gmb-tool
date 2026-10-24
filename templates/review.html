@@ -541,6 +541,113 @@ body {
   transform: scale(0.99);
 }
 
+/* Redesigned Empathic Private Feedback Button */
+.btn-private-submit {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px var(--primary-glow) !important;
+  padding: 15px 20px !important;
+  font-size: 14px !important;
+  letter-spacing: 0.01em;
+}
+
+.btn-private-submit:hover {
+  filter: brightness(1.08) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px var(--primary-glow) !important;
+}
+
+/* WhatsApp Resolution Box & Button */
+.whatsapp-support-box {
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.wa-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #15803D;
+  background: #DCFCE7;
+  padding: 3px 9px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+.wa-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #14532D;
+  margin-bottom: 3px;
+}
+
+.wa-sub {
+  font-size: 11.5px;
+  color: #166534;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 18px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.32);
+  transition: all 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.45);
+  color: #FFFFFF;
+}
+
+.wa-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.divider-or {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text3);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin: 14px 0 2px;
+}
+
+.divider-or::before, .divider-or::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+
+.divider-or:not(:empty)::before {
+  margin-right: .8em;
+}
+
+.divider-or:not(:empty)::after {
+  margin-left: .8em;
+}
+
 .privacy-note {
   font-size: 11.5px;
   color: var(--text3);
@@ -873,10 +980,26 @@ body {
       </div>
     </div>
 
+    {% if whatsapp_url %}
+    <div class="whatsapp-support-box" id="whatsappSupportBox">
+      <div class="wa-badge">Instant Resolution</div>
+      <div class="wa-title">Prefer to talk directly?</div>
+      <div class="wa-sub">Chat directly with the business management team on WhatsApp for immediate support.</div>
+      <a href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" id="whatsappFeedbackBtn">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        <span>Chat with Management on WhatsApp</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <div class="divider-or"><span>OR SUBMIT PRIVATE NOTE</span></div>
+    </div>
+    {% endif %}
+
     <div id="feedbackFormWrap">
       <div style="margin-bottom:12px">
         <label style="font-size:11px; text-transform:uppercase; color:var(--text3); font-weight:600; letter-spacing:0.04em; display:block; margin-bottom:5px">What went wrong? *</label>
-        <textarea id="feedbackText" rows="3" style="width:100%; border:1.5px solid var(--border); border-radius:12px; padding:12px; font-family:'Poppins',sans-serif; font-size:13.5px; outline:none; resize:none; background:var(--surface2);" placeholder="Please share what happened so we can improve..."></textarea>
+        <textarea id="feedbackText" rows="3" style="width:100%; border:1.5px solid var(--border); border-radius:12px; padding:12px; font-family:'Poppins',sans-serif; font-size:13.5px; outline:none; resize:none; background:var(--surface2);" placeholder="Please share what happened so we can make it right..."></textarea>
       </div>
 
       <div style="margin-bottom:16px">
@@ -884,12 +1007,18 @@ body {
         <input type="text" id="feedbackContact" style="width:100%; border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; font-family:'Poppins',sans-serif; font-size:13.5px; outline:none; background:var(--surface2);" placeholder="e.g. Rahul, 9876543210">
       </div>
 
-      <button class="btn-submit" id="feedbackSubmitBtn" onclick="submitPrivateFeedback()" style="background:#1F2937;">
-        <span>Send Private Feedback to Management</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <button class="btn-submit btn-private-submit" id="feedbackSubmitBtn" onclick="submitPrivateFeedback()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <span>Send Feedback to Management</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
 
-      <div style="text-align:center; margin-top:14px; font-size:11.5px; color:var(--text3)">
+      <div style="text-align:center; margin-top:10px; font-size:11px; color:var(--text3); display:flex; align-items:center; justify-content:center; gap:5px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Confidential • Delivered privately to owner</span>
+      </div>
+
+      <div style="text-align:center; margin-top:12px; font-size:11.5px; color:var(--text3)">
         Prefer to review on Google Maps directly? <a href="{{ business.maps_url }}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:underline;">Continue to Google Maps</a>
       </div>
     </div>
@@ -904,7 +1033,6 @@ body {
         ✓ Sent Privately to Management
       </div>
     </div>
-  </div>
   </div>
 
   <!-- AI Review Suggestions Section -->
@@ -960,6 +1088,7 @@ body {
 <script>
 const SLUG = "{{ business.slug }}";
 const MAPS_URL = "{{ business.maps_url }}";
+const BASE_WA_URL = "{{ whatsapp_url or '' }}";
 const starLabels = ['', 'Needs Improvement 👎', 'Below Expectations 😕', 'Average Experience 👍', 'Very Good! ⭐⭐⭐⭐', 'Exceptional! 🎉 5/5'];
 
 let selectedStars = 0;
@@ -969,6 +1098,21 @@ let suggestions = [];
 let currentIdx = 0;
 let selectedText = '';
 let isDragging = false, startX = 0;
+
+function updateWhatsAppUrl(stars) {
+  const waBtn = document.getElementById('whatsappFeedbackBtn');
+  if (!waBtn || !BASE_WA_URL) return;
+  try {
+    const url = new URL(BASE_WA_URL);
+    const bizName = "{{ business.name }}";
+    const starText = stars > 0 ? ` (${stars} Star${stars > 1 ? 's' : ''})` : '';
+    const msg = `Hi ${bizName}, I would like to share feedback regarding my recent experience${starText} and speak with management for a resolution.`;
+    url.searchParams.set('text', msg);
+    waBtn.href = url.toString();
+  } catch(e) {
+    waBtn.href = BASE_WA_URL;
+  }
+}
 
 window.onload = () => {
   document.getElementById('loadingOverlay').style.display = 'none';
@@ -1006,6 +1150,7 @@ starBtns.forEach(btn => {
       loadSuggestions();
     } else {
       // 1, 2, or 3 Stars: Protect brand reputation with private feedback form!
+      updateWhatsAppUrl(selectedStars);
       if (cardSec) cardSec.style.display = 'none';
       if (prodSec) prodSec.style.display = 'none';
       if (privateSec) {
@@ -1057,7 +1202,7 @@ async function submitPrivateFeedback() {
     } else {
       alert(data.error || 'Could not submit. Please try again.');
       btn.disabled = false;
-      btn.innerHTML = '<span>Send Private Feedback to Management</span>';
+      btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span>Send Feedback to Management</span>';
     }
   } catch(e) {
     document.getElementById('feedbackFormWrap').style.display = 'none';
