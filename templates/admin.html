@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — GBP Review Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --primary: #3A2CCB; --primary-light: #5B4FD9; --bg: #F5F5F5; --surface: #fff; --surface2: #ECECEC; --border: #E0E0E0; --text: #0F0F10; --text2: #5A5A60; --text3: #9E9EA8; --red: #DC3545; --green: #2D7A4F; --radius: 14px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--primary); color: #fff; flex-shrink: 0; display: flex; flex-direction: column; padding: 28px 0; position: fixed; top: 0; left: 0; height: 100vh; z-index: 10; }
+.main { margin-left: 240px; flex: 1; padding: 32px 36px; max-width: 1200px; }
+.sb-logo { padding: 0 24px 28px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.sb-brand { font-family: 'Alata', sans-serif; font-size: 18px; color: #fff; }
+.sb-sub { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+.sb-nav { padding: 20px 12px; flex: 1; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.15s; text-decoration: none; margin-bottom: 2px; }
+.nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-item.active { background: rgba(255,255,255,0.18); color: #fff; font-weight: 500; }
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.page-title { font-family: 'Alata', sans-serif; font-size: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+.stat-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-val { font-size: 26px; font-weight: 600; font-family: 'Alata', sans-serif; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+th { background: var(--surface2); padding: 12px 14px; text-align: left; font-size: 11.5px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+td { padding: 12px 14px; border-top: 1px solid var(--border); font-size: 13.5px; vertical-align: middle; }
+tr:hover td { background: rgba(58,44,203,0.02); }
+.biz-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; font-family: 'Alata', sans-serif; font-size: 13px; color: #fff; overflow: hidden; flex-shrink: 0; }
+.biz-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.biz-info { display: flex; align-items: center; gap: 10px; }
+.biz-name { font-weight: 500; font-size: 13.5px; }
+.biz-slug { font-size: 11.5px; color: var(--text3); }
+.badge { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+.badge-on { background: rgba(45,122,79,0.12); color: var(--green); }
+.badge-off { background: #FFF3E0; color: #E65100; }
+.badge-count { background: rgba(58,44,203,0.09); color: var(--primary); font-size: 11.5px; padding: 3px 8px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.btn { padding: 6px 12px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--text2); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+.btn:hover { border-color: var(--primary); color: var(--primary); }
+.btn-danger { border-color: var(--red); color: var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { filter: brightness(1.1); }
+.copy-url { font-size: 12px; color: var(--primary-light); cursor: pointer; text-decoration: underline; }
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--primary); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 13px; transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* Modals */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(3px); }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--surface); border-radius: 16px; padding: 28px; width: 100%; max-width: 520px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+.modal h2 { font-family: 'Alata', sans-serif; font-size: 20px; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.form-group label { font-size: 11.5px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
+.form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13.5px; color: var(--text); background: var(--bg); outline: none; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
+
+/* Products List in Modal */
+.admin-prod-list { max-height: 240px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; margin: 12px 0; background: var(--bg); }
+.admin-prod-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.admin-prod-item:last-child { border-bottom: none; }
+.admin-prod-item-name { font-weight: 500; font-size: 13px; }
+.admin-prod-item-desc { font-size: 11px; color: var(--text3); }
+
+@media (max-width: 900px) { .sidebar { display: none; } .main { margin-left: 0; padding: 20px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .form-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-brand">GBP Admin</div>
+      <div class="sb-sub">Super Admin Panel</div>
+    </div>
+    <nav class="sb-nav">
+      <a class="nav-item active" onclick="switchPanel('businesses')"><span>📊</span> All Businesses</a>
+      <a class="nav-item" onclick="switchPanel('reviews')"><span>⭐</span> All Reviews</a>
+      <a class="nav-item" href="/login"><span>↩</span> Business Login</a>
+      <a class="nav-item" href="/admin/logout"><span>🚪</span> Logout</a>
+    </nav>
+  </aside>
+  
+  <main class="main">
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">All Businesses</div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Businesses</div><div class="stat-val">{{ stats.total_businesses }}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Reviews</div><div class="stat-val">{{ stats.total_reviews }}</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Rating</div><div class="stat-val">{{ '%.1f'|format(stats.avg_rating or 0) }}★</div></div>
+      <div class="stat-card"><div class="stat-label">Products Active</div><div class="stat-val">{{ stats.total_products }}</div></div>
+      <div class="stat-card"><div class="stat-label">Auto-Reply</div><div class="stat-val">{{ stats.auto_reply_on }}</div></div>
+    </div>
+
+    <!-- Businesses Panel -->
+    <div id="panel-businesses">
+      <table>
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Category</th>
+            <th>Reviews</th>
+            <th>Avg</th>
+            <th>Products</th>
+            <th>Auto-Reply</th>
+            <th>Review URL</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for b in businesses %}
+        <tr id="row-{{ b.id }}">
+          <td>
+            <div class="biz-info">
+              <div class="biz-avatar">{% if b.profile_pic %}<img src="{{ b.profile_pic }}">{% else %}{{ b.name[0].upper() }}{% endif %}</div>
+              <div><div class="biz-name">{{ b.name }}</div><div class="biz-slug">/{{ b.slug }}</div></div>
+            </div>
+          </td>
+          <td>{{ b.category or '—' }}</td>
+          <td>{{ b.review_count or 0 }}</td>
+          <td>{{ '%.1f'|format(b.avg_stars or 0) }}★</td>
+          <td>
+            <span class="badge-count" title="Click Products to view/import">📦 {{ b.product_count or 0 }}</span>
+          </td>
+          <td><span class="badge {{ 'badge-on' if b.auto_reply else 'badge-off' }}">{{ 'ON' if b.auto_reply else 'OFF' }}</span></td>
+          <td><span class="copy-url" onclick="copyUrl('{{ b.slug }}')">Copy</span></td>
+          <td style="display:flex;gap:5px;flex-wrap:wrap">
+            <button class="btn" onclick="openAdminProducts('{{ b.id }}', '{{ b.name }}')">📦 Products</button>
+            <button class="btn" onclick="editBiz('{{ b.id }}')">Edit</button>
+            <button class="btn btn-danger" onclick="deleteBiz('{{ b.id }}','{{ b.name }}')">Delete</button>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Reviews Panel -->
+    <div id="panel-reviews" style="display:none">
+      <table>
+        <thead><tr><th>Business</th><th>Stars</th><th>Review</th><th>Reply</th><th>Date</th></tr></thead>
+        <tbody>
+        {% for r in all_reviews %}
+        <tr>
+          <td><strong>{{ r.biz_name }}</strong></td>
+          <td>{{ '⭐' * (r.stars or 0) }}</td>
+          <td style="max-width:280px">{{ r.text or '<em style="color:var(--text3)">Rating only</em>' | safe }}</td>
+          <td style="max-width:240px;font-size:12.5px;color:var(--text2)">{{ r.reply or '—' }}</td>
+          <td style="font-size:12px;color:var(--text3)">{{ r.created_at[:10] if r.created_at else '' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Edit Business Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2>Edit Business Information</h2>
+    <input type="hidden" id="edit_id">
+    <div class="form-row">
+      <div class="form-group"><label>Business Name</label><input type="text" id="edit_name"></div>
+      <div class="form-group"><label>Slug</label><input type="text" id="edit_slug" disabled style="opacity:0.6"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tagline</label><input type="text" id="edit_tagline"></div>
+      <div class="form-group"><label>Category</label>
+        <select id="edit_category">
+          <option>Employment Agency</option>
+          <option>Staffing Agency</option>
+          <option>Software & IT Services</option>
+          <option>Restaurant & Cafe</option>
+          <option>Hotel & Hospitality</option>
+          <option>Retail Store</option>
+          <option>Healthcare & Clinic</option>
+          <option>Education & Coaching</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Website URL (Source)</label><input type="url" id="edit_website_url"></div>
+      <div class="form-group"><label>Brand Keywords</label><input type="text" id="edit_keywords"></div>
+    </div>
+    <div class="form-group"><label>Google Maps URL</label><input type="url" id="edit_maps_url"></div>
+    <div class="form-group"><label>Description / USPs</label><textarea id="edit_description" rows="2"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Groq API Key (Optional)</label><input type="text" id="edit_groq_key" placeholder="gsk_..."></div>
+      <div class="form-group"><label>Auto Reply</label>
+        <select id="edit_auto_reply"><option value="1">Enabled</option><option value="0">Disabled</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Reset Passcode (leave blank to keep)</label><input type="password" id="edit_passcode" placeholder="New passcode..."></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBiz()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Business Products Modal -->
+<div class="modal-overlay" id="adminProductsModal">
+  <div class="modal" style="max-width:560px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+      <h2 style="margin-bottom:0" id="adminProdModalTitle">Manage Products</h2>
+      <button class="btn btn-outline" onclick="closeAdminProductsModal()" style="font-size:16px;padding:2px 8px">×</button>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Train AI for this business by importing an Excel/CSV catalog or adding items manually.</p>
+    
+    <!-- Upload Toolbar -->
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:14px; background:var(--bg); padding:10px; border-radius:10px; border:1px solid var(--border)">
+      <input type="file" id="adminImportFileInput" accept=".csv, .xlsx, .xls" style="display:none" onchange="adminUploadProductsFile(this)">
+      <button class="btn btn-primary" onclick="document.getElementById('adminImportFileInput').click()" style="font-size:12px">📤 Import Excel / CSV</button>
+      <a href="/api/sample-products-csv" class="btn" style="font-size:12px">📥 Sample CSV</a>
+    </div>
+
+    <!-- Product list -->
+    <div class="admin-prod-list" id="adminProdList">Loading products...</div>
+
+    <!-- Add manual product form -->
+    <div style="background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--border); margin-top:12px">
+      <div style="font-size:12px; font-weight:600; color:var(--text); margin-bottom:8px">+ Add Single Product</div>
+      <div class="form-row">
+        <div class="form-group"><label>Name *</label><input type="text" id="ap_name" placeholder="Product name"></div>
+        <div class="form-group"><label>Keywords</label><input type="text" id="ap_kw" placeholder="tags, features"></div>
+      </div>
+      <div class="form-group"><label>Description</label><input type="text" id="ap_desc" placeholder="Details or quality..."></div>
+      <button class="btn btn-primary" onclick="adminAddProduct()" style="width:100%; justify-content:center; margin-top:4px">Add Product to Catalog</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BUSINESSES = {{ businesses_json | safe }};
+let currentAdminBid = null;
+
+function switchPanel(name) {
+  document.getElementById('panel-businesses').style.display = name === 'businesses' ? '' : 'none';
+  document.getElementById('panel-reviews').style.display = name === 'reviews' ? '' : 'none';
+  document.getElementById('pageTitle').textContent = name === 'businesses' ? 'All Businesses' : 'All Reviews';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function copyUrl(slug) {
+  const url = `${location.origin}/review/${slug}`;
+  navigator.clipboard.writeText(url).then(() => toast('Review link copied!'));
+}
+
+function editBiz(id) {
+  const b = BUSINESSES.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('edit_id').value = b.id;
+  document.getElementById('edit_name').value = b.name;
+  document.getElementById('edit_slug').value = b.slug;
+  document.getElementById('edit_tagline').value = b.tagline || '';
+  document.getElementById('edit_category').value = b.category || 'Other';
+  document.getElementById('edit_website_url').value = b.website_url || '';
+  document.getElementById('edit_keywords').value = b.keywords || '';
+  document.getElementById('edit_maps_url').value = b.maps_url;
+  document.getElementById('edit_description').value = b.description || '';
+  document.getElementById('edit_groq_key').value = b.groq_key || '';
+  document.getElementById('edit_auto_reply').value = b.auto_reply ? '1' : '0';
+  document.getElementById('edit_passcode').value = '';
+  document.getElementById('editModal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('editModal').classList.remove('active'); }
+
+async function saveBiz() {
+  const id = document.getElementById('edit_id').value;
+  const body = {
+    name: document.getElementById('edit_name').value,
+    tagline: document.getElementById('edit_tagline').value,
+    category: document.getElementById('edit_category').value,
+    website_url: document.getElementById('edit_website_url').value,
+    keywords: document.getElementById('edit_keywords').value,
+    maps_url: document.getElementById('edit_maps_url').value,
+    description: document.getElementById('edit_description').value,
+    groq_key: document.getElementById('edit_groq_key').value,
+    auto_reply: document.getElementById('edit_auto_reply').value === '1',
+    passcode: document.getElementById('edit_passcode').value
+  };
+  const res = await fetch(`/admin/api/business/${id}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
+  const data = await res.json();
+  if (data.ok) { toast('Business updated!'); closeModal(); setTimeout(() => location.reload(), 500); }
+  else toast(data.error || 'Error');
+}
+
+async function deleteBiz(id, name) {
+  if (!confirm(`Delete "${name}"? This will remove all its products, reviews and templates. This cannot be undone.`)) return;
+  const res = await fetch(`/admin/api/business/${id}`, { method: 'DELETE', headers: {'Content-Type': 'application/json'} });
+  const data = await res.json();
+  if (data.ok) { toast('Business deleted'); document.getElementById('row-' + id)?.remove(); }
+  else toast(data.error || 'Error');
+}
+
+/* Admin Products Management */
+async function openAdminProducts(bid, name) {
+  currentAdminBid = bid;
+  document.getElementById('adminProdModalTitle').textContent = `Products: ${name}`;
+  document.getElementById('adminProductsModal').classList.add('active');
+  loadAdminProductsList();
+}
+
+function closeAdminProductsModal() {
+  document.getElementById('adminProductsModal').classList.remove('active');
+}
+
+async function loadAdminProductsList() {
+  const listEl = document.getElementById('adminProdList');
+  listEl.innerHTML = '<div style="padding:16px;text-align:center;font-size:12px;color:var(--text3)">Loading catalog...</div>';
+  try {
+    const res = await fetch(`/admin/api/business/${currentAdminBid}/products`);
+    const prods = await res.json();
+    if (!prods.length) {
+      listEl.innerHTML = '<div style="padding:18px;text-align:center;font-size:12px;color:var(--text3)">No products in catalog yet.</div>';
+      return;
+    }
+    listEl.innerHTML = prods.map(p => `
+      <div class="admin-prod-item" id="admin-p-${p.id}">
+        <div>
+          <div class="admin-prod-item-name">${p.name}</div>
+          <div class="admin-prod-item-desc">${p.description || 'No description'} ${p.keywords ? '• 🏷️ ' + p.keywords : ''}</div>
+        </div>
+        <button class="btn btn-danger" style="padding:2px 8px;font-size:11px" onclick="adminDeleteProduct(${p.id})">Delete</button>
+      </div>
+    `).join('');
+  } catch(e) {
+    listEl.innerHTML = '<div style="padding:14px;color:var(--red);font-size:12px">Error loading products.</div>';
+  }
+}
+
+async function adminAddProduct() {
+  const name = document.getElementById('ap_name').value.trim();
+  const description = document.getElementById('ap_desc').value.trim();
+  const keywords = document.getElementById('ap_kw').value.trim();
+  if (!name) { toast('Product name required'); return; }
+  const res = await fetch(`/admin/api/business/${currentAdminBid}/products`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ name, description, keywords })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    document.getElementById('ap_name').value = '';
+    document.getElementById('ap_desc').value = '';
+    document.getElementById('ap_kw').value = '';
+    toast('Product added!');
+    loadAdminProductsList();
+  }
+}
+
+async function adminDeleteProduct(pid) {
+  if (!confirm('Delete this product?')) return;
+  const res = await fetch(`/admin/api/business/${currentAdminBid}/products/${pid}`, { method: 'DELETE' });
+  const data = await res.json();
+  if (data.ok) {
+    document.getElementById('admin-p-' + pid)?.remove();
+    toast('Product removed');
+  }
+}
+
+async function adminUploadProductsFile(input) {
+  if (!input.files || !input.files[0]) return;
+  const formData = new FormData();
+  formData.append('file', input.files[0]);
+  toast('Importing catalog...');
+  try {
+    const res = await fetch(`/admin/api/business/${currentAdminBid}/products/import`, { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.ok) {
+      toast(`Imported ${data.count} products!`);
+      loadAdminProductsList();
+    } else {
+      toast(data.error || 'Import failed');
+    }
+  } catch(e) {
+    toast('Import error');
+  }
+  input.value = '';
+}
+
+document.getElementById('editModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.getElementById('adminProductsModal').addEventListener('click', function(e) { if (e.target === this) closeAdminProductsModal(); });
+</script>
+</body>
+</html>

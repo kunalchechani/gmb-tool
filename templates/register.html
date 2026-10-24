@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Business — GBP Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: #0F0F10; color: #F5F5F5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+.card { background: #1A1A1E; border: 1px solid #2E2E34; border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 540px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+.logo { font-family: 'Alata', sans-serif; font-size: 26px; margin-bottom: 4px; }
+.logo span { color: #5B4FD9; }
+.sub { font-size: 13px; color: #9E9EA8; margin-bottom: 24px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+label { font-size: 11.5px; color: #9E9EA8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+input, select, textarea { width: 100%; background: #222228; border: 1.5px solid #2E2E34; border-radius: 10px; padding: 10px 12px; font-family: 'Poppins', sans-serif; font-size: 13.5px; color: #F5F5F5; outline: none; transition: border-color 0.15s; }
+input:focus, select:focus, textarea:focus { border-color: #3A2CCB; }
+input::placeholder, textarea::placeholder { color: #505058; }
+select option { background: #222228; }
+.hint { font-size: 11px; color: #60606A; margin-top: 3px; }
+.file-upload-box {
+  background: #202026;
+  border: 1.5px dashed #3D3D48;
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+.file-upload-box:hover {
+  border-color: #5B4FD9;
+  background: rgba(91, 79, 217, 0.06);
+}
+.file-upload-hint {
+  font-size: 12px;
+  color: #9E9EA8;
+}
+.file-upload-sub {
+  font-size: 10.5px;
+  color: #60606A;
+  margin-top: 2px;
+}
+.sample-link {
+  font-size: 11px;
+  color: #5B4FD9;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 4px;
+}
+.sample-link:hover { text-decoration: underline; }
+.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3A2CCB, #5B4FD9); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 10px; box-shadow: 0 4px 16px rgba(58,44,203,0.25); }
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.6; }
+.error { background: #2A1515; border: 1px solid #4A2020; color: #F4A0A0; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; display: none; }
+.success-box { background: #151E2A; border: 1px solid #3A2CCB; border-radius: 14px; padding: 22px; display: none; text-align: center; }
+.success-box h3 { font-family: 'Alata', sans-serif; font-size: 20px; margin-bottom: 8px; color: #5B4FD9; }
+.url-box { background: #0F0F10; border-radius: 8px; padding: 12px 14px; font-size: 13.5px; color: #9E9EA8; word-break: break-all; margin: 12px 0; border: 1px solid #2E2E34; }
+.url-box span { color: #5B4FD9; font-weight: 600; }
+.back-link { text-align: center; margin-top: 20px; font-size: 13px; color: #60606A; cursor: pointer; }
+.back-link:hover { color: #9E9EA8; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">GBP<span>.</span>Review</div>
+  <div class="sub">Register your business & train AI on your specific products</div>
+  
+  <div class="error" id="errBox"></div>
+
+  <div class="success-box" id="successBox">
+    <h3>🎉 Business Registered Successfully!</h3>
+    <div id="successMsg"></div>
+    <button class="btn" onclick="location.href='/dashboard'" style="margin-top:14px">Go to Dashboard →</button>
+  </div>
+
+  <form id="formWrap" onsubmit="doRegister(event)">
+    <div class="row">
+      <div class="form-group">
+        <label>Business Name *</label>
+        <input type="text" id="name" placeholder="Woho Jobs" oninput="autoSlug()" required>
+      </div>
+      <div class="form-group">
+        <label>URL Slug *</label>
+        <input type="text" id="slug" placeholder="woho-jobs" required>
+        <div class="hint"><span id="domainPreview">...</span>/review/<span id="slugPreview">...</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category">
+          <option>Employment Agency</option>
+          <option>Staffing Agency</option>
+          <option>Software & IT Services</option>
+          <option>Restaurant & Cafe</option>
+          <option>Hotel & Hospitality</option>
+          <option>Retail Store</option>
+          <option>Healthcare & Clinic</option>
+          <option>Education & Coaching</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Passcode *</label>
+        <input type="password" id="passcode" placeholder="Min 6 characters" required>
+        <div class="hint">For business dashboard login</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Google Maps Review URL *</label>
+      <input type="url" id="maps_url" placeholder="https://maps.google.com/maps?cid=..." required>
+      <div class="hint">Your Google Business Maps listing review link</div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Official Website (Source)</label>
+        <input type="url" id="website_url" placeholder="https://yourbrand.com">
+      </div>
+      <div class="form-group">
+        <label>Brand Keywords</label>
+        <input type="text" id="keywords" placeholder="recruitment, verified jobs, quick placement">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Tagline</label>
+      <input type="text" id="tagline" placeholder="e.g. Leading recruitment partner with 100% verified jobs">
+    </div>
+
+    <div class="form-group">
+      <label>Business Description</label>
+      <textarea id="description" rows="2" placeholder="Brief description of what you do, location, and USPs for AI context..."></textarea>
+    </div>
+
+    <!-- Excel / CSV Product Upload -->
+    <div class="form-group">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <label>Upload Products / Services Catalog (Excel / CSV)</label>
+        <a href="/api/sample-products-csv" class="sample-link">📥 Sample CSV</a>
+      </div>
+      <div class="file-upload-box" onclick="document.getElementById('products_file').click()">
+        <input type="file" id="products_file" accept=".csv, .xlsx, .xls" style="display:none" onchange="fileSelected(this)">
+        <div class="file-upload-hint" id="fileLabel">📁 Drop or click to upload catalog (.csv, .xlsx, .xls)</div>
+        <div class="file-upload-sub">AI uses your actual products & descriptions to write authentic customer reviews</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn" id="regBtn">Register Business →</button>
+  </form>
+
+  <div class="back-link" onclick="location.href='/login'">← Back to business login</div>
+</div>
+
+<script>
+document.getElementById('domainPreview').textContent = location.host;
+
+function autoSlug() {
+  const name = document.getElementById('name').value;
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  document.getElementById('slug').value = slug;
+  document.getElementById('slugPreview').textContent = slug || '...';
+}
+
+document.getElementById('slug').addEventListener('input', function() {
+  document.getElementById('slugPreview').textContent = this.value || '...';
+});
+
+function fileSelected(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById('fileLabel').textContent = `✅ Attached: ${input.files[0].name} (${Math.round(input.files[0].size/1024)} KB)`;
+  }
+}
+
+async function doRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('regBtn');
+  const err = document.getElementById('errBox');
+  btn.disabled = true;
+  btn.textContent = 'Registering & Training AI...';
+  err.style.display = 'none';
+
+  const formData = new FormData();
+  formData.append('name', document.getElementById('name').value);
+  formData.append('slug', document.getElementById('slug').value);
+  formData.append('passcode', document.getElementById('passcode').value);
+  formData.append('maps_url', document.getElementById('maps_url').value);
+  formData.append('category', document.getElementById('category').value);
+  formData.append('website_url', document.getElementById('website_url').value);
+  formData.append('keywords', document.getElementById('keywords').value);
+  formData.append('tagline', document.getElementById('tagline').value);
+  formData.append('description', document.getElementById('description').value);
+
+  const fileInput = document.getElementById('products_file');
+  if (fileInput.files && fileInput.files[0]) {
+    formData.append('products_file', fileInput.files[0]);
+  }
+
+  try {
+    const res = await fetch('/register', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+      let prodMsg = data.imported_products ? `<p style="font-size:12.5px;color:#34D399;margin-bottom:8px">✅ Successfully imported <strong>${data.imported_products}</strong> products into AI knowledge base!</p>` : '';
+      document.getElementById('successMsg').innerHTML = `
+        ${prodMsg}
+        <p style="font-size:13px;color:#9E9EA8;margin-bottom:6px">Your public customer review link:</p>
+        <div class="url-box">${location.origin}<span>/review/${data.slug}</span></div>
+        <p style="font-size:12px;color:#60606A">Share this link with customers via WhatsApp, QR code or SMS.</p>
+      `;
+    } else {
+      err.textContent = data.error || 'Registration failed';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Register Business →';
+    }
+  } catch(e) {
+    err.textContent = 'Connection error. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Register Business →';
+  }
+}
+</script>
+</body>
+</html>

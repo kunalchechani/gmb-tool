@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — GBP Review Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: #0F0F10; color: #F5F5F5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.card { background: #1A1A1E; border: 1px solid #2E2E34; border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; }
+.logo { font-family: 'Alata', sans-serif; font-size: 28px; margin-bottom: 6px; }
+.logo span { color: #5B4FD9; }
+.sub { font-size: 13px; color: #9E9EA8; margin-bottom: 32px; }
+.form-group { margin-bottom: 16px; }
+label { display: block; font-size: 12px; color: #9E9EA8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+input { width: 100%; background: #222228; border: 1.5px solid #2E2E34; border-radius: 10px; padding: 12px 14px; font-family: 'Poppins', sans-serif; font-size: 14px; color: #F5F5F5; outline: none; transition: border-color 0.15s; }
+input:focus { border-color: #3A2CCB; }
+input::placeholder { color: #505058; }
+.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3A2CCB, #5B4FD9); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 4px 16px rgba(58,44,203,0.25); }
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.error { background: #2A1515; border: 1px solid #4A2020; color: #F4A0A0; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: {{ 'block' if error else 'none' }}; }
+.divider { text-align: center; font-size: 12px; color: #505058; margin: 20px 0; }
+.link-btn { width: 100%; padding: 12px; background: transparent; border: 1.5px solid #2E2E34; color: #9E9EA8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+.link-btn:hover { border-color: #5B4FD9; color: #F5F5F5; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">GBP<span>.</span>kizee</div>
+  <div class="sub">Review Management Platform</div>
+  <div class="error" id="errBox">{{ error or '' }}</div>
+  <div class="form-group">
+    <label>Business Slug</label>
+    <input type="text" id="slug" placeholder="e.g. woho-jobs" autocomplete="off">
+  </div>
+  <div class="form-group">
+    <label>Passcode</label>
+    <input type="password" id="passcode" placeholder="Your secret passcode">
+  </div>
+  <button class="btn" id="loginBtn" onclick="doLogin()">Login →</button>
+  <div class="divider">— or —</div>
+  <button class="link-btn" onclick="location.href='/register'">Register a new business</button>
+</div>
+<script>
+async function doLogin() {
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Logging in...';
+  const err = document.getElementById('errBox');
+  err.style.display = 'none';
+  try {
+    const res = await fetch('/login', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ slug: document.getElementById('slug').value, passcode: document.getElementById('passcode').value })
+    });
+    const data = await res.json();
+    if (data.ok) location.href = '/dashboard';
+    else { err.textContent = data.error || 'Invalid credentials'; err.style.display = 'block'; }
+  } catch(e) { err.textContent = 'Connection error'; err.style.display = 'block'; }
+  btn.disabled = false; btn.textContent = 'Login →';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

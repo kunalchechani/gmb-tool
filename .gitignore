@@ -1,0 +1,80 @@
+# ==========================================
+# Git Ignore - GBP Review Management System
+# ==========================================
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Databases & local persistent storage
+*.db
+*.sqlite
+*.sqlite3
+gbp.db
+
+# User profile uploads (preserve directory structure via .gitkeep)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Archives & compressed files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+Archive.zip
+
+# Logs
+*.log
+logs/
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.claude/

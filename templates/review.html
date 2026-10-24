@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Review {{ business.name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #3A2CCB;
+  --primary-light: #5B4FD9;
+  --primary-soft: rgba(58, 44, 203, 0.08);
+  --primary-glow: rgba(58, 44, 203, 0.16);
+  --bg: #F5F5F5;
+  --surface: #FFFFFF;
+  --surface2: #F0F0F5;
+  --surface-hover: #ECECF2;
+  --border: #E2E2E8;
+  --border-light: #EFEFF3;
+  --text: #0F0F10;
+  --text2: #52525C;
+  --text3: #8C8C96;
+  --gold: #F59E0B;
+  --green: #10B981;
+  --green-soft: rgba(16, 185, 129, 0.12);
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 0%, rgba(91, 79, 217, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(58, 44, 203, 0.05) 0%, transparent 35%);
+}
+
+.page {
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 18px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.biz-header {
+  text-align: center;
+  margin-bottom: 24px;
+  animation: fadeInDown 0.45s ease;
+}
+
+.biz-logo-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.biz-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Alata', sans-serif;
+  font-size: 30px;
+  color: #fff;
+  box-shadow: 0 8px 24px var(--primary-glow);
+  overflow: hidden;
+  border: 3px solid #fff;
+}
+
+.biz-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.verified-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  background: #3B82F6;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.biz-name {
+  font-family: 'Alata', sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.biz-tagline {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.biz-website-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 20px;
+  transition: all 0.15s ease;
+}
+
+.biz-website-link:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary-light);
+}
+
+/* Card Surface Container */
+.card-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  box-shadow: 0 4px 20px rgba(15, 15, 16, 0.04);
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+/* Stars Rating Section */
+.star-section {
+  text-align: center;
+  animation: fadeInUp 0.45s 0.05s ease both;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.section-sub {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 14px;
+}
+
+.stars-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.star-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-btn .star-svg {
+  width: 44px;
+  height: 44px;
+  fill: #E9ECEF;
+  stroke: #CED4DA;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.06));
+}
+
+.star-btn.lit .star-svg {
+  fill: #FFB000;
+  stroke: #E09000;
+  stroke-width: 0.8;
+  filter: drop-shadow(0 4px 10px rgba(255, 176, 0, 0.45));
+}
+
+.star-btn:hover {
+  transform: scale(1.18);
+}
+
+.star-btn.lit:hover .star-svg {
+  fill: #FFA000;
+}
+
+.star-label-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 4px 14px;
+  border-radius: 20px;
+  min-height: 24px;
+  transition: all 0.2s ease;
+}
+
+/* Products / Offerings Selector (Scrollable) */
+.product-section {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+  animation: fadeIn 0.3s ease;
+}
+
+.product-scroll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.product-scroll-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.product-scroll-hint {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.product-scroll-wrapper {
+  position: relative;
+  margin: 0 -4px;
+}
+
+.product-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.product-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.product-chip {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.product-chip:hover {
+  background: var(--surface-hover);
+  border-color: #D2D2DC;
+  color: var(--text);
+}
+
+.product-chip.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-color: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px var(--primary-glow);
+  transform: translateY(-1px);
+}
+
+/* Suggestions & Swiper Section */
+.suggestions-section {
+  animation: fadeInUp 0.45s 0.15s ease both;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-badge-focus {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 3px 10px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.regen-btn {
+  font-size: 11px;
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+
+.regen-btn:hover {
+  color: var(--primary);
+}
+
+.card-stack {
+  position: relative;
+  min-height: 155px;
+  margin-bottom: 14px;
+}
+
+.review-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text);
+  cursor: grab;
+  transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.2s ease;
+  user-select: none;
+  touch-action: pan-y;
+  box-shadow: 0 4px 16px rgba(15, 15, 16, 0.04);
+}
+
+.review-card.front {
+  z-index: 3;
+  box-shadow: 0 8px 24px rgba(15, 15, 16, 0.08), 0 0 0 1px rgba(58, 44, 203, 0.08);
+}
+
+.review-card.mid {
+  z-index: 2;
+  transform: scale(0.96) translateY(8px);
+  opacity: 0.65;
+}
+
+.review-card.back {
+  z-index: 1;
+  transform: scale(0.92) translateY(16px);
+  opacity: 0.35;
+}
+
+.review-card.swiping-right {
+  transform: translateX(120%) rotate(8deg) !important;
+  opacity: 0;
+  transition: all 0.32s ease;
+}
+
+.review-card.swiping-left {
+  transform: translateX(-120%) rotate(-8deg) !important;
+  opacity: 0;
+  transition: all 0.32s ease;
+}
+
+/* Dots and Nav */
+.stack-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.nav-arrow-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.nav-arrow-btn:hover {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: var(--primary-light);
+}
+
+.swipe-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.dot-ind {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.2s ease;
+}
+
+.dot-ind.active {
+  background: var(--primary);
+  width: 18px;
+  border-radius: 4px;
+}
+
+/* Selected review edit */
+.selected-box {
+  background: #FAF9FE;
+  border: 1.5px solid var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 16px;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.selected-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.selected-label {
+  font-size: 11px;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.selected-char-hint {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.selected-text {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  resize: none;
+  min-height: 78px;
+  line-height: 1.6;
+}
+
+/* Actions */
+.btn-submit {
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.btn-submit:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px var(--primary-glow);
+}
+
+.btn-submit:active {
+  transform: scale(0.99);
+}
+
+.privacy-note {
+  font-size: 11.5px;
+  color: var(--text3);
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 245, 245, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  gap: 14px;
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.loading-text {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+/* Success Modal Overlay */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 16, 0.45);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  padding: 20px;
+}
+
+.success-card {
+  width: 100%;
+  max-width: 390px;
+  background: #FFFFFF;
+  border-radius: 22px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  animation: modalScale 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  border: 1px solid var(--border);
+}
+
+.success-icon-wrap {
+  width: 64px;
+  height: 64px;
+  background: var(--green-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 16px;
+  animation: bounceIn 0.6s ease;
+}
+
+.success-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.success-sub {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.copied-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-soft);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #065F46;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.step-hints {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  text-align: left;
+  background: var(--surface2);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.step-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+.step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 15px 24px;
+  background: #FFFFFF;
+  color: #1F2937;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.btn-google:hover {
+  background: #F9FAFB;
+  border-color: #9CA3AF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.g-logo {
+  width: 20px;
+  height: 20px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScale {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+<body>
+
+<!-- Initial Page Loader -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Preparing your review experience...</div>
+</div>
+
+<!-- Success Modal Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon-wrap">🎉</div>
+    <div class="success-title">Review Copied!</div>
+    <div class="success-sub">Your feedback is ready. Click below to finish on Google Maps in just 2 clicks!</div>
+    
+    <div class="copied-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Copied to your clipboard
+    </div>
+
+    <div class="step-hints">
+      <div class="step-hint">
+        <span class="step-num">1</span>
+        <span>Tap <strong>Open Google Maps</strong> below.</span>
+      </div>
+      <div class="step-hint">
+        <span class="step-num">2</span>
+        <span>Select your star rating.</span>
+      </div>
+      <div class="step-hint">
+        <span class="step-num">3</span>
+        <span>Tap the text box and select <strong>Paste</strong>.</span>
+      </div>
+    </div>
+
+    <button class="btn-google" id="googleBtn">
+      <svg class="g-logo" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Open Google Maps to Post →
+    </button>
+  </div>
+</div>
+
+<!-- Main App Flow -->
+<div class="page" id="mainPage" style="display:none">
+
+  <!-- Header -->
+  <div class="biz-header">
+    <div class="biz-logo-wrap">
+      <div class="biz-logo">
+        {% if business.profile_pic %}
+          <img src="{{ business.profile_pic }}" alt="{{ business.name }}">
+        {% else %}
+          {{ business.name[0].upper() }}
+        {% endif %}
+      </div>
+      <div class="verified-badge" title="Verified business">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>
+    
+    <h1 class="biz-name">{{ business.name }}</h1>
+    <p class="biz-tagline">{{ business.tagline or 'Share your verified customer experience' }}</p>
+    
+    {% if business.website_url %}
+    <a href="{{ business.website_url }}" target="_blank" rel="noopener noreferrer" class="biz-website-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Visit Website ↗
+    </a>
+    {% endif %}
+  </div>
+
+  <!-- Star Rating Box -->
+  <div class="card-box star-section">
+    <div class="section-label">How was your overall experience?</div>
+    <div class="section-sub">Tap a star to personalize your review</div>
+    
+    <div class="stars-row" id="starsRow">
+      <button class="star-btn lit" data-val="1" type="button" aria-label="1 Star">
+        <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </button>
+      <button class="star-btn lit" data-val="2" type="button" aria-label="2 Stars">
+        <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </button>
+      <button class="star-btn lit" data-val="3" type="button" aria-label="3 Stars">
+        <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </button>
+      <button class="star-btn lit" data-val="4" type="button" aria-label="4 Stars">
+        <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </button>
+      <button class="star-btn lit" data-val="5" type="button" aria-label="5 Stars">
+        <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </button>
+    </div>
+    
+    <div class="star-label-badge" id="starLabel">Tap stars above to start</div>
+
+    <!-- Product / Service Carousel Selector -->
+    {% if products and products|length > 0 %}
+    <div class="product-section" id="productSection" style="display:none">
+      <div class="product-scroll-header">
+        <span class="product-scroll-title">Select What You Used</span>
+        <span class="product-scroll-hint">Scroll to pick →</span>
+      </div>
+      <div class="product-scroll-wrapper">
+        <div class="product-scroll" id="productScroll">
+          <button class="product-chip active" data-id="all" onclick="selectProduct(this, 'all', 'Overall Experience')">
+            <span>✨</span>
+            <span>Overall Experience</span>
+          </button>
+          {% for p in products %}
+          <button class="product-chip" data-id="{{ p.id }}" onclick="selectProduct(this, '{{ p.id }}', '{{ p.name }}')">
+            <span>📦</span>
+            <span>{{ p.name }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- AI Review Suggestions Section -->
+  <div class="card-box suggestions-section" id="cardSection" style="display:none">
+    <div class="card-header-bar">
+      <div class="card-badge-focus" id="focusBadge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="focusText">Review Suggestions</span>
+      </div>
+      <button class="regen-btn" onclick="loadSuggestions(true)" title="Generate fresh options">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        New Options
+      </button>
+    </div>
+
+    <!-- Card Stack Container -->
+    <div class="card-stack" id="cardStack">
+      <div class="review-card front" id="card0"></div>
+      <div class="review-card mid" id="card1"></div>
+      <div class="review-card back" id="card2"></div>
+    </div>
+
+    <!-- Stack Controls -->
+    <div class="stack-controls">
+      <button class="nav-arrow-btn" onclick="prevCard()" title="Previous option">←</button>
+      <div class="swipe-indicators" id="dotRow"></div>
+      <button class="nav-arrow-btn" onclick="skipCard()" title="Next option">→</button>
+    </div>
+
+    <!-- Edit Box -->
+    <div class="selected-box" id="selectedBox">
+      <div class="selected-label-row">
+        <span class="selected-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Selected Review (Editable)
+        </span>
+        <span class="selected-char-hint" id="charCount">0 chars</span>
+      </div>
+      <textarea class="selected-text" id="selectedText" rows="3" placeholder="You can edit or add your own words..."></textarea>
+    </div>
+
+    <!-- Submit CTA -->
+    <button class="btn-submit" id="submitBtn" onclick="submitReview()">
+      <span>Post on Google Maps</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+    
+    <div class="privacy-note">Review text is automatically copied. Tap Paste on Google Maps!</div>
+  </div>
+
+</div>
+
+<script>
+const SLUG = "{{ business.slug }}";
+const MAPS_URL = "{{ business.maps_url }}";
+const starLabels = ['', 'Needs Improvement 👎', 'Below Expectations 😕', 'Average Experience 👍', 'Very Good! ⭐⭐⭐⭐', 'Exceptional! 🎉 5/5'];
+
+let selectedStars = 5;
+let selectedProductId = 'all';
+let selectedProductName = 'Overall Experience';
+let suggestions = [];
+let currentIdx = 0;
+let selectedText = '';
+let isDragging = false, startX = 0;
+
+window.onload = () => {
+  document.getElementById('loadingOverlay').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'flex';
+};
+
+// Star button interactions
+const starBtns = document.querySelectorAll('.star-btn');
+const starsRow = document.getElementById('starsRow');
+
+function updateStarDisplay(val) {
+  starBtns.forEach((s, i) => s.classList.toggle('lit', i < val));
+  document.getElementById('starLabel').textContent = starLabels[val] || 'Selected';
+}
+
+starBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedStars = parseInt(btn.dataset.val);
+    updateStarDisplay(selectedStars);
+    
+    // Show product chips if available
+    const prodSec = document.getElementById('productSection');
+    if (prodSec) prodSec.style.display = 'block';
+    
+    loadSuggestions();
+  });
+
+  btn.addEventListener('mouseenter', () => {
+    const val = parseInt(btn.dataset.val);
+    starBtns.forEach((s, i) => s.classList.toggle('lit', i < val));
+  });
+});
+
+if (starsRow) {
+  starsRow.addEventListener('mouseleave', () => {
+    updateStarDisplay(selectedStars);
+  });
+}
+
+// Initial state
+updateStarDisplay(selectedStars);
+
+// Product Chip Selection
+function selectProduct(el, prodId, prodName) {
+  document.querySelectorAll('.product-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedProductId = prodId;
+  selectedProductName = prodName;
+  
+  // Update focus badge
+  const focusText = document.getElementById('focusText');
+  if (focusText) {
+    focusText.textContent = prodId === 'all' ? 'Overall Experience' : `Focus: ${prodName}`;
+  }
+  
+  loadSuggestions();
+}
+
+async function loadSuggestions(isRefresh = false) {
+  const section = document.getElementById('cardSection');
+  const stack = document.getElementById('cardStack');
+  section.style.display = 'block';
+  
+  stack.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;height:140px;gap:10px;color:var(--text2);font-size:13.5px;font-weight:500;">
+      <div class="spinner" style="width:24px;height:24px;border-width:2.5px;"></div>
+      <span>Crafting ${selectedStars}★ suggestions${selectedProductId !== 'all' ? ' for ' + selectedProductName : ''}...</span>
+    </div>
+  `;
+
+  try {
+    let url = `/api/suggestions/${SLUG}?stars=${selectedStars}`;
+    if (selectedProductId && selectedProductId !== 'all') {
+      url += `&product_id=${selectedProductId}`;
+    }
+    
+    const res = await fetch(url);
+    const data = await res.json();
+    suggestions = data.suggestions || [];
+    currentIdx = 0;
+    
+    if (suggestions.length > 0) {
+      renderCards();
+      buildDots();
+    } else {
+      stack.innerHTML = `<div style="color:var(--text2);font-size:13.5px;text-align:center;padding:30px 10px;">Write your own review in the box below!</div>`;
+      showSelected('');
+    }
+  } catch(e) {
+    stack.innerHTML = `<div style="color:var(--text2);font-size:13.5px;text-align:center;padding:30px 10px;">Type your review directly below.</div>`;
+    showSelected('');
+  }
+}
+
+function renderCards() {
+  const stack = document.getElementById('cardStack');
+  stack.innerHTML = '';
+  
+  const displayCount = Math.min(3, suggestions.length);
+  for (let i = 0; i < displayCount; i++) {
+    const card = document.createElement('div');
+    card.className = 'review-card ' + (i === 0 ? 'front' : i === 1 ? 'mid' : 'back');
+    card.id = 'card' + i;
+    const idx = (currentIdx + i) % suggestions.length;
+    card.textContent = `"${suggestions[idx]}"`;
+    card.dataset.idx = idx;
+    if (i === 0) setupSwipe(card);
+    stack.appendChild(card);
+  }
+  
+  showSelected(suggestions[currentIdx] || '');
+}
+
+function buildDots() {
+  const dotRow = document.getElementById('dotRow');
+  if (!dotRow) return;
+  dotRow.innerHTML = suggestions.map((_, i) =>
+    `<div class="dot-ind ${i === currentIdx ? 'active' : ''}" id="dot${i}"></div>`
+  ).join('');
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot-ind').forEach((d, i) => d.classList.toggle('active', i === currentIdx));
+}
+
+function showSelected(text) {
+  selectedText = text;
+  const box = document.getElementById('selectedBox');
+  const ta = document.getElementById('selectedText');
+  const charCount = document.getElementById('charCount');
+  
+  box.style.display = 'block';
+  ta.value = text;
+  if (charCount) charCount.textContent = `${text.length} chars`;
+  
+  ta.oninput = () => {
+    selectedText = ta.value;
+    if (charCount) charCount.textContent = `${ta.value.length} chars`;
+  };
+}
+
+function skipCard() {
+  if (suggestions.length <= 1) return;
+  const front = document.querySelector('#cardStack .review-card.front');
+  if (!front) return;
+  front.classList.add('swiping-left');
+  setTimeout(() => {
+    currentIdx = (currentIdx + 1) % suggestions.length;
+    renderCards();
+    updateDots();
+  }, 260);
+}
+
+function prevCard() {
+  if (suggestions.length <= 1) return;
+  const front = document.querySelector('#cardStack .review-card.front');
+  if (!front) return;
+  front.classList.add('swiping-right');
+  setTimeout(() => {
+    currentIdx = (currentIdx - 1 + suggestions.length) % suggestions.length;
+    renderCards();
+    updateDots();
+  }, 260);
+}
+
+function setupSwipe(card) {
+  let sx = 0;
+  card.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive: true});
+  card.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - sx;
+    card.style.transform = `translateX(${dx}px) rotate(${dx * 0.04}deg)`;
+  }, {passive: true});
+  card.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 55) {
+      if (dx > 0) prevCard(); else skipCard();
+    } else {
+      card.style.transition = 'transform 0.25s ease';
+      card.style.transform = '';
+      setTimeout(() => card.style.transition = '', 250);
+    }
+  });
+
+  // Desktop drag
+  card.addEventListener('mousedown', e => { sx = e.clientX; isDragging = true; });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - sx;
+    card.style.transform = `translateX(${dx}px) rotate(${dx * 0.04}deg)`;
+  });
+  document.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dx = e.clientX - sx;
+    if (Math.abs(dx) > 55) {
+      if (dx > 0) prevCard(); else skipCard();
+    } else {
+      card.style.transition = 'transform 0.25s ease';
+      card.style.transform = '';
+      setTimeout(() => card.style.transition = '', 250);
+    }
+  });
+}
+
+async function submitReview() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2.5px;border-top-color:#fff;"></div>';
+
+  const text = (document.getElementById('selectedText').value || selectedText).trim();
+
+  // Copy to clipboard
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  } catch(e) {
+    console.error('Clipboard copy error', e);
+  }
+
+  // Log in system
+  try {
+    await fetch('/api/log-review', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ slug: SLUG, stars: selectedStars, text })
+    });
+  } catch(e) {}
+
+  document.getElementById('successOverlay').style.display = 'flex';
+
+  let mapsUrl = MAPS_URL;
+  if (mapsUrl.includes('place_id=') || mapsUrl.includes('placeid=')) {
+    const match = mapsUrl.match(/place_?id[=:]([A-Za-z0-9_-]+)/i);
+    if (match) {
+      mapsUrl = `https://search.google.com/local/writereview?placeid=${match[1]}`;
+    }
+  }
+
+  document.getElementById('googleBtn').onclick = () => {
+    window.open(mapsUrl, '_blank');
+  };
+}
+</script>
+</body>
+</html>
