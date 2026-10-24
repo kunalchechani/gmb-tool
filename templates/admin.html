@@ -206,7 +206,7 @@ tr:hover td { background: rgba(58,44,203,0.02); }
           </div>
           <div>
             <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Primary Model</div>
-            <div style="font-size:13px; font-weight:600; margin-top:4px;">llama-3.1-8b-instant</div>
+            <div style="font-size:13px; font-weight:600; margin-top:4px;">llama-3.3-70b-versatile</div>
           </div>
           <div>
             <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Fallback Strategy</div>
@@ -516,7 +516,8 @@ async function deleteGroqKey(id) {
 
 function renderStatusBadge(res) {
   if (res.status === 'active') {
-    return `<span class="badge badge-active">● Active & Operational</span>`;
+    const modelTag = res.model ? `<span style="font-size:10.5px;color:#137333;font-weight:500;display:block;margin-top:3px;">${res.model}</span>` : '';
+    return `<span class="badge badge-active">● Active & Operational</span>${modelTag}`;
   } else if (res.status === 'rate_limited') {
     return `<span class="badge badge-limited" title="${res.message || ''}">▲ Rate Limited (429)</span>`;
   } else if (res.status === 'invalid_key') {
@@ -524,7 +525,7 @@ function renderStatusBadge(res) {
   } else if (res.status === 'timeout') {
     return `<span class="badge badge-limited">⏱ Timeout</span>`;
   } else {
-    return `<span class="badge badge-invalid" title="${res.message || ''}">✕ Error</span>`;
+    return `<span class="badge badge-invalid" title="${res.message || ''}">✕ Error</span><span style="font-size:10px;color:var(--red);display:block;margin-top:2px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${res.message || ''}</span>`;
   }
 }
 

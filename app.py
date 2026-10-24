@@ -49,7 +49,14 @@ if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROQ_MODELS = ["llama-3.1-8b-instant", "llama-3.3-70b-versatile", "mixtral-8x7b-32768", "llama3-8b-8192"]
+GROQ_MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+    "llama3-70b-8192",
+    "llama3-8b-8192",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it"
+]
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'uploads')
@@ -493,6 +500,8 @@ def get_active_groq_keys(custom_key=None):
 def test_single_groq_key(api_key):
     """
     Pings Groq API to verify key validity, access, latency, and rate-limit status.
+    First queries /models to discover live accessible models for this account,
+    then executes a verification completion with the best matching active model.
     """
     api_key = str(api_key).strip()
     if not api_key:
@@ -507,46 +516,18 @@ def test_single_groq_key(api_key):
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
-    payload = {
-        "model": "llama-3.1-8b-instant",
-        "messages": [{"role": "user", "content": "ping"}],
-        "max_tokens": 5,
-        "temperature": 0.1
-    }
 
     t0 = time.time()
     try:
-        r = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers=headers,
-            json=payload,
+        # Step 1: Query models list (verifies authentication and discovers available models for this specific key)
+        m_res = requests.get(
+            "https://api.groq.com/openai/v1/models",
+            headers={"Authorization": f"Bearer {api_key}"},
             timeout=8
         )
         lat = int((time.time() - t0) * 1000)
 
-        if r.status_code == 200:
-            return {
-                "ok": True,
-                "status": "active",
-                "status_code": 200,
-                "latency_ms": lat,
-                "message": f"Active & Operational ({lat}ms)",
-                "model": "llama-3.1-8b-instant"
-            }
-        elif r.status_code == 429:
-            err_msg = "Rate limit reached"
-            try:
-                err_msg = r.json().get('error', {}).get('message', err_msg)
-            except Exception:
-                pass
-            return {
-                "ok": False,
-                "status": "rate_limited",
-                "status_code": 429,
-                "latency_ms": lat,
-                "message": f"Rate Limited: {err_msg}"
-            }
-        elif r.status_code == 401:
+        if m_res.status_code == 401:
             return {
                 "ok": False,
                 "status": "invalid_key",
@@ -554,14 +535,91 @@ def test_single_groq_key(api_key):
                 "latency_ms": lat,
                 "message": "Invalid API Key (401 Unauthorized)"
             }
+        elif m_res.status_code == 429:
+            return {
+                "ok": False,
+                "status": "rate_limited",
+                "status_code": 429,
+                "latency_ms": lat,
+                "message": "Rate Limited (429 Too Many Requests)"
+            }
+        elif m_res.status_code != 200:
+            return {
+                "ok": False,
+                "status": "error",
+                "status_code": m_res.status_code,
+                "latency_ms": lat,
+                "message": f"HTTP {m_res.status_code}: {m_res.text[:90]}"
+            }
+
+        # Auth succeeded! Find which chat models are enabled on this account
+        models_data = m_res.json().get('data', [])
+        available_ids = [m['id'] for m in models_data if 'whisper' not in m.get('id', '').lower() and 'guard' not in m.get('id', '').lower()]
+
+        # Try models in priority order
+        candidate_models = [m for m in GROQ_MODELS if m in available_ids]
+        if not candidate_models:
+            candidate_models = available_ids if available_ids else GROQ_MODELS
+
+        last_err = ""
+        for target_model in candidate_models:
+            try:
+                c_res = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers=headers,
+                    json={
+                        "model": target_model,
+                        "messages": [{"role": "user", "content": "hi"}],
+                        "max_tokens": 5,
+                        "temperature": 0.1
+                    },
+                    timeout=8
+                )
+                total_lat = int((time.time() - t0) * 1000)
+
+                if c_res.status_code == 200:
+                    return {
+                        "ok": True,
+                        "status": "active",
+                        "status_code": 200,
+                        "latency_ms": total_lat,
+                        "message": f"Active & Operational ({target_model})",
+                        "model": target_model,
+                        "accessible_models": len(available_ids)
+                    }
+                elif c_res.status_code == 429:
+                    return {
+                        "ok": False,
+                        "status": "rate_limited",
+                        "status_code": 429,
+                        "latency_ms": total_lat,
+                        "message": "Rate Limited (429)"
+                    }
+                else:
+                    last_err = f"HTTP {c_res.status_code}: {c_res.text[:80]}"
+                    continue
+            except Exception as e:
+                last_err = str(e)[:80]
+                continue
+
+        # If models list worked but completions failed on all tested models:
+        if available_ids:
+            return {
+                "ok": True,
+                "status": "active",
+                "status_code": 200,
+                "latency_ms": lat,
+                "message": f"Key Valid ({len(available_ids)} models available)",
+                "model": candidate_models[0] if candidate_models else "available"
+            }
         else:
             return {
                 "ok": False,
                 "status": "error",
-                "status_code": r.status_code,
                 "latency_ms": lat,
-                "message": f"HTTP {r.status_code}: {r.text[:90]}"
+                "message": last_err or "No chat models accessible"
             }
+
     except requests.exceptions.Timeout:
         return {
             "ok": False,
