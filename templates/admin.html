@@ -38,6 +38,19 @@ tr:hover td { background: rgba(58,44,203,0.02); }
 .badge-on { background: rgba(45,122,79,0.12); color: var(--green); }
 .badge-off { background: #FFF3E0; color: #E65100; }
 .badge-count { background: rgba(58,44,203,0.09); color: var(--primary); font-size: 11.5px; padding: 3px 8px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+/* Groq Status Badges & Styling */
+.badge-active { background: #E6F4EA; color: #137333; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.badge-limited { background: #FEF7E0; color: #B06000; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.badge-invalid { background: #FCE8E6; color: #C5221F; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.badge-untested { background: #F1F3F4; color: #5F6368; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+.groq-header-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+.groq-banner-title { font-family: 'Alata', sans-serif; font-size: 19px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.groq-banner-desc { font-size: 12.5px; color: var(--text2); line-height: 1.5; margin-bottom: 16px; }
+.groq-tools-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.add-key-card { background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+.key-priority-badge { font-size: 11px; font-weight: 700; background: rgba(58,44,203,0.1); color: var(--primary); padding: 3px 8px; border-radius: 6px; }
+.key-code { font-family: monospace; font-size: 12px; background: var(--surface2); padding: 3px 8px; border-radius: 6px; color: #374151; }
 .btn { padding: 6px 12px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--text2); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
 .btn:hover { border-color: var(--primary); color: var(--primary); }
 .btn-danger { border-color: var(--red); color: var(--red); }
@@ -80,6 +93,7 @@ tr:hover td { background: rgba(58,44,203,0.02); }
     <nav class="sb-nav">
       <a class="nav-item active" onclick="switchPanel('businesses')"><span>📊</span> All Businesses</a>
       <a class="nav-item" onclick="switchPanel('reviews')"><span>⭐</span> All Reviews</a>
+      <a class="nav-item" onclick="switchPanel('groq')"><span>⚡</span> Groq AI & Fallback</a>
       <a class="nav-item" href="/login"><span>↩</span> Business Login</a>
       <a class="nav-item" href="/admin/logout"><span>🚪</span> Logout</a>
     </nav>
@@ -155,6 +169,153 @@ tr:hover td { background: rgba(58,44,203,0.02); }
           <td style="font-size:12px;color:var(--text3)">{{ r.created_at | format_date }}</td>
         </tr>
         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Groq AI & API Keys Panel -->
+    <div id="panel-groq" style="display:none">
+      <div class="groq-header-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+          <div>
+            <div class="groq-banner-title">⚡ Groq API Engine & Fallback Chain</div>
+            <div class="groq-banner-desc">
+              Monitor key health & configure fallback API keys. When rate limits (429) or quota errors occur on your primary key, the system seamlessly transitions down the fallback chain without breaking the user experience.
+            </div>
+          </div>
+          <div class="groq-tools-row">
+            <button class="btn btn-primary" id="btnTestAllGroq" onclick="testAllGroqKeys()">
+              <span>⚡</span> Test Status of All Keys
+            </button>
+            <button class="btn" onclick="toggleAddKeyCard()">
+              <span>+</span> Add Groq API Key(s)
+            </button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border)">
+          <div>
+            <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Total Keys</div>
+            <div style="font-size:20px; font-weight:600; font-family:'Alata',sans-serif;" id="statTotalKeys">{{ groq_keys|length }}</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Active in Chain</div>
+            <div style="font-size:20px; font-weight:600; font-family:'Alata',sans-serif; color:var(--green)" id="statActiveKeys">
+              {{ groq_keys | selectattr('is_active') | list | length }}
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Primary Model</div>
+            <div style="font-size:13px; font-weight:600; margin-top:4px;">llama-3.1-8b-instant</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text3); text-transform:uppercase; font-weight:600">Fallback Strategy</div>
+            <div style="font-size:13px; font-weight:600; margin-top:4px; color:var(--primary)">Automatic Chain</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Key(s) Card Form -->
+      <div class="add-key-card" id="addKeyCard" style="display:none">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+          <h3 style="font-family:'Alata',sans-serif; font-size:16px;">Add Groq API Key(s) for Fallback</h3>
+          <button class="btn" onclick="toggleAddKeyCard()" style="padding:2px 8px; font-size:14px;">✕</button>
+        </div>
+        <p style="font-size:12px; color:var(--text2); margin-bottom:12px">
+          Paste a single key or multiple keys separated by newlines or commas. They will automatically be queued as fallback keys.
+        </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Key Label / Alias (Optional)</label>
+            <input type="text" id="new_groq_label" placeholder="e.g. Production Fallback 2">
+          </div>
+          <div class="form-group">
+            <label>Groq API Key(s) *</label>
+            <textarea id="new_groq_keys" rows="2" placeholder="gsk_... (one or multiple keys)"></textarea>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:8px">
+          <button class="btn" onclick="toggleAddKeyCard()">Cancel</button>
+          <button class="btn btn-primary" id="btnSaveGroqKey" onclick="saveGroqKeys()">
+            <span>💾</span> Save to Fallback Chain
+          </button>
+        </div>
+      </div>
+
+      <!-- Keys Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Label</th>
+            <th>API Key</th>
+            <th>Live Status</th>
+            <th>Latency</th>
+            <th>Last Checked</th>
+            <th>Chain</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="groqKeysTableBody">
+          {% if groq_keys|length == 0 %}
+          <tr id="noKeysRow">
+            <td colspan="8" style="text-align:center; padding:28px; color:var(--text3)">
+              No Groq keys stored yet. Click <strong>"+ Add Groq API Key(s)"</strong> above to add your primary and fallback keys!
+            </td>
+          </tr>
+          {% else %}
+          {% for k in groq_keys %}
+          <tr id="groq-row-{{ k.id }}">
+            <td>
+              <span class="key-priority-badge">
+                #{{ loop.index }} {{ 'Primary' if loop.first else 'Fallback' }}
+              </span>
+            </td>
+            <td>
+              <strong>{{ k.label or 'Groq Key #' ~ loop.index }}</strong>
+            </td>
+            <td>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="key-code" id="key-text-{{ k.id }}" data-full="{{ k.api_key }}">{{ k.masked_key }}</span>
+                <button class="btn" style="padding:2px 6px; font-size:11px;" onclick="toggleKeyReveal('{{ k.id }}')" title="Reveal/Mask Key">👁</button>
+                <button class="btn" style="padding:2px 6px; font-size:11px;" onclick="copyGroqKey('{{ k.id }}')" title="Copy Key">📋</button>
+              </div>
+            </td>
+            <td id="status-cell-{{ k.id }}">
+              {% if k.last_status == 'active' %}
+                <span class="badge badge-active">● Active & Operational</span>
+              {% elif k.last_status == 'rate_limited' %}
+                <span class="badge badge-limited">▲ Rate Limited (429)</span>
+              {% elif k.last_status == 'invalid_key' %}
+                <span class="badge badge-invalid">✕ Invalid Key (401)</span>
+              {% elif k.last_status == 'timeout' %}
+                <span class="badge badge-limited">⏱ Timeout</span>
+              {% else %}
+                <span class="badge badge-untested">○ Untested</span>
+              {% endif %}
+            </td>
+            <td id="latency-cell-{{ k.id }}">
+              {{ (k.latency_ms ~ 'ms') if k.latency_ms else '—' }}
+            </td>
+            <td id="checked-cell-{{ k.id }}" style="font-size:12px; color:var(--text3)">
+              {{ k.last_checked or 'Never' }}
+            </td>
+            <td>
+              <button class="btn {{ 'badge-on' if k.is_active else 'badge-off' }}" id="toggle-btn-{{ k.id }}" onclick="toggleGroqKey('{{ k.id }}')">
+                {{ 'Enabled' if k.is_active else 'Disabled' }}
+              </button>
+            </td>
+            <td style="display:flex; gap:6px;">
+              <button class="btn btn-primary" id="test-btn-{{ k.id }}" onclick="testSingleGroqKey('{{ k.id }}')">
+                ⚡ Test
+              </button>
+              <button class="btn btn-danger" onclick="deleteGroqKey('{{ k.id }}')">
+                🗑 Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     </div>
@@ -243,14 +404,194 @@ tr:hover td { background: rgba(58,44,203,0.02); }
 
 <script>
 const BUSINESSES = {{ businesses_json | safe }};
+let GROQ_KEYS = {{ groq_keys_json | safe }};
 let currentAdminBid = null;
 
 function switchPanel(name) {
   document.getElementById('panel-businesses').style.display = name === 'businesses' ? '' : 'none';
   document.getElementById('panel-reviews').style.display = name === 'reviews' ? '' : 'none';
-  document.getElementById('pageTitle').textContent = name === 'businesses' ? 'All Businesses' : 'All Reviews';
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  const groqPanel = document.getElementById('panel-groq');
+  if (groqPanel) groqPanel.style.display = name === 'groq' ? '' : 'none';
+
+  document.getElementById('pageTitle').textContent = 
+    name === 'businesses' ? 'All Businesses' :
+    name === 'reviews' ? 'All Reviews' : 'Groq AI Status & Fallback Keys';
+    
+  document.querySelectorAll('.sb-nav .nav-item').forEach(n => n.classList.remove('active'));
+  if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
+}
+
+function toggleAddKeyCard() {
+  const c = document.getElementById('addKeyCard');
+  if (!c) return;
+  c.style.display = c.style.display === 'none' ? 'block' : 'none';
+  if (c.style.display === 'block') document.getElementById('new_groq_keys').focus();
+}
+
+function toggleKeyReveal(id) {
+  const el = document.getElementById('key-text-' + id);
+  if (!el) return;
+  const full = el.getAttribute('data-full');
+  if (el.dataset.revealed === 'true') {
+    el.textContent = full.substring(0, 7) + '...' + full.substring(full.length - 4);
+    el.dataset.revealed = 'false';
+  } else {
+    el.textContent = full;
+    el.dataset.revealed = 'true';
+  }
+}
+
+function copyGroqKey(id) {
+  const el = document.getElementById('key-text-' + id);
+  if (!el) return;
+  const full = el.getAttribute('data-full');
+  navigator.clipboard.writeText(full).then(() => toast('Groq API Key copied!'));
+}
+
+async function saveGroqKeys() {
+  const raw = document.getElementById('new_groq_keys').value.trim();
+  const label = document.getElementById('new_groq_label').value.trim();
+  if (!raw) {
+    alert('Please enter at least one Groq API key.');
+    return;
+  }
+  const btn = document.getElementById('btnSaveGroqKey');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  try {
+    const res = await fetch('/admin/api/groq-keys/add', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ api_key: raw, label: label })
+    });
+    const d = await res.json();
+    if (d.ok) {
+      toast(`Added ${d.added} key(s) to fallback chain!`);
+      setTimeout(() => location.reload(), 500);
+    } else {
+      alert(d.error || 'Failed to add key');
+      btn.disabled = false;
+      btn.textContent = '💾 Save to Fallback Chain';
+    }
+  } catch(e) {
+    alert('Error saving keys');
+    btn.disabled = false;
+    btn.textContent = '💾 Save to Fallback Chain';
+  }
+}
+
+async function toggleGroqKey(id) {
+  try {
+    const res = await fetch(`/admin/api/groq-keys/${id}/toggle`, { method: 'POST' });
+    const d = await res.json();
+    if (d.ok) {
+      const btn = document.getElementById('toggle-btn-' + id);
+      if (d.is_active === 1) {
+        btn.textContent = 'Enabled';
+        btn.className = 'btn badge-on';
+      } else {
+        btn.textContent = 'Disabled';
+        btn.className = 'btn badge-off';
+      }
+      toast('Key status updated');
+    }
+  } catch(e) {
+    toast('Error updating key status');
+  }
+}
+
+async function deleteGroqKey(id) {
+  if (!confirm('Remove this Groq API key from fallback chain?')) return;
+  try {
+    const res = await fetch(`/admin/api/groq-keys/${id}`, { method: 'DELETE' });
+    const d = await res.json();
+    if (d.ok) {
+      document.getElementById('groq-row-' + id)?.remove();
+      toast('Key removed');
+    }
+  } catch(e) {
+    toast('Error deleting key');
+  }
+}
+
+function renderStatusBadge(res) {
+  if (res.status === 'active') {
+    return `<span class="badge badge-active">● Active & Operational</span>`;
+  } else if (res.status === 'rate_limited') {
+    return `<span class="badge badge-limited" title="${res.message || ''}">▲ Rate Limited (429)</span>`;
+  } else if (res.status === 'invalid_key') {
+    return `<span class="badge badge-invalid" title="${res.message || ''}">✕ Invalid Key (401)</span>`;
+  } else if (res.status === 'timeout') {
+    return `<span class="badge badge-limited">⏱ Timeout</span>`;
+  } else {
+    return `<span class="badge badge-invalid" title="${res.message || ''}">✕ Error</span>`;
+  }
+}
+
+async function testSingleGroqKey(id) {
+  const btn = document.getElementById('test-btn-' + id);
+  const statusCell = document.getElementById('status-cell-' + id);
+  const latCell = document.getElementById('latency-cell-' + id);
+  const checkedCell = document.getElementById('checked-cell-' + id);
+
+  btn.disabled = true;
+  btn.textContent = 'Testing...';
+  statusCell.innerHTML = '<span class="badge badge-untested">Testing...</span>';
+
+  try {
+    const res = await fetch('/admin/api/groq-keys/test', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ id: parseInt(id) })
+    });
+    const d = await res.json();
+    if (d.ok && d.results && d.results[0]) {
+      const r = d.results[0];
+      statusCell.innerHTML = renderStatusBadge(r);
+      latCell.textContent = r.latency_ms ? r.latency_ms + 'ms' : '—';
+      checkedCell.textContent = 'Just now';
+      toast(`Key test: ${r.message}`);
+    }
+  } catch(e) {
+    statusCell.innerHTML = '<span class="badge badge-invalid">Network Error</span>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Test';
+  }
+}
+
+async function testAllGroqKeys() {
+  const btn = document.getElementById('btnTestAllGroq');
+  btn.disabled = true;
+  btn.textContent = 'Testing All Keys...';
+  toast('Testing all Groq keys in chain...');
+
+  try {
+    const res = await fetch('/admin/api/groq-keys/test', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({})
+    });
+    const d = await res.json();
+    if (d.ok && d.results) {
+      d.results.forEach(r => {
+        if (!r.id) return;
+        const statusCell = document.getElementById('status-cell-' + r.id);
+        const latCell = document.getElementById('latency-cell-' + r.id);
+        const checkedCell = document.getElementById('checked-cell-' + r.id);
+        if (statusCell) statusCell.innerHTML = renderStatusBadge(r);
+        if (latCell) latCell.textContent = r.latency_ms ? r.latency_ms + 'ms' : '—';
+        if (checkedCell) checkedCell.textContent = 'Just now';
+      });
+      const activeCount = d.results.filter(x => x.status === 'active').length;
+      toast(`Completed: ${activeCount}/${d.results.length} keys active & operational!`);
+    }
+  } catch(e) {
+    toast('Error checking key status');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>⚡</span> Test Status of All Keys';
+  }
 }
 
 function toast(msg) {

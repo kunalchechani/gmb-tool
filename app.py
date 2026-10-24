@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort, send_from_directory, Response
 from flask_cors import CORS
-import sqlite3, hashlib, os, json, requests, csv, io, random, secrets, re, urllib.parse
+import sqlite3, hashlib, os, json, requests, csv, io, random, secrets, re, urllib.parse, time
 from datetime import datetime
 from functools import wraps
 from werkzeug.utils import secure_filename
@@ -226,10 +226,31 @@ def init_db():
                     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY(business_id) REFERENCES businesses(id)
                 );
+
+                CREATE TABLE IF NOT EXISTS groq_keys (
+                    id          SERIAL PRIMARY KEY,
+                    api_key     TEXT NOT NULL,
+                    label       TEXT,
+                    is_active   INTEGER DEFAULT 1,
+                    last_status TEXT DEFAULT 'untested',
+                    last_checked TIMESTAMP,
+                    latency_ms  INTEGER DEFAULT 0,
+                    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
                 """)
                 for col in ["profile_pic", "website_url", "keywords", "whatsapp_number"]:
                     try:
                         cur.execute(f"ALTER TABLE businesses ADD COLUMN IF NOT EXISTS {col} TEXT")
+                    except Exception:
+                        pass
+                if GROQ_API_KEY:
+                    try:
+                        cur.execute("SELECT id FROM groq_keys LIMIT 1")
+                        if not cur.fetchone():
+                            cur.execute(
+                                "INSERT INTO groq_keys (api_key, label, is_active, last_status) VALUES (%s, %s, 1, 'untested')",
+                                (GROQ_API_KEY, "Environment Primary Key")
+                            )
                     except Exception:
                         pass
                 conn.commit()
@@ -290,10 +311,31 @@ def init_db():
             created_at  TEXT DEFAULT (datetime('now')),
             FOREIGN KEY(business_id) REFERENCES businesses(id)
         );
+
+        CREATE TABLE IF NOT EXISTS groq_keys (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            api_key     TEXT NOT NULL,
+            label       TEXT,
+            is_active   INTEGER DEFAULT 1,
+            last_status TEXT DEFAULT 'untested',
+            last_checked TEXT,
+            latency_ms  INTEGER DEFAULT 0,
+            created_at  TEXT DEFAULT (datetime('now'))
+        );
         """)
         for col_name in ["profile_pic", "website_url", "keywords", "whatsapp_number"]:
             try:
                 db.execute(f"ALTER TABLE businesses ADD COLUMN {col_name} TEXT")
+            except Exception:
+                pass
+        if GROQ_API_KEY:
+            try:
+                row = db.execute("SELECT id FROM groq_keys LIMIT 1").fetchone()
+                if not row:
+                    db.execute(
+                        "INSERT INTO groq_keys (api_key, label, is_active, last_status) VALUES (?,?,?,?)",
+                        (GROQ_API_KEY, "Environment Primary Key", 1, "untested")
+                    )
             except Exception:
                 pass
     print("✅ SQLite Database initialised with Products & Business enhancements")
@@ -413,9 +455,131 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated
 
-def generate_ai_reply(business, review_text, stars, groq_key=None):
-    key = groq_key or business.get('groq_key') or GROQ_API_KEY
+def mask_groq_key(key):
     if not key:
+        return ""
+    key = str(key).strip()
+    if len(key) <= 12:
+        return key[:3] + "..." + key[-3:]
+    return key[:7] + "..." + key[-4:]
+
+def get_active_groq_keys(custom_key=None):
+    """
+    Returns an ordered list of active Groq API keys:
+    1. Custom business key (if specified)
+    2. Active keys configured in database (in order)
+    3. GROQ_API_KEY from environment as fallback
+    """
+    keys = []
+    if custom_key and str(custom_key).strip().startswith("gsk_"):
+        keys.append(str(custom_key).strip())
+
+    try:
+        db = get_db()
+        rows = db.execute("SELECT api_key FROM groq_keys WHERE is_active=1 ORDER BY id ASC").fetchall()
+        for r in rows:
+            k = r['api_key'] if isinstance(r, dict) or hasattr(r, '__getitem__') else r[0]
+            k = str(k).strip()
+            if k and k not in keys:
+                keys.append(k)
+    except Exception:
+        pass
+
+    if GROQ_API_KEY and GROQ_API_KEY.strip() not in keys:
+        keys.append(GROQ_API_KEY.strip())
+
+    return keys
+
+def test_single_groq_key(api_key):
+    """
+    Pings Groq API to verify key validity, access, latency, and rate-limit status.
+    """
+    api_key = str(api_key).strip()
+    if not api_key:
+        return {
+            "ok": False,
+            "status": "invalid_key",
+            "message": "Key is empty",
+            "latency_ms": 0
+        }
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "llama-3.1-8b-instant",
+        "messages": [{"role": "user", "content": "ping"}],
+        "max_tokens": 5,
+        "temperature": 0.1
+    }
+
+    t0 = time.time()
+    try:
+        r = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=8
+        )
+        lat = int((time.time() - t0) * 1000)
+
+        if r.status_code == 200:
+            return {
+                "ok": True,
+                "status": "active",
+                "status_code": 200,
+                "latency_ms": lat,
+                "message": f"Active & Operational ({lat}ms)",
+                "model": "llama-3.1-8b-instant"
+            }
+        elif r.status_code == 429:
+            err_msg = "Rate limit reached"
+            try:
+                err_msg = r.json().get('error', {}).get('message', err_msg)
+            except Exception:
+                pass
+            return {
+                "ok": False,
+                "status": "rate_limited",
+                "status_code": 429,
+                "latency_ms": lat,
+                "message": f"Rate Limited: {err_msg}"
+            }
+        elif r.status_code == 401:
+            return {
+                "ok": False,
+                "status": "invalid_key",
+                "status_code": 401,
+                "latency_ms": lat,
+                "message": "Invalid API Key (401 Unauthorized)"
+            }
+        else:
+            return {
+                "ok": False,
+                "status": "error",
+                "status_code": r.status_code,
+                "latency_ms": lat,
+                "message": f"HTTP {r.status_code}: {r.text[:90]}"
+            }
+    except requests.exceptions.Timeout:
+        return {
+            "ok": False,
+            "status": "timeout",
+            "latency_ms": int((time.time() - t0) * 1000),
+            "message": "Request Timeout (>8s)"
+        }
+    except Exception as e:
+        return {
+            "ok": False,
+            "status": "error",
+            "latency_ms": int((time.time() - t0) * 1000),
+            "message": f"Connection Error: {str(e)[:80]}"
+        }
+
+def generate_ai_reply(business, review_text, stars, groq_key=None):
+    keys = get_active_groq_keys(custom_key=groq_key or business.get('groq_key'))
+    if not keys:
         return None
     star_ctx = "positive" if stars >= 4 else "neutral" if stars == 3 else "negative/critical"
     prompt = f"""You are the social media manager for {business['name']}, a {business.get('category') or 'business'} in India.
@@ -435,19 +599,23 @@ Write a Google Business Profile reply that:
 
 Reply ONLY with the reply text. No quotes or intro labels."""
 
-    for model_name in GROQ_MODELS:
-        try:
-            r = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-                json={"model": model_name, "messages": [{"role": "user", "content": prompt}], "max_tokens": 200, "temperature": 0.8},
-                timeout=12
-            )
-            if r.status_code == 200:
-                data = r.json()
-                return data["choices"][0]["message"]["content"].strip()
-        except Exception:
-            continue
+    for key_idx, key in enumerate(keys):
+        for model_name in GROQ_MODELS:
+            try:
+                r = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                    json={"model": model_name, "messages": [{"role": "user", "content": prompt}], "max_tokens": 200, "temperature": 0.8},
+                    timeout=10
+                )
+                if r.status_code == 200:
+                    data = r.json()
+                    return data["choices"][0]["message"]["content"].strip()
+                elif r.status_code in (401, 429):
+                    print(f"⚠️ Groq reply key #{key_idx+1} ({mask_groq_key(key)}) HTTP {r.status_code}. Trying fallback key.")
+                    break
+            except Exception:
+                continue
     return None
 
 # ─────────────────────────────────────────
@@ -510,10 +678,10 @@ def generate_review_suggestions(business, stars, product=None, groq_key=None):
     if stars < 4:
         return []
 
-    key = groq_key or business.get('groq_key') or GROQ_API_KEY
+    keys = get_active_groq_keys(custom_key=groq_key or business.get('groq_key'))
     prod_name = product.get('name') if product else None
     
-    if not key:
+    if not keys:
         return get_fallback_suggestions(business, stars, product=product)
 
     domain = classify_product_domain(
@@ -573,29 +741,33 @@ RULES:
 {'The review MUST specifically mention ' + prod_name + '.' if prod_name else 'Reviews should highlight their offerings naturally.'}
 - Return ONLY a valid JSON array of 5 distinct strings. No markdown, no numbering, no code block backticks."""
 
-    for model_name in GROQ_MODELS:
-        try:
-            r = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-                json={
-                    "model": model_name,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 500,
-                    "temperature": 0.95,
-                    "top_p": 0.95
-                },
-                timeout=12
-            )
-            if r.status_code == 200:
-                text = r.json()["choices"][0]["message"]["content"].strip()
-                text = text.replace("```json","").replace("```","").strip()
-                suggestions = json.loads(text)
-                if isinstance(suggestions, list) and len(suggestions) >= 3:
-                    return [s.strip('"\'') for s in suggestions]
-        except Exception as e:
-            print(f"Groq attempt ({model_name}) error: {e}")
-            continue
+    for key_idx, key in enumerate(keys):
+        for model_name in GROQ_MODELS:
+            try:
+                r = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                    json={
+                        "model": model_name,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "max_tokens": 500,
+                        "temperature": 0.95,
+                        "top_p": 0.95
+                    },
+                    timeout=10
+                )
+                if r.status_code == 200:
+                    text = r.json()["choices"][0]["message"]["content"].strip()
+                    text = text.replace("```json","").replace("```","").strip()
+                    suggestions = json.loads(text)
+                    if isinstance(suggestions, list) and len(suggestions) >= 3:
+                        return [s.strip('"\'') for s in suggestions]
+                elif r.status_code in (401, 429):
+                    print(f"⚠️ Groq review key #{key_idx+1} ({mask_groq_key(key)}) returned HTTP {r.status_code}. Trying fallback key.")
+                    break
+            except Exception as e:
+                print(f"Groq attempt ({model_name}) error: {e}")
+                continue
 
     return get_fallback_suggestions(business, stars, product=product)
 
@@ -1211,11 +1383,21 @@ def admin_panel():
         'total_products': total_products
     }
 
+    raw_g_keys = db.execute("SELECT * FROM groq_keys ORDER BY id ASC").fetchall()
+    groq_keys_list = []
+    for k in raw_g_keys:
+        kd = dict(k)
+        kd['masked_key'] = mask_groq_key(kd.get('api_key', ''))
+        groq_keys_list.append(kd)
+
     return render_template("admin.html",
         businesses=businesses,
         businesses_json=json.dumps(businesses, default=str),
         all_reviews=all_reviews,
-        stats=stats
+        stats=stats,
+        groq_keys=groq_keys_list,
+        groq_keys_json=json.dumps(groq_keys_list, default=str),
+        groq_models=GROQ_MODELS
     )
 
 @app.route("/admin/api/business/<bid>", methods=["POST"])
@@ -1317,6 +1499,126 @@ def admin_import_products(bid):
                    (bid, p['name'], p.get('description', ''), p.get('keywords', '')))
     db.commit()
     return jsonify({"ok": True, "count": len(parsed)})
+
+# ─────────────────────────────────────────
+# ADMIN — GROQ MULTI-KEY & STATUS ENGINE
+# ─────────────────────────────────────────
+
+@app.route("/admin/api/groq-keys", methods=["GET"])
+@admin_required
+def admin_get_groq_keys():
+    db = get_db()
+    rows = db.execute("SELECT * FROM groq_keys ORDER BY id ASC").fetchall()
+    keys = []
+    for r in rows:
+        d = dict(r)
+        d['masked_key'] = mask_groq_key(d.get('api_key', ''))
+        keys.append(d)
+    return jsonify({
+        "ok": True,
+        "keys": keys,
+        "models": GROQ_MODELS,
+        "env_key_set": bool(GROQ_API_KEY)
+    })
+
+@app.route("/admin/api/groq-keys/add", methods=["POST"])
+@admin_required
+def admin_add_groq_keys():
+    data = request.json or {}
+    raw_input = data.get("api_key", "").strip()
+    label = data.get("label", "").strip()
+    
+    if not raw_input:
+        return jsonify({"ok": False, "error": "No API key provided"}), 400
+
+    tokens = re.split(r'[\r\n,]+', raw_input)
+    added = 0
+    db = get_db()
+    for tok in tokens:
+        k = tok.strip()
+        if not k:
+            continue
+        existing = db.execute("SELECT id FROM groq_keys WHERE api_key=?", (k,)).fetchone()
+        if existing:
+            continue
+        
+        lbl = label if (label and len(tokens) == 1) else f"Key #{added + 1}"
+        db.execute(
+            "INSERT INTO groq_keys (api_key, label, is_active, last_status) VALUES (?,?,?,?)",
+            (k, lbl, 1, "untested")
+        )
+        added += 1
+    db.commit()
+    return jsonify({"ok": True, "added": added})
+
+@app.route("/admin/api/groq-keys/<int:kid>/toggle", methods=["POST"])
+@admin_required
+def admin_toggle_groq_key(kid):
+    db = get_db()
+    k = db.execute("SELECT is_active FROM groq_keys WHERE id=?", (kid,)).fetchone()
+    if not k:
+        return jsonify({"ok": False, "error": "Key not found"}), 404
+    curr = k['is_active'] if isinstance(k, dict) or hasattr(k, '__getitem__') else k[0]
+    new_state = 0 if curr == 1 else 1
+    db.execute("UPDATE groq_keys SET is_active=? WHERE id=?", (new_state, kid))
+    db.commit()
+    return jsonify({"ok": True, "is_active": new_state})
+
+@app.route("/admin/api/groq-keys/<int:kid>", methods=["DELETE"])
+@admin_required
+def admin_delete_groq_key(kid):
+    db = get_db()
+    db.execute("DELETE FROM groq_keys WHERE id=?", (kid,))
+    db.commit()
+    return jsonify({"ok": True})
+
+@app.route("/admin/api/groq-keys/test", methods=["POST"])
+@admin_required
+def admin_test_groq_keys():
+    data = request.json or {}
+    kid = data.get("id")
+    raw_key = data.get("api_key")
+    
+    db = get_db()
+    results = []
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    if kid:
+        row = db.execute("SELECT * FROM groq_keys WHERE id=?", (kid,)).fetchone()
+        if not row:
+            return jsonify({"ok": False, "error": "Key not found"}), 404
+        r_dict = dict(row)
+        res = test_single_groq_key(r_dict['api_key'])
+        res['id'] = kid
+        res['label'] = r_dict.get('label')
+        res['masked_key'] = mask_groq_key(r_dict['api_key'])
+        db.execute(
+            "UPDATE groq_keys SET last_status=?, last_checked=?, latency_ms=? WHERE id=?",
+            (res['status'], now_str, res.get('latency_ms', 0), kid)
+        )
+        db.commit()
+        results.append(res)
+    elif raw_key:
+        res = test_single_groq_key(raw_key)
+        res['masked_key'] = mask_groq_key(raw_key)
+        results.append(res)
+    else:
+        # Test all keys in database
+        rows = db.execute("SELECT * FROM groq_keys ORDER BY id ASC").fetchall()
+        for row in rows:
+            r_dict = dict(row)
+            res = test_single_groq_key(r_dict['api_key'])
+            res['id'] = r_dict['id']
+            res['label'] = r_dict.get('label')
+            res['masked_key'] = mask_groq_key(r_dict['api_key'])
+            db.execute(
+                "UPDATE groq_keys SET last_status=?, last_checked=?, latency_ms=? WHERE id=?",
+                (res['status'], now_str, res.get('latency_ms', 0), r_dict['id'])
+            )
+            results.append(res)
+        db.commit()
+
+    return jsonify({"ok": True, "results": results})
 
 # Health check route for Dokploy / Docker container monitoring
 @app.route("/healthz")
