@@ -51,6 +51,8 @@ if DATABASE_URL.startswith("postgres://"):
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_MODELS = [
     "llama-3.3-70b-versatile",
+    "qwen/qwen3.8-27b",
+    "openai/gpt-oss-120b",
     "llama-3.1-8b-instant",
     "llama3-70b-8192",
     "llama3-8b-8192",
@@ -58,6 +60,32 @@ GROQ_MODELS = [
     "gemma2-9b-it"
 ]
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+
+_key_models_cache = {}
+
+def get_key_models(key):
+    """Discovers accessible chat models for this specific Groq key, with preference order"""
+    if key in _key_models_cache:
+        return _key_models_cache[key]
+    try:
+        r = requests.get(
+            "https://api.groq.com/openai/v1/models",
+            headers={"Authorization": f"Bearer {key}"},
+            timeout=4
+        )
+        if r.status_code == 200:
+            data = r.json().get('data', [])
+            available = [m['id'] for m in data if 'whisper' not in m.get('id', '').lower() and 'guard' not in m.get('id', '').lower()]
+            ordered = [m for m in GROQ_MODELS if m in available]
+            for a in available:
+                if a not in ordered:
+                    ordered.append(a)
+            if ordered:
+                _key_models_cache[key] = ordered
+                return ordered
+    except Exception:
+        pass
+    return GROQ_MODELS
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
@@ -658,7 +686,7 @@ Write a Google Business Profile reply that:
 Reply ONLY with the reply text. No quotes or intro labels."""
 
     for key_idx, key in enumerate(keys):
-        for model_name in GROQ_MODELS:
+        for model_name in get_key_models(key):
             try:
                 r = requests.post(
                     "https://api.groq.com/openai/v1/chat/completions",
@@ -680,53 +708,65 @@ Reply ONLY with the reply text. No quotes or intro labels."""
 # REVIEW DIVERSITY & REPUTATION ENGINE
 # ─────────────────────────────────────────
 
+def check_keyword(kw, text):
+    kw = kw.strip().lower()
+    text = text.lower()
+    if ' ' in kw:
+        return kw in text
+    return bool(re.search(r'\b' + re.escape(kw) + r'\b', text))
+
 def classify_product_domain(product_name="", product_desc="", product_keywords="", business_info=""):
     """
     Accurately classifies offerings into their true domain to prevent cross-category hallucinations
-    (e.g., prevents body wash from talking about hair fall, or software talking about food).
+    (e.g., prevents tooth powder from talking about ants/kitchen, or body wash talking about hair).
     """
     prod_text = f"{product_name} {product_desc} {product_keywords}".lower()
     full_text = f"{prod_text} {business_info}".lower()
 
-    # Domain keyword maps
-    pest_home_keywords = ['ant', 'repellent', 'repel', 'spray', 'mosquito', 'pest', 'insect', 'cockroach', 'bug', 'cleaner', 'floor cleaner', 'disinfectant']
+    # Domain keyword maps (strictly checked with word boundaries)
+    oral_dental_keywords = ['daant', 'dant', 'manjan', 'tooth', 'teeth', 'charcoal', 'dental', 'gum', 'gums', 'cavity', 'breath', 'oral', 'toothpaste', 'whitening', 'miswak']
     body_keywords = ['body wash', 'soap', 'body lotion', 'ubtan', 'scrub', 'shower', 'bath', 'body butter', 'body oil', 'moisturizer', 'hand cream', 'foot cream']
     skin_face_keywords = ['face', 'serum', 'glow', 'acne', 'pimple', 'pigmentation', 'skin', 'blemish', 'cream', 'face wash', 'sunscreen', 'anti aging', 'toner', 'facial', 'kumkumadi']
     hair_keywords = ['hair', 'hairfall', 'shampoo', 'conditioner', 'scalp', 'dandruff', 'kesh', 'follicle', 'shedding', 'hair oil', 'anti hairfall']
+    pest_home_keywords = ['ant', 'ants', 'repellent', 'repel', 'mosquito', 'pest', 'insect', 'cockroach', 'bug', 'cleaner', 'floor cleaner', 'disinfectant']
     wellness_keywords = ['churna', 'juice', 'kadha', 'tea', 'capsule', 'immunity', 'digest', 'stamina', 'weight', 'detox', 'supplement', 'herbal powder']
     recruitment_keywords = ['job', 'placement', 'interview', 'hiring', 'recruitment', 'staffing', 'resume', 'candidate']
     tech_keywords = ['software', 'website', 'app', 'crm', 'web development', 'ui/ux', 'seo', 'cloud']
 
     # Priority 1: Match specific product fields
-    if any(k in prod_text for k in pest_home_keywords):
-        return 'pest_home'
-    if any(k in prod_text for k in body_keywords):
+    if any(check_keyword(k, prod_text) for k in oral_dental_keywords):
+        return 'oral_dental'
+    if any(check_keyword(k, prod_text) for k in body_keywords):
         return 'body_bath'
-    if any(k in prod_text for k in skin_face_keywords):
+    if any(check_keyword(k, prod_text) for k in skin_face_keywords):
         return 'skin_face'
-    if any(k in prod_text for k in hair_keywords):
+    if any(check_keyword(k, prod_text) for k in hair_keywords):
         return 'hair'
-    if any(k in prod_text for k in wellness_keywords):
+    if any(check_keyword(k, prod_text) for k in pest_home_keywords):
+        return 'pest_home'
+    if any(check_keyword(k, prod_text) for k in wellness_keywords):
         return 'wellness_health'
-    if any(k in prod_text for k in recruitment_keywords):
+    if any(check_keyword(k, prod_text) for k in recruitment_keywords):
         return 'recruitment'
-    if any(k in prod_text for k in tech_keywords):
+    if any(check_keyword(k, prod_text) for k in tech_keywords):
         return 'tech'
 
     # Priority 2: Match broader context
-    if any(k in full_text for k in pest_home_keywords):
-        return 'pest_home'
-    if any(k in full_text for k in body_keywords):
+    if any(check_keyword(k, full_text) for k in oral_dental_keywords):
+        return 'oral_dental'
+    if any(check_keyword(k, full_text) for k in body_keywords):
         return 'body_bath'
-    if any(k in full_text for k in skin_face_keywords):
+    if any(check_keyword(k, full_text) for k in skin_face_keywords):
         return 'skin_face'
-    if any(k in full_text for k in hair_keywords):
+    if any(check_keyword(k, full_text) for k in hair_keywords):
         return 'hair'
-    if any(k in full_text for k in wellness_keywords):
+    if any(check_keyword(k, full_text) for k in pest_home_keywords):
+        return 'pest_home'
+    if any(check_keyword(k, full_text) for k in wellness_keywords):
         return 'wellness_health'
-    if any(k in full_text for k in recruitment_keywords):
+    if any(check_keyword(k, full_text) for k in recruitment_keywords):
         return 'recruitment'
-    if any(k in full_text for k in tech_keywords):
+    if any(check_keyword(k, full_text) for k in tech_keywords):
         return 'tech'
 
     return 'general'
@@ -750,7 +790,8 @@ def generate_review_suggestions(business, stars, product=None, groq_key=None):
     )
 
     domain_guidance = {
-        'pest_home': "This is a NATURAL / HERBAL HOME CARE & PEST REPELLENT product (e.g. Herbal Ant Repellent Spray, mosquito repellent, natural floor cleaner). Strictly focus on: highly effective at repelling ants/pests safely, 100% safe around kids and pets, pleasant natural botanical smell (NO toxic chemical fumes or choking pesticide smell), easy spray bottle, clean home protection. ABSOLUTE RULE: DO NOT mention hair, scalp, skin, hairfall, or body wash!",
+        'oral_dental': "This is an ORAL HEALTH & DENTAL CARE product (e.g. Ayurvedic Tooth Powder, Charcoal Manjan, Herbal Toothpaste). Strictly focus on: refreshing clean mouth feeling, effective plaque and tea/coffee stain removal, healthy firm gums, fresh breath all day, non-abrasive natural charcoal, pure herbal ingredients with zero synthetic chemicals. ABSOLUTE RULE: DO NOT mention skin, hair, balcony, kitchen, body wash, or ants/pests!",
+        'pest_home': "This is a NATURAL / HERBAL HOME CARE & PEST REPELLENT product (e.g. Herbal Ant Repellent Spray, mosquito repellent, natural floor cleaner). Strictly focus on: highly effective at repelling ants/pests safely, 100% safe around kids and pets, pleasant natural botanical smell (NO toxic chemical fumes or choking pesticide smell), easy spray bottle, clean home protection. ABSOLUTE RULE: DO NOT mention teeth, mouth, hair, scalp, skin, hairfall, or body wash!",
         'body_bath': "This is a BODY CARE / BATH product (e.g. body wash, soap, body lotion, scrub). Strictly focus on: refreshing shower feel, skin hydration, gentle natural lather, all-day softness, botanical aroma, zero chemical dryness. ABSOLUTE RULE: DO NOT mention hair, scalp, hairfall, or facial acne!",
         'skin_face': "This is a FACIAL SKINCARE product (e.g. face serum, face wash, cream, glow pack). Strictly focus on: radiant glowing skin, clearer complexion, smooth skin texture, fast absorption, calming redness/blemishes. ABSOLUTE RULE: DO NOT mention hair fall or scalp!",
         'hair': "This is a HAIR CARE product (e.g. hairfall kit, hair oil, shampoo). Strictly focus on: healthy nourished scalp, reduced hair shedding/breakage, stronger roots, natural shine, non-greasy feel. ABSOLUTE RULE: DO NOT mention body wash lather or facial acne!",
@@ -800,7 +841,7 @@ RULES:
 - Return ONLY a valid JSON array of 5 distinct strings. No markdown, no numbering, no code block backticks."""
 
     for key_idx, key in enumerate(keys):
-        for model_name in GROQ_MODELS:
+        for model_name in get_key_models(key):
             try:
                 r = requests.post(
                     "https://api.groq.com/openai/v1/chat/completions",
@@ -850,7 +891,17 @@ def get_fallback_suggestions(business, stars, product=None):
         f"{business.get('name', '')} {business.get('category', '')} {business.get('tagline', '')} {business.get('description', '')}"
     )
 
-    if domain == 'pest_home':
+    if domain == 'oral_dental':
+        pool = [
+            f"Started using {biz_name}'s {p} morning and evening. Leaves teeth feeling polished and super clean, with long-lasting fresh breath!",
+            f"Best natural oral care! {biz_name} {p} noticeably reduced stubborn tea and coffee stains without damaging enamel. Very pleased.",
+            f"Authentic Ayurvedic formulation! Unlike commercial chemical toothpastes, {biz_name}'s {p} is gentle on gums and leaves mouth feeling so refreshed.",
+            f"Noticeable improvement in gum health and tooth brightness within 2 weeks of using {p}. 100% natural and pleasant to use daily.",
+            f"Our whole family switched to {biz_name}'s {p}. Pure herbal ingredients, zero synthetic chemicals, and keeps teeth feeling clean all day.",
+            f"Highly impressed by the quality of {p}. Mild natural taste, non-gritty texture, and excellent for daily oral hygiene. Will definitely reorder!",
+            f"Clean, safe, and effective! {biz_name} {p} made a real difference for fresh breath and natural whitening. Trustworthy brand!"
+        ]
+    elif domain == 'pest_home':
         pool = [
             f"Tried {biz_name}'s {p} in our kitchen and balcony. Worked like magic on ants within hours, and the best part is it has zero toxic fumes!",
             f"Finally a genuine 100% natural pest repellent that actually works! {biz_name} {p} is completely safe around our kids and pets. Highly recommended.",
@@ -1377,7 +1428,7 @@ def register():
 def index():
     if 'business_id' in session:
         return redirect(url_for('dashboard'))
-    return redirect(url_for('login'))
+    return render_template("index.html")
 
 # ─────────────────────────────────────────
 # ADMIN PANEL

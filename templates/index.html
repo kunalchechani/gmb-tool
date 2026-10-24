@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiziee GBP AI — Optimise Your Google Business Profile With AI</title>
+<link rel="icon" type="image/png" href="/static/kiziee_logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #3A2CCB;
+  --primary-light: #5B4FD9;
+  --primary-soft: rgba(58, 44, 203, 0.08);
+  --primary-glow: rgba(58, 44, 203, 0.22);
+  --accent: #2563EB;
+  --bg: #F8F9FC;
+  --surface: #FFFFFF;
+  --surface2: #F1F3F9;
+  --border: #E2E4EB;
+  --text: #0F0F10;
+  --text2: #4B5563;
+  --text3: #8C8C96;
+  --green: #10B981;
+  --green-soft: #ECFDF5;
+  --radius: 18px;
+  --radius-lg: 24px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Navigation */
+.navbar {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 16px 0;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+.nav-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 4px;
+  object-fit: contain;
+}
+.nav-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.nav-title span { color: var(--primary); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--primary); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-nav-login {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+.btn-nav-login:hover { background: var(--surface2); }
+
+.btn-nav-reg {
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 9px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px var(--primary-glow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-nav-reg:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 18px var(--primary-glow);
+}
+
+/* Hero Section */
+.hero {
+  padding: 70px 0 60px;
+  position: relative;
+  overflow: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(91, 79, 217, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(58, 44, 203, 0.08) 0%, transparent 45%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid rgba(58, 44, 203, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 48px;
+  line-height: 1.16;
+  color: var(--text);
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 30px;
+  max-width: 540px;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px var(--primary-glow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-hero-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 10px 28px var(--primary-glow);
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 26px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.btn-hero-secondary:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+}
+
+.hero-perks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 12.5px;
+  color: var(--text3);
+  flex-wrap: wrap;
+}
+.hero-perks span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #374151;
+  font-weight: 500;
+}
+.hero-perks span svg { color: var(--green); }
+
+/* Mockup Card in Hero */
+.hero-preview {
+  position: relative;
+}
+.mockup-phone {
+  background: #FFFFFF;
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 24px 20px;
+  box-shadow: 0 24px 60px rgba(15, 15, 16, 0.1);
+  position: relative;
+}
+.mockup-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.mockup-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Alata', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+.mockup-stars {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 14px 0;
+}
+.mockup-stars span {
+  font-size: 26px;
+  color: #FFB000;
+  filter: drop-shadow(0 2px 4px rgba(255, 176, 0, 0.3));
+}
+.mockup-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: hidden;
+  margin-bottom: 14px;
+}
+.mockup-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #F3F4F6;
+  border: 1px solid var(--border);
+}
+.mockup-chip.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border-color: var(--primary);
+}
+.mockup-bubble {
+  background: #FAF9FE;
+  border: 1.5px solid #DDD6FE;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #1F2937;
+  margin-bottom: 14px;
+  position: relative;
+}
+.mockup-bubble::after {
+  content: "✓ AI Personalized for Product";
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mockup-btn {
+  width: 100%;
+  padding: 12px;
+  background: #FFFFFF;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1F2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 3 Core Pillars Section */
+.section {
+  padding: 80px 0;
+}
+.section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 50px;
+}
+.section-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 4px 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 36px;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--text2);
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.pillar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 34px 28px;
+  box-shadow: 0 4px 20px rgba(15, 15, 16, 0.03);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pillar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(58, 44, 203, 0.09);
+  border-color: rgba(58, 44, 203, 0.25);
+}
+
+.pillar-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 22px;
+}
+.p-icon-1 { background: #EEF2FF; color: var(--primary); }
+.p-icon-2 { background: #EFF6FF; color: var(--accent); }
+.p-icon-3 { background: #ECFDF5; color: var(--green); }
+
+.pillar-num {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.pillar-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 21px;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.pillar-desc {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.pillar-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.pillar-tag {
+  font-size: 12px;
+  color: #374151;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.pillar-tag svg { color: var(--green); flex-shrink: 0; }
+
+/* Industry Solutions */
+.solutions-section {
+  background: #FFFFFF;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.sol-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.2s;
+}
+.sol-box:hover {
+  background: #FAF9FE;
+  border-color: var(--primary-light);
+}
+.sol-emoji { font-size: 28px; margin-bottom: 10px; }
+.sol-title { font-family: 'Alata', sans-serif; font-size: 17px; margin-bottom: 6px; }
+.sol-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* How It Works */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+.step-card {
+  text-align: center;
+  padding: 28px 20px;
+}
+.step-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  font-family: 'Alata', sans-serif;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+.step-title { font-family: 'Alata', sans-serif; font-size: 18px; margin-bottom: 8px; }
+.step-desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+/* CTA Banner */
+.cta-banner {
+  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #3A2CCB 100%);
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  padding: 56px 40px;
+  text-align: center;
+  margin: 60px 0 80px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(58, 44, 203, 0.25);
+}
+.cta-banner h2 {
+  font-family: 'Alata', sans-serif;
+  font-size: 38px;
+  margin-bottom: 14px;
+}
+.cta-banner p {
+  font-size: 16px;
+  opacity: 0.85;
+  max-width: 580px;
+  margin: 0 auto 30px;
+}
+.btn-cta-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-cta-large:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+/* Footer */
+.footer {
+  background: #0F0F10;
+  color: #9CA3AF;
+  padding: 50px 0 30px;
+  font-size: 13px;
+}
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #1F2937;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #FFFFFF;
+}
+.footer-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 3px;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+.footer-links a {
+  color: #9CA3AF;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-links a:hover { color: #FFFFFF; }
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 24px;
+  font-size: 12px;
+  color: #6B7280;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 36px; text-align: center; }
+  .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-ctas { justify-content: center; }
+  .hero-perks { justify-content: center; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .solutions-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">
+      <img src="/static/kiziee_logo.png" alt="Kiziee Media Logo" class="nav-logo">
+      <div class="nav-title">Kiziee <span>GBP AI</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#pillars">3 Core Pillars</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#howitworks">How It Works</a></li>
+      <li><a href="/admin/login">Admin</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="/login" class="btn-nav-login">Business Login</a>
+      <a href="/register" class="btn-nav-reg">Register Business →</a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-badge">
+        <span>🚀</span>
+        <span>AI-Powered Google Maps & Local SEO Engine</span>
+      </div>
+      <h1 class="hero-title">
+        Optimise Your Google Business Profile <span>With AI.</span>
+      </h1>
+      <p class="hero-sub">
+        Transform everyday customer transactions into keyword-rich, authentic 5-star Google reviews. Automate high-authority review replies and intercept negative reviews privately before they harm your score.
+      </p>
+      <div class="hero-ctas">
+        <a href="/register" class="btn-hero-primary">
+          <span>Get Started Free</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/login" class="btn-hero-secondary">
+          <span>Business Login →</span>
+        </a>
+      </div>
+      <div class="hero-perks">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> No Credit Card Required</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Instant Standee QR Code</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 2-Minute Setup</span>
+      </div>
+    </div>
+
+    <!-- Interactive Mockup Visual -->
+    <div class="hero-preview">
+      <div class="mockup-phone">
+        <div class="mockup-top">
+          <div class="mockup-logo">G</div>
+          <div>
+            <div style="font-weight:700; font-size:14px; color:#111;">Gir Natural Ayurvedic Care</div>
+            <div style="font-size:11.5px; color:#6B7280;">Bhilwara, Rajasthan • Verified Business ✓</div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; font-weight:600; color:#374151;">Rate your customer experience</div>
+        <div class="mockup-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <div style="font-size:10.5px; font-weight:700; text-transform:uppercase; color:#9CA3AF; margin-bottom:6px;">Select Offering:</div>
+        <div class="mockup-chips">
+          <div class="mockup-chip active">📦 DAANT DETOX MANJAN</div>
+          <div class="mockup-chip">📦 HAIRFALL KIT</div>
+          <div class="mockup-chip">📦 BODY WASH</div>
+        </div>
+        <div class="mockup-bubble">
+          "Started using Gir Natural's DAANT DETOX CHARCOAL MANJAN morning and evening. Leaves my teeth noticeably cleaner and polished, with fresh breath that lasts all day! Pure herbal quality."
+        </div>
+        <div class="mockup-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          <span>One-Click Post to Google Maps →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 Core Pillars Section (Requested specifically) -->
+<section class="section" id="pillars">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">How It Works</span>
+      <h2 class="section-title">Built to Rank Your Business Higher on Google Maps</h2>
+      <p class="section-sub">
+        Google's search algorithm heavily rewards profiles with keyword diversity, high reply rates, and protected ratings.
+      </p>
+    </div>
+
+    <div class="pillars-grid">
+      <!-- Pillar 1 -->
+      <div class="pillar-card">
+        <div class="pillar-icon-wrap p-icon-1">🎯</div>
+        <div class="pillar-num">Pillar 01</div>
+        <h3 class="pillar-title">Product-Oriented Keywords in Reviews</h3>
+        <p class="pillar-desc">
+          Get product-specific keywords included in reviews directly from your customers to dramatically increase local search visibility. When customers search for specific products or services, Google ranks your profile first.
+        </p>
+        <div class="pillar-tags">
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Exact product keyword inclusion</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>100% natural, diverse sentence variations</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>No duplicate text or spam penalties</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="pillar-card">
+        <div class="pillar-icon-wrap p-icon-2">⚡</div>
+        <div class="pillar-num">Pillar 02</div>
+        <h3 class="pillar-title">Instant AI Auto-Replies to Reviews</h3>
+        <p class="pillar-desc">
+          Auto-reply to customer reviews instantly to build deep customer trust and algorithmic authority. Never leave a review unanswered — our Groq-powered AI crafts polite, keyword-optimized responses 24/7.
+        </p>
+        <div class="pillar-tags">
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Sub-second AI response generation</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Tailored brand tone & local keywords</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Signals high active authority to Google</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="pillar-card">
+        <div class="pillar-icon-wrap p-icon-3">🛡️</div>
+        <div class="pillar-num">Pillar 03</div>
+        <h3 class="pillar-title">Private Negative Review Shield</h3>
+        <p class="pillar-desc">
+          Capture negative comments (1–3 star ratings) as private management feedback and WhatsApp resolution before they ever reach your public Google profile. Keep your Google Maps score at a stellar 4.8+ stars.
+        </p>
+        <div class="pillar-tags">
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Direct WhatsApp chat resolution option</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Private management feedback form</span>
+          </div>
+          <div class="pillar-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Protects public brand reputation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Business Specific Solutions -->
+<section class="section solutions-section" id="solutions">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Business Specific Solutions</span>
+      <h2 class="section-title">Engineered For Every Industry</h2>
+      <p class="section-sub">
+        Whether you sell herbal products, provide medical care, or run a staffing agency, our AI classifies products into their authentic domain without cross-category errors.
+      </p>
+    </div>
+
+    <div class="solutions-grid">
+      <div class="sol-box">
+        <div class="sol-emoji">🌿</div>
+        <h4 class="sol-title">Ayurvedic & Natural Brands</h4>
+        <p class="sol-desc">Hairfall kits, facial serums, dental manjan, and herbal care. Tailored reviews highlight pure botanical ingredients and zero chemicals.</p>
+      </div>
+      <div class="sol-box">
+        <div class="sol-emoji">🏥</div>
+        <h4 class="sol-title">Healthcare & Clinics</h4>
+        <p class="sol-desc">Doctors, dental clinics, and wellness centers. Authentic reviews emphasize hygiene, gentle treatment, and professional care.</p>
+      </div>
+      <div class="sol-box">
+        <div class="sol-emoji">👔</div>
+        <h4 class="sol-title">Staffing & Recruitment</h4>
+        <p class="sol-desc">Placement agencies and HR consultants. Reviews highlight verified jobs, transparent communication, and fast interview calls.</p>
+      </div>
+      <div class="sol-box">
+        <div class="sol-emoji">🍽️</div>
+        <h4 class="sol-title">Restaurants & Cafes</h4>
+        <p class="sol-desc">Dining, cloud kitchens, and bakeries. Specific dish mentions, fresh ingredients, warm hospitality, and memorable ambience.</p>
+      </div>
+      <div class="sol-box">
+        <div class="sol-emoji">🛍️</div>
+        <h4 class="sol-title">Retail Stores & Showrooms</h4>
+        <p class="sol-desc">Clothing, electronics, and specialty stores. Customer reviews praise fair pricing, genuine product warranty, and polite staff.</p>
+      </div>
+      <div class="sol-box">
+        <div class="sol-emoji">💻</div>
+        <h4 class="sol-title">IT & Digital Services</h4>
+        <p class="sol-desc">Software agencies, web design, and digital marketing. Reviews focus on clean architecture, punctual delivery, and strong ROI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Step-by-Step -->
+<section class="section" id="howitworks">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Simple 3-Step Flow</span>
+      <h2 class="section-title">Effortless for You. Delightful for Customers.</h2>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-badge">1</div>
+        <h3 class="step-title">Register & Add Offerings</h3>
+        <p class="step-desc">Enter your business details and upload your product/service catalog using Excel or CSV in seconds.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-badge">2</div>
+        <h3 class="step-title">Place QR Code / Share Link</h3>
+        <p class="step-desc">Display your branded QR code standee on your counter or include the review link in WhatsApp invoices.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-badge">3</div>
+        <h3 class="step-title">Customer Reviews in 2 Clicks</h3>
+        <p class="step-desc">Customer taps a star, picks what they bought, AI personalizes the review, and copies it directly to Google Maps!</p>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner">
+      <h2>Start Growing Your Google Business Profile Today</h2>
+      <p>Supercharge your local search visibility with product-targeted reviews, automated AI replies, and private negative review protection.</p>
+      <a href="/register" class="btn-cta-large">
+        <span>Claim Your Business Link Free →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="/static/kiziee_logo.png" alt="Kiziee Media Logo" class="footer-logo">
+        <div style="font-family:'Alata',sans-serif; font-size:18px;">Kiziee Media <span>GBP Suite</span></div>
+      </div>
+      <div class="footer-links">
+        <a href="/login">Business Login</a>
+        <a href="/register">Register Business</a>
+        <a href="/admin/login">Admin Console</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Kiziee Media. All rights reserved. Advanced AI Review & Google Business Profile Management Suite.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

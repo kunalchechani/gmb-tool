@@ -3,73 +3,277 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Business — GBP Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Register Business — Kiziee GBP Review Manager</title>
+<link rel="icon" type="image/png" href="/static/kiziee_logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Poppins', sans-serif; background: #0F0F10; color: #F5F5F5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
-.card { background: #1A1A1E; border: 1px solid #2E2E34; border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 540px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-.logo { font-family: 'Alata', sans-serif; font-size: 26px; margin-bottom: 4px; }
-.logo span { color: #5B4FD9; }
-.sub { font-size: 13px; color: #9E9EA8; margin-bottom: 24px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-label { font-size: 11.5px; color: #9E9EA8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
-input, select, textarea { width: 100%; background: #222228; border: 1.5px solid #2E2E34; border-radius: 10px; padding: 10px 12px; font-family: 'Poppins', sans-serif; font-size: 13.5px; color: #F5F5F5; outline: none; transition: border-color 0.15s; }
-input:focus, select:focus, textarea:focus { border-color: #3A2CCB; }
-input::placeholder, textarea::placeholder { color: #505058; }
-select option { background: #222228; }
-.hint { font-size: 11px; color: #60606A; margin-top: 3px; }
+:root {
+  --primary: #3A2CCB;
+  --primary-light: #5B4FD9;
+  --primary-glow: rgba(58, 44, 203, 0.22);
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #0F0F10;
+  --text2: #4B5563;
+  --text3: #9CA3AF;
+  --red: #DC2626;
+  --green: #10B981;
+  --radius: 18px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(91, 79, 217, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(58, 44, 203, 0.06) 0%, transparent 40%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.reg-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 38px 34px 34px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 16px 48px rgba(15, 15, 16, 0.06);
+  position: relative;
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-logo-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 6px;
+}
+
+.brand-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.brand-sub {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: var(--red);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  margin-bottom: 18px;
+  display: none;
+}
+
+.success-box {
+  background: #F0FDF4;
+  border: 1.5px solid #86EFAC;
+  border-radius: 14px;
+  padding: 24px;
+  display: none;
+  text-align: center;
+}
+.success-box h3 {
+  font-family: 'Alata', sans-serif;
+  font-size: 20px;
+  color: #15803D;
+  margin-bottom: 8px;
+}
+.url-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  color: var(--text2);
+  word-break: break-all;
+  margin: 14px 0;
+  border: 1.5px solid #D1D5DB;
+}
+.url-box span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 580px) {
+  .row { grid-template-columns: 1fr; gap: 0; }
+  .reg-card { padding: 28px 20px; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 12px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: #F9FAFB;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text3);
+}
+
+.hint {
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
 .file-upload-box {
-  background: #202026;
-  border: 1.5px dashed #3D3D48;
+  background: #F9FAFB;
+  border: 2px dashed #D1D5DB;
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 18px 16px;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 4px;
 }
 .file-upload-box:hover {
-  border-color: #5B4FD9;
-  background: rgba(91, 79, 217, 0.06);
+  border-color: var(--primary-light);
+  background: rgba(91, 79, 217, 0.04);
 }
 .file-upload-hint {
-  font-size: 12px;
-  color: #9E9EA8;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
 }
 .file-upload-sub {
-  font-size: 10.5px;
-  color: #60606A;
-  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text2);
+  margin-top: 3px;
 }
 .sample-link {
-  font-size: 11px;
-  color: #5B4FD9;
+  font-size: 11.5px;
+  color: var(--primary);
   text-decoration: none;
-  font-weight: 500;
-  display: inline-block;
-  margin-top: 4px;
+  font-weight: 600;
 }
 .sample-link:hover { text-decoration: underline; }
-.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3A2CCB, #5B4FD9); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 10px; box-shadow: 0 4px 16px rgba(58,44,203,0.25); }
-.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn:disabled { opacity: 0.6; }
-.error { background: #2A1515; border: 1px solid #4A2020; color: #F4A0A0; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; display: none; }
-.success-box { background: #151E2A; border: 1px solid #3A2CCB; border-radius: 14px; padding: 22px; display: none; text-align: center; }
-.success-box h3 { font-family: 'Alata', sans-serif; font-size: 20px; margin-bottom: 8px; color: #5B4FD9; }
-.url-box { background: #0F0F10; border-radius: 8px; padding: 12px 14px; font-size: 13.5px; color: #9E9EA8; word-break: break-all; margin: 12px 0; border: 1px solid #2E2E34; }
-.url-box span { color: #5B4FD9; font-weight: 600; }
-.back-link { text-align: center; margin-top: 20px; font-size: 13px; color: #60606A; cursor: pointer; }
-.back-link:hover { color: #9E9EA8; }
+
+.btn {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px var(--primary-glow);
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.back-link a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+.brand-footer {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">GBP<span>.</span>Review</div>
-  <div class="sub">Register your business & train AI on your specific products</div>
+
+<div class="reg-card">
+  <div class="brand-header">
+    <div class="brand-logo-wrap">
+      <img src="/static/kiziee_logo.png" alt="Kiziee Media Logo">
+    </div>
+    <h1 class="brand-title">Register Business</h1>
+    <p class="brand-sub">Setup AI-driven Google Business Profile reviews & shield ratings</p>
+  </div>
   
-  <div class="error" id="errBox"></div>
+  <div class="error-banner" id="errBox"></div>
 
   <div class="success-box" id="successBox">
     <h3>🎉 Business Registered Successfully!</h3>
@@ -81,11 +285,11 @@ select option { background: #222228; }
     <div class="row">
       <div class="form-group">
         <label>Business Name *</label>
-        <input type="text" id="name" placeholder="Woho Jobs" oninput="autoSlug()" required>
+        <input type="text" id="name" placeholder="e.g. Gir Natural" oninput="autoSlug()" required>
       </div>
       <div class="form-group">
         <label>URL Slug *</label>
-        <input type="text" id="slug" placeholder="woho-jobs" required>
+        <input type="text" id="slug" placeholder="gir-natural" required>
         <div class="hint"><span id="domainPreview">...</span>/review/<span id="slugPreview">...</span></div>
       </div>
     </div>
@@ -94,28 +298,29 @@ select option { background: #222228; }
       <div class="form-group">
         <label>Category</label>
         <select id="category">
+          <option>Herbal & Ayurvedic Products</option>
+          <option>Healthcare & Wellness</option>
+          <option>Retail & E-commerce</option>
           <option>Employment Agency</option>
           <option>Staffing Agency</option>
           <option>Software & IT Services</option>
           <option>Restaurant & Cafe</option>
           <option>Hotel & Hospitality</option>
-          <option>Retail Store</option>
-          <option>Healthcare & Clinic</option>
           <option>Education & Coaching</option>
           <option>Other</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Passcode *</label>
+        <label>Dashboard Passcode *</label>
         <input type="password" id="passcode" placeholder="Min 6 characters" required>
-        <div class="hint">For business dashboard login</div>
+        <div class="hint">Secret key to access your analytics dashboard</div>
       </div>
     </div>
 
     <div class="form-group">
       <label>Google Maps Review URL *</label>
       <input type="url" id="maps_url" placeholder="https://maps.google.com/maps?cid=..." required>
-      <div class="hint">Your Google Business Maps listing review link</div>
+      <div class="hint">Your official Google Business Maps listing review link</div>
     </div>
 
     <div class="row">
@@ -125,19 +330,19 @@ select option { background: #222228; }
       </div>
       <div class="form-group">
         <label>Brand Keywords</label>
-        <input type="text" id="keywords" placeholder="recruitment, verified jobs, quick placement">
+        <input type="text" id="keywords" placeholder="natural herbal, organic tooth powder, genuine">
       </div>
     </div>
 
     <div class="form-group">
-      <label>Feedback WhatsApp Number / Link (1–3★ Customer Resolution)</label>
+      <label>Feedback WhatsApp (1–3★ Customer Shield)</label>
       <input type="text" id="whatsapp_number" placeholder="e.g. +91 9876543210 or https://wa.me/919876543210">
-      <span style="font-size:11.5px; color:#6B7280; margin-top:3px; display:block;">Allows unhappy customers to reach you privately on WhatsApp instead of posting bad reviews on Google.</span>
+      <div class="hint">Unhappy customers reach you directly on WhatsApp before posting publicly on Google.</div>
     </div>
 
     <div class="form-group">
       <label>Tagline</label>
-      <input type="text" id="tagline" placeholder="e.g. Leading recruitment partner with 100% verified jobs">
+      <input type="text" id="tagline" placeholder="e.g. Authentic 100% Ayurvedic & Herbal Care">
     </div>
 
     <div class="form-group">
@@ -147,9 +352,9 @@ select option { background: #222228; }
 
     <!-- Excel / CSV Product Upload -->
     <div class="form-group">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <label>Upload Products / Services Catalog (Excel / CSV)</label>
-        <a href="/api/sample-products-csv" class="sample-link">📥 Sample CSV</a>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+        <label>Upload Products Catalog (Excel / CSV)</label>
+        <a href="/api/sample-products-csv" class="sample-link">📥 Download Sample CSV</a>
       </div>
       <div class="file-upload-box" onclick="document.getElementById('products_file').click()">
         <input type="file" id="products_file" accept=".csv, .xlsx, .xls" style="display:none" onchange="fileSelected(this)">
@@ -158,10 +363,16 @@ select option { background: #222228; }
       </div>
     </div>
 
-    <button type="submit" class="btn" id="regBtn">Register Business →</button>
+    <button type="submit" class="btn" id="regBtn">Register Business & Launch AI →</button>
   </form>
 
-  <div class="back-link" onclick="location.href='/login'">← Back to business login</div>
+  <div class="back-link">
+    Already registered? <a href="/login">Sign in to Business Dashboard</a>
+  </div>
+</div>
+
+<div class="brand-footer">
+  Powered by <strong>Kiziee Media</strong> • AI Reputation Management
 </div>
 
 <script>
@@ -218,24 +429,24 @@ async function doRegister(e) {
     if (data.ok) {
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successBox').style.display = 'block';
-      let prodMsg = data.imported_products ? `<p style="font-size:12.5px;color:#34D399;margin-bottom:8px">✅ Successfully imported <strong>${data.imported_products}</strong> products into AI knowledge base!</p>` : '';
+      let prodMsg = data.imported_products ? `<p style="font-size:13px;color:#15803D;font-weight:600;margin-bottom:8px">✅ Successfully imported ${data.imported_products} products into AI knowledge base!</p>` : '';
       document.getElementById('successMsg').innerHTML = `
         ${prodMsg}
-        <p style="font-size:13px;color:#9E9EA8;margin-bottom:6px">Your public customer review link:</p>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:6px">Your public customer review link:</p>
         <div class="url-box">${location.origin}<span>/review/${data.slug}</span></div>
-        <p style="font-size:12px;color:#60606A">Share this link with customers via WhatsApp, QR code or SMS.</p>
+        <p style="font-size:12px;color:var(--text3)">Share this link with customers via WhatsApp, QR code or SMS.</p>
       `;
     } else {
       err.textContent = data.error || 'Registration failed';
       err.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = 'Register Business →';
+      btn.textContent = 'Register Business & Launch AI →';
     }
   } catch(e) {
     err.textContent = 'Connection error. Please try again.';
     err.style.display = 'block';
     btn.disabled = false;
-    btn.textContent = 'Register Business →';
+    btn.textContent = 'Register Business & Launch AI →';
   }
 }
 </script>

@@ -3,63 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — GBP Review Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Business Login — Kiziee GBP Review Manager</title>
+<link rel="icon" type="image/png" href="/static/kiziee_logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Poppins', sans-serif; background: #0F0F10; color: #F5F5F5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.card { background: #1A1A1E; border: 1px solid #2E2E34; border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; }
-.logo { font-family: 'Alata', sans-serif; font-size: 28px; margin-bottom: 6px; }
-.logo span { color: #5B4FD9; }
-.sub { font-size: 13px; color: #9E9EA8; margin-bottom: 32px; }
-.form-group { margin-bottom: 16px; }
-label { display: block; font-size: 12px; color: #9E9EA8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-input { width: 100%; background: #222228; border: 1.5px solid #2E2E34; border-radius: 10px; padding: 12px 14px; font-family: 'Poppins', sans-serif; font-size: 14px; color: #F5F5F5; outline: none; transition: border-color 0.15s; }
-input:focus { border-color: #3A2CCB; }
-input::placeholder { color: #505058; }
-.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3A2CCB, #5B4FD9); color: #fff; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 4px 16px rgba(58,44,203,0.25); }
-.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.error { background: #2A1515; border: 1px solid #4A2020; color: #F4A0A0; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: {{ 'block' if error else 'none' }}; }
-.divider { text-align: center; font-size: 12px; color: #505058; margin: 20px 0; }
-.link-btn { width: 100%; padding: 12px; background: transparent; border: 1.5px solid #2E2E34; color: #9E9EA8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.15s; }
-.link-btn:hover { border-color: #5B4FD9; color: #F5F5F5; }
+:root {
+  --primary: #3A2CCB;
+  --primary-light: #5B4FD9;
+  --primary-glow: rgba(58, 44, 203, 0.22);
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #0F0F10;
+  --text2: #4B5563;
+  --text3: #9CA3AF;
+  --red: #DC2626;
+  --radius: 18px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(91, 79, 217, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(58, 44, 203, 0.06) 0%, transparent 40%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 38px 32px 34px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 16px 48px rgba(15, 15, 16, 0.06);
+  position: relative;
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.brand-logo-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 5px;
+}
+
+.brand-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-family: 'Alata', sans-serif;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.brand-sub {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: var(--red);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  margin-bottom: 18px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #FAFAFC;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-wrap input:focus {
+  background: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px var(--primary-glow);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.btn-login:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 22px 0 16px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+.divider::before { margin-right: 12px; }
+.divider::after { margin-left: 12px; }
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.link-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 11px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text2);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+  color: var(--text);
+}
+
+.admin-sublink {
+  font-size: 11.5px;
+  color: var(--text3);
+  text-decoration: none;
+  margin-top: 6px;
+  transition: color 0.15s;
+}
+
+.admin-sublink:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.powered-tag {
+  margin-top: 20px;
+  font-size: 11.5px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.powered-tag img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">GBP<span>.</span>kizee</div>
-  <div class="sub">Review Management Platform</div>
-  <div class="error" id="errBox">{{ error or '' }}</div>
-  <div class="form-group">
-    <label>Business Slug</label>
-    <input type="text" id="slug" placeholder="e.g. woho-jobs" autocomplete="off">
+
+<div class="login-card">
+  <div class="brand-header">
+    <div class="brand-logo-wrap">
+      <img src="/static/kiziee_logo.png" alt="Kiziee Media">
+    </div>
+    <h1 class="brand-title">Business Portal</h1>
+    <p class="brand-sub">Access your Google Business Profile & review dashboard</p>
   </div>
-  <div class="form-group">
-    <label>Passcode</label>
-    <input type="password" id="passcode" placeholder="Your secret passcode">
+
+  <div class="error-banner" id="errBox">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span id="errText">{{ error or '' }}</span>
   </div>
-  <button class="btn" id="loginBtn" onclick="doLogin()">Login →</button>
-  <div class="divider">— or —</div>
-  <button class="link-btn" onclick="location.href='/register'">Register a new business</button>
+
+  <form id="loginForm" onsubmit="doLogin(event)">
+    <div class="form-group">
+      <label>Business Slug</label>
+      <div class="input-wrap">
+        <input type="text" id="slug" placeholder="e.g. gir-natural" required autocomplete="username" autofocus>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Secret Passcode</label>
+      <div class="input-wrap">
+        <input type="password" id="passcode" placeholder="Enter your business passcode" required autocomplete="current-password">
+      </div>
+    </div>
+
+    <button type="submit" class="btn-login" id="loginBtn">
+      <span>Sign In to Dashboard</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </form>
+
+  <div class="divider">NEW TO THE PLATFORM?</div>
+
+  <div class="footer-actions">
+    <a href="/register" class="link-btn">Register New Business →</a>
+    <a href="/admin/login" class="admin-sublink">Looking for Super Admin? Login here</a>
+  </div>
 </div>
+
+<div class="powered-tag">
+  <img src="/static/kiziee_logo.png" alt="Kiziee Media">
+  <span>Powered by <strong>Kiziee Media</strong></span>
+</div>
+
 <script>
-async function doLogin() {
+async function doLogin(e) {
+  if (e) e.preventDefault();
   const btn = document.getElementById('loginBtn');
-  btn.disabled = true; btn.textContent = 'Logging in...';
-  const err = document.getElementById('errBox');
-  err.style.display = 'none';
+  const errBox = document.getElementById('errBox');
+  const errText = document.getElementById('errText');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>Verifying credentials...</span>';
+  errBox.style.display = 'none';
+
+  const slug = document.getElementById('slug').value.trim();
+  const passcode = document.getElementById('passcode').value.trim();
+
   try {
-    const res = await fetch('/login', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ slug: document.getElementById('slug').value, passcode: document.getElementById('passcode').value })
+    const res = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, passcode })
     });
     const data = await res.json();
-    if (data.ok) location.href = '/dashboard';
-    else { err.textContent = data.error || 'Invalid credentials'; err.style.display = 'block'; }
-  } catch(e) { err.textContent = 'Connection error'; err.style.display = 'block'; }
-  btn.disabled = false; btn.textContent = 'Login →';
+    if (data.ok) {
+      location.href = '/dashboard';
+    } else {
+      errText.textContent = data.error || 'Invalid business slug or passcode';
+      errBox.style.display = 'flex';
+      btn.disabled = false;
+      btn.innerHTML = '<span>Sign In to Dashboard</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+    }
+  } catch(err) {
+    errText.textContent = 'Server connection error. Please try again.';
+    errBox.style.display = 'flex';
+    btn.disabled = false;
+    btn.innerHTML = '<span>Sign In to Dashboard</span>';
+  }
 }
-document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
 </html>
