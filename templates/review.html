@@ -818,24 +818,24 @@ body {
     <div class="section-sub">Tap a star to personalize your review</div>
     
     <div class="stars-row" id="starsRow">
-      <button class="star-btn lit" data-val="1" type="button" aria-label="1 Star">
+      <button class="star-btn" data-val="1" type="button" aria-label="1 Star">
         <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </button>
-      <button class="star-btn lit" data-val="2" type="button" aria-label="2 Stars">
+      <button class="star-btn" data-val="2" type="button" aria-label="2 Stars">
         <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </button>
-      <button class="star-btn lit" data-val="3" type="button" aria-label="3 Stars">
+      <button class="star-btn" data-val="3" type="button" aria-label="3 Stars">
         <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </button>
-      <button class="star-btn lit" data-val="4" type="button" aria-label="4 Stars">
+      <button class="star-btn" data-val="4" type="button" aria-label="4 Stars">
         <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </button>
-      <button class="star-btn lit" data-val="5" type="button" aria-label="5 Stars">
+      <button class="star-btn" data-val="5" type="button" aria-label="5 Stars">
         <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       </button>
     </div>
     
-    <div class="star-label-badge" id="starLabel">Tap stars above to start</div>
+    <div class="star-label-badge" id="starLabel">Tap a star to begin</div>
 
     <!-- Product / Service Carousel Selector -->
     {% if products and products|length > 0 %}
@@ -860,6 +860,50 @@ body {
       </div>
     </div>
     {% endif %}
+  </div>
+
+  <!-- Private Feedback & Resolution Section (For 1-3 Stars) -->
+  <div class="card-box private-feedback-section" id="privateFeedbackSection" style="display:none">
+    <div style="text-align:center; margin-bottom:16px">
+      <div style="font-size:36px; margin-bottom:6px">💬</div>
+      <div style="font-family:'Alata',sans-serif; font-size:19px; color:var(--text); margin-bottom:4px">How can we make this right?</div>
+      <div style="font-size:12.5px; color:var(--text2); line-height:1.5; max-width:320px; margin:0 auto">
+        We're truly sorry we did not meet your expectations! Your feedback goes straight to our management team so we can resolve your issue personally.
+      </div>
+    </div>
+
+    <div id="feedbackFormWrap">
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px; text-transform:uppercase; color:var(--text3); font-weight:600; letter-spacing:0.04em; display:block; margin-bottom:5px">What went wrong? *</label>
+        <textarea id="feedbackText" rows="3" style="width:100%; border:1.5px solid var(--border); border-radius:12px; padding:12px; font-family:'Poppins',sans-serif; font-size:13.5px; outline:none; resize:none; background:var(--surface2);" placeholder="Please share what happened so we can improve..."></textarea>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <label style="font-size:11px; text-transform:uppercase; color:var(--text3); font-weight:600; letter-spacing:0.04em; display:block; margin-bottom:5px">Your Name & Phone / Email (Optional)</label>
+        <input type="text" id="feedbackContact" style="width:100%; border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; font-family:'Poppins',sans-serif; font-size:13.5px; outline:none; background:var(--surface2);" placeholder="e.g. Rahul, 9876543210">
+      </div>
+
+      <button class="btn-submit" id="feedbackSubmitBtn" onclick="submitPrivateFeedback()" style="background:#1F2937;">
+        <span>Send Private Feedback to Management</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+
+      <div style="text-align:center; margin-top:14px; font-size:11.5px; color:var(--text3)">
+        Prefer to review on Google Maps directly? <a href="{{ business.maps_url }}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:underline;">Continue to Google Maps</a>
+      </div>
+    </div>
+
+    <div id="feedbackSuccessWrap" style="display:none; text-align:center; padding:16px 8px;">
+      <div style="font-size:40px; margin-bottom:8px">🙏</div>
+      <div style="font-family:'Alata',sans-serif; font-size:19px; color:var(--text); margin-bottom:6px">Thank You For Your Feedback</div>
+      <div style="font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:14px">
+        Our management team has received your message and will review it immediately to resolve your concern.
+      </div>
+      <div style="display:inline-block; font-size:12px; color:var(--green); background:var(--green-soft); padding:6px 16px; border-radius:20px; font-weight:500">
+        ✓ Sent Privately to Management
+      </div>
+    </div>
+  </div>
   </div>
 
   <!-- AI Review Suggestions Section -->
@@ -917,7 +961,7 @@ const SLUG = "{{ business.slug }}";
 const MAPS_URL = "{{ business.maps_url }}";
 const starLabels = ['', 'Needs Improvement 👎', 'Below Expectations 😕', 'Average Experience 👍', 'Very Good! ⭐⭐⭐⭐', 'Exceptional! 🎉 5/5'];
 
-let selectedStars = 5;
+let selectedStars = 0;
 let selectedProductId = 'all';
 let selectedProductName = 'Overall Experience';
 let suggestions = [];
@@ -935,8 +979,13 @@ const starBtns = document.querySelectorAll('.star-btn');
 const starsRow = document.getElementById('starsRow');
 
 function updateStarDisplay(val) {
-  starBtns.forEach((s, i) => s.classList.toggle('lit', i < val));
-  document.getElementById('starLabel').textContent = starLabels[val] || 'Selected';
+  if (val === 0) {
+    starBtns.forEach(s => s.classList.remove('lit'));
+    document.getElementById('starLabel').textContent = 'Tap a star to begin';
+  } else {
+    starBtns.forEach((s, i) => s.classList.toggle('lit', i < val));
+    document.getElementById('starLabel').textContent = starLabels[val] || 'Selected';
+  }
 }
 
 starBtns.forEach(btn => {
@@ -944,11 +993,25 @@ starBtns.forEach(btn => {
     selectedStars = parseInt(btn.dataset.val);
     updateStarDisplay(selectedStars);
     
-    // Show product chips if available
     const prodSec = document.getElementById('productSection');
-    if (prodSec) prodSec.style.display = 'block';
-    
-    loadSuggestions();
+    const cardSec = document.getElementById('cardSection');
+    const privateSec = document.getElementById('privateFeedbackSection');
+
+    if (selectedStars >= 4) {
+      // 4 or 5 Stars: Glowing public reviews
+      if (privateSec) privateSec.style.display = 'none';
+      if (prodSec) prodSec.style.display = 'block';
+      if (cardSec) cardSec.style.display = 'block';
+      loadSuggestions();
+    } else {
+      // 1, 2, or 3 Stars: Protect brand reputation with private feedback form!
+      if (cardSec) cardSec.style.display = 'none';
+      if (prodSec) prodSec.style.display = 'none';
+      if (privateSec) {
+        privateSec.style.display = 'block';
+        privateSec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
   });
 
   btn.addEventListener('mouseenter', () => {
@@ -963,8 +1026,43 @@ if (starsRow) {
   });
 }
 
-// Initial state
-updateStarDisplay(selectedStars);
+// Initial state: 0 stars selected
+updateStarDisplay(0);
+
+async function submitPrivateFeedback() {
+  const btn = document.getElementById('feedbackSubmitBtn');
+  const text = (document.getElementById('feedbackText').value || '').trim();
+  const contact = (document.getElementById('feedbackContact').value || '').trim();
+
+  if (!text) {
+    alert('Please briefly share your feedback so our management can assist.');
+    document.getElementById('feedbackText').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;border-top-color:#fff;"></div>';
+
+  try {
+    const res = await fetch('/api/private-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: SLUG, stars: selectedStars, text, contact })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('feedbackFormWrap').style.display = 'none';
+      document.getElementById('feedbackSuccessWrap').style.display = 'block';
+    } else {
+      alert(data.error || 'Could not submit. Please try again.');
+      btn.disabled = false;
+      btn.innerHTML = '<span>Send Private Feedback to Management</span>';
+    }
+  } catch(e) {
+    document.getElementById('feedbackFormWrap').style.display = 'none';
+    document.getElementById('feedbackSuccessWrap').style.display = 'block';
+  }
+}
 
 // Product Chip Selection
 function selectProduct(el, prodId, prodName) {

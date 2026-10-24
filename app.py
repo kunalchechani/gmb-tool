@@ -441,29 +441,83 @@ Reply ONLY with the reply text. No quotes or intro labels."""
     return None
 
 # ─────────────────────────────────────────
-# REVIEW DIVERSITY & GENERATION ENGINE
+# REVIEW DIVERSITY & REPUTATION ENGINE
 # ─────────────────────────────────────────
 
-def is_ayurvedic_or_herbal(business, product=None):
-    check_str = f"{business.get('name', '')} {business.get('tagline', '')} {business.get('description', '')} {business.get('category', '')} {business.get('keywords', '')}".lower()
-    if product:
-        check_str += f" {product.get('name', '')} {product.get('description', '')} {product.get('keywords', '')}".lower()
-    ayur_terms = ['ayurvedic', 'ayurveda', 'herbal', 'natural', 'hairfall', 'skincare', 'hair care', 'wellness', 'organic', 'oil', 'serum', 'personal care', 'gir natural']
-    return any(term in check_str for term in ayur_terms)
+def classify_product_domain(product_name="", product_desc="", product_keywords="", business_info=""):
+    """
+    Accurately classifies offerings into their true domain to prevent cross-category hallucinations
+    (e.g., prevents body wash from talking about hair fall, or software talking about food).
+    """
+    prod_text = f"{product_name} {product_desc} {product_keywords}".lower()
+    full_text = f"{prod_text} {business_info}".lower()
 
-def is_recruitment_or_agency(business, product=None):
-    check_str = f"{business.get('name', '')} {business.get('tagline', '')} {business.get('description', '')} {business.get('category', '')}".lower()
-    return any(t in check_str for t in ['job', 'recruitment', 'staffing', 'placement', 'career', 'employment', 'hiring', 'woho'])
+    # Domain keyword maps
+    body_keywords = ['body wash', 'soap', 'body lotion', 'ubtan', 'scrub', 'shower', 'bath', 'body butter', 'body oil', 'moisturizer', 'hand cream', 'foot cream']
+    skin_face_keywords = ['face', 'serum', 'glow', 'acne', 'pimple', 'pigmentation', 'skin', 'blemish', 'cream', 'face wash', 'sunscreen', 'anti aging', 'toner', 'facial', 'kumkumadi']
+    hair_keywords = ['hair', 'hairfall', 'shampoo', 'conditioner', 'scalp', 'dandruff', 'kesh', 'follicle', 'shedding', 'hair oil', 'anti hairfall']
+    wellness_keywords = ['churna', 'juice', 'kadha', 'tea', 'capsule', 'immunity', 'digest', 'stamina', 'weight', 'detox', 'supplement', 'herbal powder']
+    recruitment_keywords = ['job', 'placement', 'interview', 'hiring', 'recruitment', 'staffing', 'resume', 'candidate']
+    tech_keywords = ['software', 'website', 'app', 'crm', 'web development', 'ui/ux', 'seo', 'cloud']
+
+    # Priority 1: Match specific product fields
+    if any(k in prod_text for k in body_keywords):
+        return 'body_bath'
+    if any(k in prod_text for k in skin_face_keywords):
+        return 'skin_face'
+    if any(k in prod_text for k in hair_keywords):
+        return 'hair'
+    if any(k in prod_text for k in wellness_keywords):
+        return 'wellness_health'
+    if any(k in prod_text for k in recruitment_keywords):
+        return 'recruitment'
+    if any(k in prod_text for k in tech_keywords):
+        return 'tech'
+
+    # Priority 2: Match broader context
+    if any(k in full_text for k in body_keywords):
+        return 'body_bath'
+    if any(k in full_text for k in skin_face_keywords):
+        return 'skin_face'
+    if any(k in full_text for k in hair_keywords):
+        return 'hair'
+    if any(k in full_text for k in wellness_keywords):
+        return 'wellness_health'
+    if any(k in full_text for k in recruitment_keywords):
+        return 'recruitment'
+    if any(k in full_text for k in tech_keywords):
+        return 'tech'
+
+    return 'general'
 
 def generate_review_suggestions(business, stars, product=None, groq_key=None):
+    # Brand Reputation Safeguard: Never generate public negative reviews to post on Google Maps!
+    if stars < 4:
+        return []
+
     key = groq_key or business.get('groq_key') or GROQ_API_KEY
     prod_name = product.get('name') if product else None
     
     if not key:
         return get_fallback_suggestions(business, stars, product=product)
-        
-    star_ctx = "positive, appreciative, genuine customer recommendation" if stars >= 4 else "balanced, neutral, honest" if stars == 3 else "polite constructive feedback"
-    
+
+    domain = classify_product_domain(
+        product.get('name', '') if product else '',
+        product.get('description', '') if product else '',
+        product.get('keywords', '') if product else '',
+        f"{business.get('name', '')} {business.get('category', '')} {business.get('tagline', '')} {business.get('description', '')}"
+    )
+
+    domain_guidance = {
+        'body_bath': "This is a BODY CARE / BATH product (e.g. body wash, soap, body lotion, scrub). Strictly focus on: refreshing shower feel, skin hydration, gentle natural lather, all-day softness, botanical aroma, zero chemical dryness. ABSOLUTE RULE: DO NOT mention hair, scalp, hairfall, or facial acne!",
+        'skin_face': "This is a FACIAL SKINCARE product (e.g. face serum, face wash, cream, glow pack). Strictly focus on: radiant glowing skin, clearer complexion, smooth skin texture, fast absorption, calming redness/blemishes. ABSOLUTE RULE: DO NOT mention hair fall or scalp!",
+        'hair': "This is a HAIR CARE product (e.g. hairfall kit, hair oil, shampoo). Strictly focus on: healthy nourished scalp, reduced hair shedding/breakage, stronger roots, natural shine, non-greasy feel. ABSOLUTE RULE: DO NOT mention body wash lather or facial acne!",
+        'wellness_health': "This is a WELLNESS / HERBAL SUPPLEMENT product. Focus on: daily energy, natural digestion, pure Ayurvedic herbs, stamina, and overall vitality.",
+        'recruitment': "This is a RECRUITMENT / STAFFING SERVICE. Focus on: verified job placements, prompt interview calls, career counseling, transparent communication.",
+        'tech': "This is a SOFTWARE / DIGITAL SERVICE. Focus on: clean code architecture, prompt project delivery, responsive communication, high performance.",
+        'general': "Focus on: authentic quality, dependable team, on-time delivery, excellent value for money, and personal recommendation."
+    }.get(domain, "Focus on high quality and dependable customer satisfaction.")
+
     context_lines = []
     if business.get('category'): context_lines.append(f"Business Category: {business['category']}")
     if business.get('tagline'): context_lines.append(f"Tagline / Core Promise: {business['tagline']}")
@@ -472,33 +526,35 @@ def generate_review_suggestions(business, stars, product=None, groq_key=None):
     if business.get('description'): context_lines.append(f"Business Details: {business['description']}")
     
     if product:
-        context_lines.append(f"Selected Product/Service for Review: {product['name']}")
+        context_lines.append(f"Specific Product Reviewed: {product['name']}")
         if product.get('description'): context_lines.append(f"Product Description: {product['description']}")
         if product.get('keywords'): context_lines.append(f"Product Keywords: {product['keywords']}")
         
     context_str = "\n".join(context_lines)
     random_salt = secrets.token_hex(4)
 
-    prompt = f"""You are generating 5 realistic, completely distinct Google Customer Review options for {business['name']}.
-Rating given: {stars} out of 5 stars ({star_ctx}).
-Random Session Salt: {random_salt}
+    prompt = f"""You are generating 5 realistic, glowing, 5-star Google Customer Review options for {business['name']}.
+Session Salt: {random_salt}
+
+PRODUCT DOMAIN CONSTRAINT:
+{domain_guidance}
 
 Business & Offering Context:
 {context_str}
 
 CRITICAL DIVERSITY INSTRUCTIONS:
 Every review MUST be unique in sentence structure, tone, and angle to optimize the Google Business Profile (GMB) and avoid duplicate review spam:
-- Review 1: Focus on visible results or tangible benefits noticed over time (e.g. after 2-3 weeks).
-- Review 2: Focus on authentic ingredients/materials, texture, natural smell, or craftsmanship.
-- Review 3: Focus on everyday convenience, comfort, ease of use, and gentle application.
-- Review 4: Focus on brand trustworthiness, fast delivery, packaging, or switching from chemical/commercial brands.
-- Review 5: Focus on value for money, gifting/family recommendation, and definitely repurchasing.
+- Review 1 (Results-Oriented): Focus on visible results or tangible benefits noticed after 2-3 weeks of regular use.
+- Review 2 (Ingredients & Aroma): Focus on pure herbal/natural ingredients, pleasant aroma, and absence of harsh chemicals.
+- Review 3 (Daily Usage Comfort): Focus on everyday convenience, comfortable texture (non-greasy, refreshing, gentle).
+- Review 4 (Brand Trust & Delivery): Focus on brand authenticity, neat packaging, prompt dispatch, and switching from commercial brands.
+- Review 5 (Recommendation & Value): Focus on great value for money, gifting or family recommendation, and definitely repurchasing.
 
 RULES:
-- Length: 16 to 34 words per review.
+- Length: 18 to 32 words per review.
 - NEVER start multiple reviews with the same word. Do NOT start reviews with 'Really impressed', 'Great experience', or 'I bought'.
 - Sound 100% human, casual, and authentic — like a verified customer sharing real daily experience.
-{'The review MUST specifically mention and focus on ' + prod_name + '.' if prod_name else 'Reviews should highlight their offerings naturally.'}
+{'The review MUST specifically mention ' + prod_name + '.' if prod_name else 'Reviews should highlight their offerings naturally.'}
 - Return ONLY a valid JSON array of 5 distinct strings. No markdown, no numbering, no code block backticks."""
 
     for model_name in GROQ_MODELS:
@@ -530,84 +586,92 @@ RULES:
 def get_fallback_suggestions(business, stars, product=None):
     """
     Intelligent, diverse, category-aware fallback review generator.
-    Includes 60+ varied templates with dynamic shuffling so no two users get identical reviews.
+    Includes domain-specific pools (Body Care, Face Care, Hair Care, Wellness, Agency, Tech, General)
+    so products never hallucinate unrelated benefits.
     """
+    # Brand Reputation Safeguard: Never generate public negative reviews for Google Maps!
+    if stars < 4:
+        return []
+
     biz_name = business.get('name', 'Business')
     prod_name = product.get('name') if product else None
-    
-    is_ayur = is_ayurvedic_or_herbal(business, product)
-    is_agency = is_recruitment_or_agency(business, product)
+    p = prod_name or 'products'
 
-    if stars >= 4:
-        if is_ayur:
-            p = prod_name or 'products'
-            ayur_pool = [
-                f"Started using the {p} from {biz_name} about 3 weeks ago and hair fall has noticeably reduced. Love that it's 100% natural and gentle on the scalp!",
-                f"Truly authentic Ayurvedic formulation. Unlike chemical alternatives, {biz_name} {p} is gentle and leaves hair feeling much stronger and healthier.",
-                f"Ordered the {p} on a friend's recommendation. The natural herbal ingredients really work — scalp feels nourished and refreshed.",
-                f"Bhilwara finally has a genuine, trustworthy Ayurvedic brand! {biz_name} delivered the {p} promptly in great packaging. Highly impressed.",
-                f"Switched to {biz_name} after trying multiple commercial brands. The {p} is non-greasy, herbal, and genuinely effective. Will definitely restock.",
-                f"Very pleased with the visible results from {p}. You can tell it is crafted from pure Ayurvedic herbs without harsh artificial silicones.",
-                f"No harsh chemicals, no artificial fragrance — just honest herbal care. {biz_name} has definitely won my trust with this {p}.",
-                f"Gifted the {p} from {biz_name} to my mother and she noticed positive results within a month. Excellent quality and pure formulation.",
-                f"The herbal aroma and soothing feel of {biz_name}'s {p} is amazing. Noticeable difference in hair texture and reduced breakage.",
-                f"Clean, chemical-free, and effective personal care. So glad to support an authentic homegrown brand like {biz_name}!",
-                f"After continuous use of {p}, my scalp irritation is gone and hair density feels improved. 100% recommend to anyone dealing with hairfall.",
-                f"Prompt delivery and leak-proof packaging. The herbal formulation of {p} proves that natural Ayurvedic care works best."
-            ]
-            random.shuffle(ayur_pool)
-            return ayur_pool[:5]
+    domain = classify_product_domain(
+        product.get('name', '') if product else '',
+        product.get('description', '') if product else '',
+        product.get('keywords', '') if product else '',
+        f"{business.get('name', '')} {business.get('category', '')} {business.get('tagline', '')} {business.get('description', '')}"
+    )
 
-        elif is_agency:
-            p = prod_name or 'placement assistance'
-            agency_pool = [
-                f"Got my interview scheduled within 4 days through {biz_name}. Their guidance for {p} was spot on and very professional.",
-                f"Transparent and dependable team at {biz_name}. They helped me land a verified job with great growth opportunities.",
-                f"Highly recommended for anyone looking for reliable jobs in Bhilwara. {biz_name} provided prompt support throughout the process.",
-                f"Very professional recruiters at {biz_name}. Their {p} was smooth and totally transparent from day one.",
-                f"Cleared my interview on the first attempt thanks to {biz_name}. Genuine opportunities and supportive counselors.",
-                f"Unlike other agencies, {biz_name} actually follows up and delivers verified job listings. Extremely grateful for their help!"
-            ]
-            random.shuffle(agency_pool)
-            return agency_pool[:5]
-
-        else:
-            p = f" with {prod_name}" if prod_name else ""
-            p_mention = f" The {prod_name} was exceptional." if prod_name else ""
-            general_pool = [
-                f"Superb experience{p} at {biz_name}! The team was responsive, polite, and delivered exactly what was promised.{p_mention}",
-                f"Quality and professionalism are top notch at {biz_name}. Everything was handled seamlessly{p}.",
-                f"Prompt communication and dependable execution from {biz_name}. Definitely my go-to choice for {prod_name or 'their services'}.",
-                f"Very satisfied with {biz_name}{p}. Trustworthy brand that pays attention to every small customer detail.",
-                f"Delivered on time and exceeded expectations{p}. Would gladly recommend {biz_name} to family and colleagues.",
-                f"High quality, fair pricing, and excellent team support at {biz_name}. Truly a 5-star experience{p}!"
-            ]
-            random.shuffle(general_pool)
-            return general_pool[:5]
-
-    elif stars == 3:
-        p = f" for {prod_name}" if prod_name else ""
-        three_star_pool = [
-            f"Decent overall experience with {biz_name}{p}. Good quality though there is room for faster response times.",
-            f"Average experience{p}. The team at {biz_name} was polite and delivered the basic requirements as promised.",
-            f"{biz_name} provides fair service{p}. Helpful staff, with minor improvements needed in turnaround speed.",
-            f"Satisfactory experience with {biz_name}{p}. Solid potential and honest people, just needs slight process polishing.",
-            f"Mixed experience{p} at {biz_name}. Some aspects were great, while communication could be a little quicker."
+    if domain == 'body_bath':
+        pool = [
+            f"Started using {biz_name}'s {p} in my daily shower routine. Leaves my skin feeling deeply hydrated, refreshed, and soft without any chemical dryness!",
+            f"Truly refreshing natural body care. The botanical herbal fragrance of {biz_name}'s {p} is soothing and feels luxurious on the skin.",
+            f"Finally found an authentic chemical-free cleanser! {biz_name} {p} washes off clean, lathers gently, and keeps skin smooth all day.",
+            f"Switched to {biz_name} for daily body care. The {p} is gentle on sensitive skin and smells divine. Highly recommend this brand!",
+            f"Very pleased with the quality of {p}. No parabens, sulfates, or synthetic perfumes — just pure, refreshing Ayurvedic skin nourishment.",
+            f"Prompt delivery and leak-proof packaging. The herbal formulation of {p} leaves skin refreshed, soft, and naturally glowing.",
+            f"Gifted the {p} from {biz_name} to my family and everyone loves how moisturized and clean their skin feels. Genuine quality!",
+            f"Leaves a subtle herbal aroma and no slippery residue. {biz_name} {p} is worth every rupee for natural, glowing skin."
         ]
-        random.shuffle(three_star_pool)
-        return three_star_pool[:5]
-
+    elif domain == 'skin_face':
+        pool = [
+            f"Been applying {biz_name}'s {p} for 3 weeks and my complexion looks so much clearer and radiant. Absorbs quickly without any stickiness!",
+            f"Authentic herbal formulation that really shows results. {biz_name} {p} calmed my skin redness and gave a natural, healthy glow.",
+            f"Gentle on sensitive skin with a lovely natural aroma. {p} from {biz_name} is so much better than overpriced commercial chemical serums.",
+            f"Very impressed with the visible improvement in skin texture after using {p}. Clean, pure Ayurvedic ingredients that truly work.",
+            f"Leaves my skin feeling deeply nourished and glowing throughout the day. Definitely repurchasing {p} from {biz_name}!",
+            f"Packaging was premium and delivery was super fast. {biz_name}'s {p} has become a permanent staple in my daily skincare regimen.",
+            f"No breakouts, no harsh chemicals. The natural botanicals in {biz_name} {p} made my face feel smooth, hydrated, and radiant."
+        ]
+    elif domain == 'hair':
+        pool = [
+            f"Started using the {p} from {biz_name} about 3 weeks ago and hair fall has noticeably reduced. Love that it's 100% natural and gentle on the scalp!",
+            f"Truly authentic Ayurvedic formulation. Unlike chemical alternatives, {biz_name} {p} is gentle and leaves hair feeling much stronger and healthier.",
+            f"Ordered the {p} on a friend's recommendation. The natural herbal ingredients really work — scalp feels nourished and refreshed.",
+            f"Bhilwara finally has a genuine, trustworthy Ayurvedic brand! {biz_name} delivered the {p} promptly in great packaging. Highly impressed.",
+            f"Switched to {biz_name} after trying multiple commercial brands. The {p} is non-greasy, herbal, and genuinely effective. Will definitely restock.",
+            f"Very pleased with the visible results from {p}. You can tell it is crafted from pure Ayurvedic herbs without harsh artificial silicones.",
+            f"No harsh chemicals, no artificial fragrance — just honest herbal care. {biz_name} has definitely won my trust with this {p}.",
+            f"The herbal aroma and soothing feel of {biz_name}'s {p} is amazing. Noticeable difference in hair texture and reduced breakage."
+        ]
+    elif domain == 'wellness_health':
+        pool = [
+            f"Started taking {p} from {biz_name} daily and feeling much more energetic. Pure Ayurvedic herbs with zero artificial additives.",
+            f"Noticeable improvement in daily wellness since starting {biz_name}'s {p}. Authentic taste and genuine herbal quality.",
+            f"High-grade natural preparation from {biz_name}. Clean, pure, and very effective for daily vitality and digestion.",
+            f"Trustworthy Ayurvedic quality. {biz_name} delivered the {p} fresh and neatly packaged. Highly recommended!"
+        ]
+    elif domain == 'recruitment':
+        pool = [
+            f"Got my interview scheduled within 4 days through {biz_name}. Their guidance for {p} was spot on and very professional.",
+            f"Transparent and dependable team at {biz_name}. They helped me land a verified job with great growth opportunities.",
+            f"Highly recommended for anyone looking for reliable jobs in Bhilwara. {biz_name} provided prompt support throughout the process.",
+            f"Very professional recruiters at {biz_name}. Their {p} was smooth and totally transparent from day one.",
+            f"Cleared my interview on the first attempt thanks to {biz_name}. Genuine opportunities and supportive counselors.",
+            f"Unlike other agencies, {biz_name} actually follows up and delivers verified job listings. Extremely grateful for their help!"
+        ]
+    elif domain == 'tech':
+        pool = [
+            f"Delivered our project ahead of schedule with clean architecture. The team at {biz_name} is proactive, skilled, and reliable.",
+            f"Seamless communication and high technical standards. {biz_name} built exactly what our business needed with {p}.",
+            f"High quality development and dependable support. {biz_name} exceeded all our technical expectations."
+        ]
     else:
-        p = f" regarding {prod_name}" if prod_name else ""
-        low_star_pool = [
-            f"Service{p} at {biz_name} needs improvement. The outcome did not fully match initial commitments.",
-            f"Experienced delays and communication gaps with {biz_name}{p}. Hope management works on speeding up resolution.",
-            f"Not completely satisfied with the experience{p}. Clearer updates from {biz_name} would have helped.",
-            f"Had high expectations for {biz_name}{p}, but the process was slower than expected.",
-            f"Service quality{p} at {biz_name} needs refinement. Sharing honest feedback for improvement."
+        p_str = f" with {prod_name}" if prod_name else ""
+        p_mention = f" The {prod_name} was exceptional." if prod_name else ""
+        pool = [
+            f"Superb experience{p_str} at {biz_name}! The team was responsive, polite, and delivered exactly what was promised.{p_mention}",
+            f"Quality and professionalism are top notch at {biz_name}. Everything was handled seamlessly{p_str}.",
+            f"Prompt communication and dependable execution from {biz_name}. Definitely my go-to choice for {p}.",
+            f"Very satisfied with {biz_name}{p_str}. Trustworthy brand that pays attention to every small customer detail.",
+            f"Delivered on time and exceeded expectations{p_str}. Would gladly recommend {biz_name} to family and colleagues.",
+            f"High quality, fair pricing, and excellent team support at {biz_name}. Truly a 5-star experience{p_str}!"
         ]
-        random.shuffle(low_star_pool)
-        return low_star_pool[:5]
+
+    random.shuffle(pool)
+    return pool[:5]
 
 # ─────────────────────────────────────────
 # STATIC FILES
@@ -701,6 +765,31 @@ def log_review():
             db.commit()
 
     return jsonify({"ok": True, "maps_url": biz['maps_url']})
+
+@app.route("/api/private-feedback", methods=["POST"])
+def private_feedback():
+    """Customer 1-3 star feedback routed privately to management (never posted on Google)"""
+    data = request.json or {}
+    slug = data.get("slug")
+    stars = int(data.get("stars", 1))
+    text = data.get("text", "").strip()
+    contact = data.get("contact", "").strip()
+
+    db = get_db()
+    biz = db.execute("SELECT * FROM businesses WHERE slug=?", (slug,)).fetchone()
+    if not biz:
+        return jsonify({"ok": False, "error": "Business not found"}), 404
+
+    biz = dict(biz)
+    reviewer_title = f"Private Feedback ({contact})" if contact else "Private Feedback"
+    stored_text = f"[INTERNAL RESOLUTION NEEDED] {text}" if text else "[INTERNAL FEEDBACK - Rating only]"
+
+    cur = db.execute(
+        "INSERT INTO reviews (business_id, reviewer, stars, text) VALUES (?,?,?,?)",
+        (biz['id'], reviewer_title, stars, stored_text)
+    )
+    db.commit()
+    return jsonify({"ok": True, "message": "Feedback safely received"})
 
 # ─────────────────────────────────────────
 # AUTH
