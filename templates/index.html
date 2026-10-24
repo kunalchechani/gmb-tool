@@ -2,13 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Kiziee Media — AI Local SEO Google Review Generator & Rating Shield</title>
-<meta name="description" content="Turn happy customers into keyword-rich 5-star Google reviews in 10 seconds. AI product drafting, 1-tap review bridge, and negative rating shield for Google Business Profiles.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Kiziee Media — AI Google Business Profile Review Generator & Local SEO Suite</title>
+<meta name="description" content="Dominate local Google Maps search results. Collect keyword-rich 5-star customer reviews in 10 seconds, intercept negative ratings privately on WhatsApp, and automate AI review responses.">
+<meta name="keywords" content="Google Business Profile review generator, GMB SEO optimization, local SEO ranking software, AI review writer, negative review shield, Google Maps review booster, WhatsApp review shield">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="author" content="Kiziee Media">
+<meta name="theme-color" content="#3A2CCB">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kiziee Media">
+<meta property="og:title" content="Kiziee Media — AI Google Business Profile Review Generator & Local SEO Suite">
+<meta property="og:description" content="Turn happy customers into keyword-rich 5-star Google reviews in 10 seconds. Deflect negative feedback to private WhatsApp chat and climb Google Maps local rankings.">
+<meta property="og:image" content="/static/kiziee_logo.png">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kiziee Media — AI Google Business Profile Review Generator">
+<meta name="twitter:description" content="Turn every customer into a keyword-rich 5-star Google review. Automated negative review shield and AI replies for Google Business Profiles.">
+<meta name="twitter:image" content="/static/kiziee_logo.png">
+
 <link rel="icon" type="image/png" href="/static/kiziee_logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Structured JSON-LD Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Kiziee Media AI Review Accelerator",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All Web Platforms, iOS, Android",
+      "description": "AI-powered Google Business Profile review generator, negative feedback shield, and local SEO accelerator.",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "1280",
+        "bestRating": "5"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Kiziee Media",
+      "logo": "/static/kiziee_logo.png",
+      "description": "Advanced AI Review & Local SEO Optimization Platform"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does product-targeted review generation improve Google Maps ranking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google's local search algorithm indexes keywords inside customer reviews. When reviews mention your exact products, menu dishes, or medical services, your profile triggers for high-intent local 'near me' queries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the negative review shield protect business ratings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When a customer selects 1, 2, or 3 stars, the system diverts them directly to your private WhatsApp feedback channel, giving you the opportunity to resolve complaints privately before they harm your public score."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this platform compliant with Google's Review Guidelines?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, 100%. All reviews are submitted directly by verified customers using their own Google accounts on the official Google Maps platform. We provide an assistive drafting bridge and clipboard automation that reduces friction without posting fake or automated reviews."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <style>
 :root {
   --primary: #3A2CCB;
@@ -20,11 +102,8 @@
   --bg-page: #F8FAFC;
   --bg-surface: #FFFFFF;
   --bg-subtle: #F1F5F9;
-  --bg-card: #FFFFFF;
-  
   --border-subtle: #E2E8F0;
   --border-strong: #CBD5E1;
-  --border-focus: #3A2CCB;
   
   --text-main: #090D1A;
   --text-secondary: #475569;
@@ -35,22 +114,20 @@
   --emerald-bg: #ECFDF5;
   --emerald-border: #A7F3D0;
   
-  --amber: #D97706;
-  --amber-bg: #FEF3C7;
-  
+  --gold: #F59E0B;
   --rose: #E11D48;
   --rose-bg: #FFE4E6;
   --rose-border: #FECDD3;
   
   --radius-xs: 8px;
   --radius-sm: 12px;
-  --radius-md: 16px;
+  --radius-md: 18px;
   --radius-lg: 24px;
   --radius-full: 9999px;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
-  --shadow-hover: 0 20px 35px -5px rgba(15, 23, 42, 0.1), 0 10px 15px -5px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 20px 40px -10px rgba(15, 23, 42, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
 }
 
 * {
@@ -71,9 +148,9 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  width: 100%;
 }
 
-/* Container */
 .container {
   width: 100%;
   max-width: 1240px;
@@ -85,19 +162,18 @@ body {
   .container { padding: 0 16px; }
 }
 
-/* Typography Helpers */
 h1, h2, h3, h4 {
   color: var(--text-main);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.18;
 }
 
-/* Header / Navigation */
+/* Header & Mobile Drawer Navigation */
 .header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 60;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -164,7 +240,7 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-full);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .brand-pill { display: none; }
 }
 
@@ -194,7 +270,85 @@ h1, h2, h3, h4 {
 .header-actions {
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+
+.hamburger-btn {
+  display: none;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+@media (max-width: 860px) {
+  .hamburger-btn { display: inline-flex; }
+  .header-actions .btn-ghost { display: none; }
+}
+
+/* Mobile Nav Drawer */
+.mobile-drawer {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 55;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-drawer.open {
+  display: block;
+  opacity: 1;
+}
+
+.drawer-panel {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 24px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+  transform: translateY(-20px);
+  transition: transform 0.25s ease;
+}
+
+.mobile-drawer.open .drawer-panel {
+  transform: translateY(0);
+}
+
+.drawer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
+}
+
+.drawer-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 8px 0;
+  display: block;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 /* Button System */
@@ -211,6 +365,7 @@ h1, h2, h3, h4 {
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .btn-ghost {
@@ -255,18 +410,43 @@ h1, h2, h3, h4 {
   border-radius: 10px;
 }
 
-/* Hero Section */
+@media (max-width: 600px) {
+  .btn-lg {
+    width: 100%;
+    padding: 14px 18px;
+  }
+}
+
+/* Hero Section with Ambient Animated Glow */
 .hero {
   position: relative;
   padding: 72px 0 60px;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 0%, rgba(91, 79, 217, 0.08) 0%, transparent 60%);
+}
+
+.hero-blob-1 {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(91, 79, 217, 0.12) 0%, rgba(58, 44, 203, 0.04) 50%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+  animation: ambientPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% { transform: translateX(-50%) scale(0.95); opacity: 0.7; }
+  100% { transform: translateX(-50%) scale(1.08); opacity: 1; }
 }
 
 .hero-content {
   text-align: center;
-  max-width: 900px;
+  max-width: 940px;
   margin: 0 auto;
+  position: relative;
 }
 
 .hero-badge-wrap {
@@ -312,9 +492,9 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-  font-size: 54px;
+  font-size: clamp(32px, 5.8vw, 56px);
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.15;
   margin-bottom: 20px;
   letter-spacing: -0.035em;
   color: var(--text-main);
@@ -327,12 +507,11 @@ h1, h2, h3, h4 {
 }
 
 .hero-desc {
-  font-size: 18px;
+  font-size: clamp(15.5px, 2.2vw, 18px);
   color: var(--text-secondary);
   line-height: 1.6;
   max-width: 720px;
   margin: 0 auto 34px;
-  font-weight: 400;
 }
 
 .hero-ctas {
@@ -340,8 +519,16 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-ctas .btn { width: 100%; }
 }
 
 .hero-subtext {
@@ -360,15 +547,9 @@ h1, h2, h3, h4 {
   gap: 6px;
 }
 
-@media (max-width: 768px) {
-  .hero { padding: 48px 0 40px; }
-  .hero-title { font-size: 36px; }
-  .hero-desc { font-size: 16px; }
-}
-
-/* Stat Proof Counter Bar */
+/* Proof Counter Bar */
 .proof-bar {
-  margin-top: 56px;
+  margin-top: 52px;
   background: #FFFFFF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -422,125 +603,159 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Product Simulator / Interactive Mockup */
-.mockup-section {
+/* Interactive Simulator Showcase (Universal, Multi-Industry) */
+.simulator-section {
   padding: 40px 0 80px;
 }
 
-.mockup-card-outer {
+.simulator-card {
   background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 28px;
   box-shadow: var(--shadow-hover);
   position: relative;
   overflow: hidden;
 }
 
-.mockup-header-bar {
+@media (max-width: 640px) {
+  .simulator-card { padding: 18px 14px; }
+}
+
+.sim-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 16px;
+  padding-bottom: 18px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.mockup-dots {
+.sim-tabs-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sim-industry-tabs {
   display: flex;
   gap: 6px;
+  background: var(--bg-subtle);
+  border-radius: 10px;
+  padding: 4px;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
-.mockup-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #CBD5E1;
-}
-
-.mockup-badge {
+.sim-tab-btn {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
-  color: var(--primary);
-  background: var(--primary-soft);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
 }
 
-.mockup-grid {
+.sim-tab-btn.active {
+  background: #FFFFFF;
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.sim-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 32px;
   align-items: center;
 }
 
-@media (max-width: 900px) {
-  .mockup-grid { grid-template-columns: 1fr; }
+@media (max-width: 940px) {
+  .sim-grid { grid-template-columns: 1fr; }
 }
 
-.mockup-phone-ui {
+/* Phone UI Container */
+.phone-frame {
   background: #FFFFFF;
-  border: 1px solid var(--border-strong);
-  border-radius: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 20px;
   padding: 22px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  position: relative;
 }
 
-.phone-biz-header {
+.phone-header-row {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.phone-biz-avatar {
+.phone-avatar-box {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--primary-soft);
+  color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.phone-biz-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.phone-biz-meta h4 {
+.phone-biz-name {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
+  color: var(--text-main);
 }
 
-.phone-biz-meta p {
-  font-size: 12px;
+.phone-biz-sub {
+  font-size: 11.5px;
   color: var(--text-secondary);
 }
 
-.phone-rating-strip {
+.interactive-stars-box {
+  background: var(--bg-subtle);
+  border-radius: 12px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-subtle);
-  border-radius: 10px;
-  padding: 10px 14px;
   margin-bottom: 16px;
 }
 
-.phone-stars {
+.stars-selector {
   display: flex;
-  gap: 4px;
-  color: #F59E0B;
+  gap: 6px;
+  cursor: pointer;
 }
 
-.phone-prod-scroll {
+.star-interactive {
+  width: 22px;
+  height: 22px;
+  color: var(--gold);
+  fill: currentColor;
+  transition: transform 0.15s;
+}
+
+.star-interactive:hover {
+  transform: scale(1.15);
+}
+
+.star-unfilled {
+  color: #CBD5E1;
+  fill: currentColor;
+}
+
+.phone-product-chips {
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -548,7 +763,7 @@ h1, h2, h3, h4 {
   margin-bottom: 16px;
 }
 
-.phone-pill {
+.product-chip {
   padding: 6px 12px;
   background: #FFFFFF;
   border: 1px solid var(--border-strong);
@@ -557,110 +772,155 @@ h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
 }
 
-.phone-pill.active {
+.product-chip.active {
   background: var(--primary);
   border-color: var(--primary);
   color: #FFFFFF;
 }
 
-.phone-review-bubble {
+/* Dynamic Review Bubble */
+.review-preview-bubble {
   background: #F8FAFC;
   border: 1.5px solid #E2E8F0;
   border-radius: 12px;
-  padding: 14px;
-  font-size: 13px;
+  padding: 16px;
+  font-size: 13.5px;
   color: var(--text-main);
-  line-height: 1.55;
+  line-height: 1.6;
   margin-bottom: 16px;
+  min-height: 110px;
+  transition: all 0.2s;
 }
 
-.phone-keyword-tags {
+.review-tags {
   display: flex;
   gap: 6px;
   margin-top: 10px;
   flex-wrap: wrap;
 }
 
-.phone-keyword-tag {
-  font-size: 10.5px;
-  font-weight: 600;
+.review-tag {
+  font-size: 11px;
+  font-weight: 700;
   color: var(--primary);
   background: var(--primary-soft);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
-.phone-cta-btn {
+/* Shield Mode Alert */
+.shield-preview-box {
+  background: #FFFBEB;
+  border: 1.5px solid #FCD34D;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.shield-preview-box.active {
+  display: block;
+}
+
+.shield-preview-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #B45309;
+  margin-bottom: 6px;
+}
+
+.shield-preview-text {
+  font-size: 12px;
+  color: #78350F;
+  line-height: 1.5;
+}
+
+.bridge-action-btn {
   width: 100%;
-  padding: 12px;
+  padding: 12px 16px;
   background: var(--primary);
   color: #FFFFFF;
   font-size: 13.5px;
   font-weight: 700;
   border-radius: 10px;
   border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   box-shadow: 0 4px 12px var(--primary-glow);
+  transition: transform 0.15s;
 }
 
-.mockup-pitch h3 {
-  font-size: 30px;
+.bridge-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Explanatory Pitch Beside Simulator */
+.sim-pitch h3 {
+  font-size: clamp(24px, 3.5vw, 32px);
   margin-bottom: 14px;
   line-height: 1.25;
 }
 
-.mockup-pitch p {
+.sim-pitch p {
   font-size: 15px;
   color: var(--text-secondary);
   margin-bottom: 24px;
 }
 
-.mockup-perks {
+.sim-perks {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
-.mockup-perk {
+.sim-perk {
   display: flex;
   align-items: flex-start;
   gap: 12px;
 }
 
-.mockup-perk-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.sim-perk-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   background: var(--emerald-bg);
   color: var(--emerald);
   display: flex;
   align-items: center;
   justify-content: center;
-  shrink: 0;
+  flex-shrink: 0;
   margin-top: 2px;
 }
 
-.mockup-perk-text h5 {
+.sim-perk-title {
   font-size: 14.5px;
   font-weight: 700;
   margin-bottom: 2px;
 }
 
-.mockup-perk-text p {
+.sim-perk-desc {
   font-size: 13px;
   color: var(--text-secondary);
-  margin: 0;
 }
 
-/* Before vs After Comparison (Revgro Inspired) */
+/* Before vs After Impact Matrix */
 .section {
   padding: 80px 0;
+}
+
+@media (max-width: 640px) {
+  .section { padding: 50px 0; }
 }
 
 .section-alt {
@@ -671,7 +931,7 @@ h1, h2, h3, h4 {
 
 .section-head {
   text-align: center;
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto 52px;
 }
 
@@ -686,9 +946,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title {
-  font-size: 38px;
-  font-weight: 800;
-  line-height: 1.2;
+  font-size: clamp(26px, 4vw, 38px);
   margin-bottom: 14px;
 }
 
@@ -697,39 +955,34 @@ h1, h2, h3, h4 {
   color: var(--text-secondary);
 }
 
-@media (max-width: 768px) {
-  .section-title { font-size: 28px; }
-  .section-sub { font-size: 14.5px; }
-}
-
-.comparison-grid {
+.comp-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
 @media (max-width: 800px) {
-  .comparison-grid { grid-template-columns: 1fr; }
+  .comp-grid { grid-template-columns: 1fr; }
 }
 
 .comp-card {
   border-radius: var(--radius-md);
-  padding: 32px;
+  padding: 32px 28px;
   box-shadow: var(--shadow-sm);
 }
 
-.comp-card-bad {
+.comp-bad {
   background: #FFFBFB;
   border: 1.5px solid var(--rose-border);
 }
 
-.comp-card-good {
+.comp-good {
   background: #F0FDF4;
   border: 1.5px solid var(--emerald-border);
   box-shadow: 0 10px 30px rgba(5, 150, 105, 0.06);
 }
 
-.comp-header {
+.comp-head-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -738,7 +991,7 @@ h1, h2, h3, h4 {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.comp-title {
+.comp-label {
   font-size: 18px;
   font-weight: 800;
   display: flex;
@@ -764,7 +1017,7 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-full);
 }
 
-.comp-list {
+.comp-items {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -779,48 +1032,34 @@ h1, h2, h3, h4 {
   line-height: 1.5;
 }
 
-.comp-item-bad {
-  color: #881337;
+.comp-item-bad { color: #881337; }
+.comp-item-good { color: #064E3B; }
+
+.comp-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.comp-item-good {
-  color: #064E3B;
-}
-
-.comp-icon-bad {
-  width: 20px;
-  height: 20px;
-  color: var(--rose);
-  shrink: 0;
-  margin-top: 1px;
-}
-
-.comp-icon-good {
-  width: 20px;
-  height: 20px;
-  color: var(--emerald);
-  shrink: 0;
-  margin-top: 1px;
-}
-
-/* Bento Features Grid */
-.bento-grid {
+/* Core Platform Bento Features */
+.features-bento {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
 @media (max-width: 960px) {
-  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-bento { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 600px) {
-  .bento-grid { grid-template-columns: 1fr; }
+@media (max-width: 620px) {
+  .features-bento { grid-template-columns: 1fr; }
 }
 
 .bento-card {
   background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 30px 26px;
   box-shadow: var(--shadow-sm);
@@ -836,7 +1075,7 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-hover);
 }
 
-.bento-icon-wrap {
+.bento-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -849,56 +1088,54 @@ h1, h2, h3, h4 {
   transition: transform 0.2s;
 }
 
-.bento-card:hover .bento-icon-wrap {
+.bento-card:hover .bento-icon {
   transform: scale(1.08);
 }
 
-.bento-title {
+.bento-heading {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 10px;
 }
 
-.bento-desc {
+.bento-text {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-.bento-tag {
+.bento-benefit {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   margin-top: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary);
 }
 
 /* 3-Step Flow */
-.flow-grid {
+.flow-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
-  position: relative;
 }
 
 @media (max-width: 860px) {
-  .flow-grid { grid-template-columns: 1fr; }
+  .flow-cards { grid-template-columns: 1fr; }
 }
 
-.flow-step-card {
+.flow-box {
   background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 32px 26px;
-  position: relative;
   box-shadow: var(--shadow-sm);
 }
 
-.flow-number-badge {
-  width: 36px;
-  height: 36px;
+.flow-step-num {
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   background: var(--primary);
   color: #FFFFFF;
@@ -911,16 +1148,16 @@ h1, h2, h3, h4 {
   box-shadow: 0 4px 12px var(--primary-glow);
 }
 
-.flow-step-title {
+.flow-box-title {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 8px;
 }
 
-.flow-step-desc {
+.flow-box-desc {
   font-size: 13.5px;
   color: var(--text-secondary);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 /* Industry Solutions */
@@ -938,20 +1175,20 @@ h1, h2, h3, h4 {
   .solutions-grid { grid-template-columns: 1fr; }
 }
 
-.sol-card {
+.solution-card {
   background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 24px;
   transition: all 0.2s ease;
 }
 
-.sol-card:hover {
+.solution-card:hover {
   border-color: var(--primary-light);
   transform: translateY(-2px);
 }
 
-.sol-icon {
+.solution-icon-box {
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -963,20 +1200,20 @@ h1, h2, h3, h4 {
   margin-bottom: 14px;
 }
 
-.sol-title {
+.solution-title {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
-.sol-desc {
+.solution-desc {
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.5;
 }
 
-/* FAQ Section */
-.faq-wrap {
+/* FAQ Accordion */
+.faq-list {
   max-width: 820px;
   margin: 0 auto;
   display: flex;
@@ -984,19 +1221,19 @@ h1, h2, h3, h4 {
   gap: 14px;
 }
 
-.faq-item {
+.faq-row {
   background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   overflow: hidden;
   transition: border-color 0.15s;
 }
 
-.faq-item:hover {
+.faq-row:hover {
   border-color: var(--border-strong);
 }
 
-.faq-btn {
+.faq-header {
   width: 100%;
   padding: 20px 24px;
   background: transparent;
@@ -1012,20 +1249,20 @@ h1, h2, h3, h4 {
   color: var(--text-main);
 }
 
-.faq-icon {
+.faq-arrow {
   width: 20px;
   height: 20px;
   color: var(--text-muted);
   transition: transform 0.2s ease;
-  shrink: 0;
+  flex-shrink: 0;
 }
 
-.faq-item.open .faq-icon {
+.faq-row.open .faq-arrow {
   transform: rotate(180deg);
   color: var(--primary);
 }
 
-.faq-content {
+.faq-body {
   padding: 0 24px 20px;
   font-size: 14px;
   color: var(--text-secondary);
@@ -1033,12 +1270,12 @@ h1, h2, h3, h4 {
   display: none;
 }
 
-.faq-item.open .faq-content {
+.faq-row.open .faq-body {
   display: block;
 }
 
-/* CTA Banner */
-.cta-box {
+/* High-Impact CTA Box */
+.cta-banner {
   background: linear-gradient(135deg, #090D1A 0%, #1E1B4B 100%);
   border-radius: var(--radius-lg);
   padding: 64px 40px;
@@ -1049,7 +1286,11 @@ h1, h2, h3, h4 {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.cta-box::before {
+@media (max-width: 600px) {
+  .cta-banner { padding: 40px 20px; }
+}
+
+.cta-banner::before {
   content: '';
   position: absolute;
   top: -50%;
@@ -1061,29 +1302,37 @@ h1, h2, h3, h4 {
   pointer-events: none;
 }
 
-.cta-title {
-  font-size: 40px;
+.cta-heading {
+  font-size: clamp(26px, 4.5vw, 40px);
   color: #FFFFFF;
   margin-bottom: 16px;
   font-weight: 800;
   position: relative;
 }
 
-.cta-desc {
-  font-size: 16.5px;
+.cta-text {
+  font-size: 16px;
   color: #CBD5E1;
   max-width: 640px;
   margin: 0 auto 32px;
   position: relative;
 }
 
-.cta-actions {
+.cta-btn-group {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
   position: relative;
   flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .cta-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .cta-btn-group .btn { width: 100%; }
 }
 
 .btn-white {
@@ -1117,7 +1366,7 @@ h1, h2, h3, h4 {
   margin-top: 80px;
 }
 
-.footer-top {
+.footer-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1127,13 +1376,13 @@ h1, h2, h3, h4 {
   gap: 24px;
 }
 
-.footer-brand {
+.footer-brand-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.footer-logo {
+.footer-logo-img {
   width: 38px;
   height: 38px;
   border-radius: 8px;
@@ -1142,32 +1391,32 @@ h1, h2, h3, h4 {
   object-fit: contain;
 }
 
-.footer-brand-title {
+.footer-brand-name {
   font-size: 17px;
   font-weight: 800;
   color: var(--text-main);
 }
 
-.footer-links {
+.footer-nav {
   display: flex;
   align-items: center;
   gap: 28px;
   flex-wrap: wrap;
 }
 
-.footer-link {
+.footer-nav a {
   text-decoration: none;
   font-size: 13.5px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
   transition: color 0.15s;
 }
 
-.footer-link:hover {
+.footer-nav a:hover {
   color: var(--primary);
 }
 
-.footer-bottom {
+.footer-bottom-row {
   padding-top: 28px;
   display: flex;
   align-items: center;
@@ -1181,23 +1430,24 @@ h1, h2, h3, h4 {
 </head>
 <body>
 
-<!-- Navigation Bar -->
+<!-- Header Navigation -->
 <header class="header">
   <div class="container header-inner">
     <a href="/" class="brand-link">
       <div class="brand-logo-box">
-        <img src="/static/kiziee_logo.png" alt="Kiziee Media" class="brand-logo-img">
+        <img src="/static/kiziee_logo.png" alt="Kiziee Media Logo" class="brand-logo-img">
       </div>
       <div>
         <span class="brand-name">Kiziee<span>.</span>ai</span>
-        <span class="brand-pill">AI Review Accelerator</span>
+        <span class="brand-pill">Local SEO Growth Suite</span>
       </div>
     </a>
 
-    <nav>
+    <nav aria-label="Main Navigation">
       <ul class="nav-menu">
+        <li class="nav-item"><a href="#simulator">Live Simulator</a></li>
+        <li class="nav-item"><a href="#comparison">Why Kiziee</a></li>
         <li class="nav-item"><a href="#features">Features</a></li>
-        <li class="nav-item"><a href="#comparison">Before vs After</a></li>
         <li class="nav-item"><a href="#how-it-works">How It Works</a></li>
         <li class="nav-item"><a href="#solutions">Industries</a></li>
         <li class="nav-item"><a href="#faq">FAQ</a></li>
@@ -1205,45 +1455,64 @@ h1, h2, h3, h4 {
     </nav>
 
     <div class="header-actions">
-      <a href="/review/gir-natural" class="btn btn-secondary" target="_blank">
-        <span>Live Review Demo</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
-      </a>
       <a href="/login" class="btn btn-ghost">Sign In</a>
       <a href="/register" class="btn btn-primary">
         <span>Get Started</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
       </a>
+      <button class="hamburger-btn" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+      </button>
     </div>
   </div>
 </header>
 
-<!-- Hero Section -->
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-drawer" id="mobileDrawer" onclick="toggleMobileDrawer()">
+  <div class="drawer-panel" onclick="event.stopPropagation()">
+    <ul class="drawer-links">
+      <li><a href="#simulator" class="drawer-link" onclick="toggleMobileDrawer()">Live Simulator</a></li>
+      <li><a href="#comparison" class="drawer-link" onclick="toggleMobileDrawer()">Why Kiziee</a></li>
+      <li><a href="#features" class="drawer-link" onclick="toggleMobileDrawer()">Platform Features</a></li>
+      <li><a href="#how-it-works" class="drawer-link" onclick="toggleMobileDrawer()">How It Works</a></li>
+      <li><a href="#solutions" class="drawer-link" onclick="toggleMobileDrawer()">Supported Industries</a></li>
+      <li><a href="#faq" class="drawer-link" onclick="toggleMobileDrawer()">FAQ</a></li>
+    </ul>
+    <div class="drawer-actions">
+      <a href="/register" class="btn btn-primary btn-lg" style="width:100%">Claim Free Business Link</a>
+      <a href="/login" class="btn btn-secondary" style="width:100%">Sign In to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Hero Section -->
+<main>
 <section class="hero">
+  <div class="hero-blob-1"></div>
   <div class="container hero-content">
     
     <div class="hero-badge-wrap">
       <div class="pulse-dot"></div>
-      <span class="hero-badge-text">Next-Gen Google Business Profile Growth Suite</span>
+      <span class="hero-badge-text">Next-Generation Local SEO Review Accelerator</span>
     </div>
 
     <h1 class="hero-title">
-      Turn Every Customer Into a <br>
-      <span class="gradient-text">5-Star Google Review</span> in 10 Seconds
+      Rank #1 on Google Maps with <br>
+      <span class="gradient-text">AI-Driven Customer Reviews</span>
     </h1>
 
     <p class="hero-desc">
-      Empower happy customers to post personalized, product-targeted Google reviews in 2 taps. Intercept unhappy ratings privately on WhatsApp before they harm your public score.
+      Empower happy customers to post authentic, keyword-rich Google reviews in 10 seconds. Automatically deflect 1–3 star dissatisfaction to your private WhatsApp before public ratings drop.
     </p>
 
     <div class="hero-ctas">
       <a href="/register" class="btn btn-primary btn-lg">
-        <span>Claim Your Business Link Free</span>
+        <span>Claim Your Free Business Link</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
       </a>
-      <a href="/review/gir-natural" class="btn btn-secondary btn-lg" target="_blank">
+      <a href="#simulator" class="btn btn-secondary btn-lg">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
-        <span>Test Interactive Demo</span>
+        <span>Try Interactive Simulator</span>
       </a>
     </div>
 
@@ -1258,129 +1527,144 @@ h1, h2, h3, h4 {
       </div>
       <div class="hero-subtext-item">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
-        <span>Setup in 2 minutes</span>
+        <span>2-minute instant onboarding</span>
       </div>
     </div>
 
-    <!-- Live Proof Counter Bar -->
+    <!-- Live Performance Metrics -->
     <div class="proof-bar">
       <div class="proof-item">
         <div class="proof-number">+380%</div>
-        <div class="proof-label">Review Volume Growth</div>
+        <div class="proof-label">Review Velocity Growth</div>
       </div>
       <div class="proof-item">
-        <div class="proof-number"><span>4.9</span>★</div>
-        <div class="proof-label">Average Public Rating</div>
+        <div class="proof-number"><span>4.9</span>
+          <svg style="width:20px;height:20px;fill:var(--gold);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <div class="proof-label">Protected Average Rating</div>
       </div>
       <div class="proof-item">
         <div class="proof-number">100%</div>
-        <div class="proof-label">Negative Feedback Shielded</div>
+        <div class="proof-label">Negative Feedback Intercepted</div>
       </div>
       <div class="proof-item">
         <div class="proof-number">10<span>s</span></div>
-        <div class="proof-label">Frictionless Review Speed</div>
+        <div class="proof-label">Zero-Friction Review Speed</div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- Interactive Live Review Flow Showcase -->
-<section class="mockup-section">
+<!-- Universal Interactive Simulator (Multi-Industry, Dynamic) -->
+<section class="simulator-section" id="simulator">
   <div class="container">
-    <div class="mockup-card-outer">
-      <div class="mockup-header-bar">
-        <div class="mockup-dots">
-          <div class="mockup-dot"></div>
-          <div class="mockup-dot"></div>
-          <div class="mockup-dot"></div>
-        </div>
-        <div class="mockup-badge">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-          <span>Live Customer Experience Simulation</span>
+    <div class="simulator-card">
+      <div class="sim-header">
+        <div class="sim-tabs-title">Test Your Industry Preset:</div>
+        <div class="sim-industry-tabs" role="tablist">
+          <button class="sim-tab-btn active" onclick="selectIndustry('dental')">Healthcare & Dental</button>
+          <button class="sim-tab-btn" onclick="selectIndustry('ayurveda')">Ayurvedic & Wellness</button>
+          <button class="sim-tab-btn" onclick="selectIndustry('dining')">Restaurant & Cafe</button>
+          <button class="sim-tab-btn" onclick="selectIndustry('staffing')">Staffing & Recruitment</button>
         </div>
       </div>
 
-      <div class="mockup-grid">
-        <!-- Interactive UI representation -->
-        <div class="mockup-phone-ui">
-          <div class="phone-biz-header">
-            <div class="phone-biz-avatar">
-              <img src="/static/kiziee_logo.png" alt="Store">
+      <div class="sim-grid">
+        <!-- Interactive Smartphone Simulator -->
+        <div class="phone-frame">
+          <div class="phone-header-row">
+            <div class="phone-avatar-box" id="simAvatar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
             </div>
-            <div class="phone-biz-meta">
-              <h4>Gir Natural Organic Store</h4>
-              <p>Authentic Ayurvedic Wellness & Products</p>
-            </div>
-          </div>
-
-          <div class="phone-rating-strip">
-            <span style="font-size:12.5px; font-weight:600; color:var(--text-secondary)">Rate your visit</span>
-            <div class="phone-stars">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <div>
+              <div class="phone-biz-name" id="simBizName">Apex Dental Care & Implant Clinic</div>
+              <div class="phone-biz-sub" id="simBizSub">Certified Multi-Specialty Dental Care</div>
             </div>
           </div>
 
-          <div style="font-size:11.5px; font-weight:600; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">Selected Product:</div>
-          <div class="phone-prod-scroll">
-            <div class="phone-pill active">Daant Detox Charcoal Manjan</div>
-            <div class="phone-pill">Herbal Hair Fall Kit</div>
-            <div class="phone-pill">Kumkumadi Face Glow</div>
-          </div>
-
-          <div class="phone-review-bubble">
-            “Been using Gir Natural’s Daant Detox Charcoal Manjan for 3 weeks. Leaves my teeth feeling super clean, thoroughly removes tea stains, and breath stays fresh all morning. Pure Ayurvedic formulation with zero chemicals!”
-            <div class="phone-keyword-tags">
-              <span class="phone-keyword-tag">#DaantDetox</span>
-              <span class="phone-keyword-tag">#EnamelSafe</span>
-              <span class="phone-keyword-tag">#TeethWhitening</span>
+          <div class="interactive-stars-box">
+            <span style="font-size:12.5px; font-weight:700; color:var(--text-secondary);">Select Rating (Tap to test):</span>
+            <div class="stars-selector" id="starGroup">
+              <svg class="star-interactive" onclick="setSimStars(1)" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg class="star-interactive" onclick="setSimStars(2)" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg class="star-interactive" onclick="setSimStars(3)" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg class="star-interactive" onclick="setSimStars(4)" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg class="star-interactive" onclick="setSimStars(5)" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
             </div>
           </div>
 
-          <button class="phone-cta-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-            <span>Copy & Open Google Maps</span>
-          </button>
+          <div id="simProductSection">
+            <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">Purchased Offering / Product:</div>
+            <div class="phone-product-chips" id="simProductChips">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="review-preview-bubble" id="simReviewText">
+              <!-- Rendered via JS -->
+            </div>
+
+            <button class="bridge-action-btn" onclick="simulateCopyBridge()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+              <span id="bridgeBtnText">Copy & Open Google Maps</span>
+            </button>
+          </div>
+
+          <!-- Negative Review Shield Demonstration -->
+          <div class="shield-preview-box" id="simShieldBox">
+            <div class="shield-preview-head">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Automated Negative Review Shield Activated!</span>
+            </div>
+            <p class="shield-preview-text">
+              Notice: The customer selected a low rating (1-3 stars). Instead of sending them to Google Maps where they could damage your public score, the system catches them privately with a direct management WhatsApp link.
+            </p>
+            <div style="margin-top:12px; background:#FFFFFF; border:1px solid #FCD34D; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400E;">
+              "We're truly sorry your experience didn't meet expectations. Please chat directly with our clinic director on WhatsApp so we can make this right immediately."
+            </div>
+            <button class="bridge-action-btn" style="background:#059669; margin-top:12px;" onclick="alert('Simulation: This opens a direct WhatsApp chat with the business owner, preventing public 1-star reviews on Google!')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              <span>Connect Privately on WhatsApp</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Explanatory Pitch -->
-        <div class="mockup-pitch">
-          <span class="section-tag">Zero Customer Friction</span>
-          <h3>How 10 Seconds Changes Your Local Google Maps Ranking</h3>
+        <!-- Explanatory Pitch Beside Simulator -->
+        <div class="sim-pitch">
+          <span class="section-tag">Frictionless Experience</span>
+          <h3>How 10 Seconds Drives High-Intent Google Search Customers</h3>
           <p>
-            When customers type generic reviews like <em>“great service”</em>, Google’s local algorithm learns nothing about what you sell. Kiziee AI automatically injects your actual products and high-intent local search keywords.
+            Generic reviews like <em>“great service”</em> tell Google nothing about what you actually sell. Kiziee AI automatically injects your specific products and local high-volume search keywords.
           </p>
 
-          <ul class="mockup-perks">
-            <li class="mockup-perk">
-              <div class="mockup-perk-icon">
+          <ul class="sim-perks">
+            <li class="sim-perk">
+              <div class="sim-perk-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
               </div>
-              <div class="mockup-perk-text">
-                <h5>Product-Driven Search Ranking</h5>
-                <p>When someone searches <em>“best tooth powder near me”</em>, your listing pops into the Google 3-Pack because reviews talk about your actual inventory.</p>
+              <div>
+                <div class="sim-perk-title">Product-Keyword Search Elevation</div>
+                <div class="sim-perk-desc">When local buyers search <em>“laser teeth whitening near me”</em> or <em>“organic charcoal tooth powder”</em>, Google’s algorithm elevates your profile because your reviews mention that exact item.</div>
               </div>
             </li>
-            <li class="mockup-perk">
-              <div class="mockup-perk-icon">
+
+            <li class="sim-perk">
+              <div class="sim-perk-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
               </div>
-              <div class="mockup-perk-text">
-                <h5>1-Tap Automated Clipboard Bridge</h5>
-                <p>Copies the review instantly to the customer’s clipboard and directs them straight to Google’s rating dialog.</p>
+              <div>
+                <div class="sim-perk-title">1-Tap Clipboard Automation</div>
+                <div class="sim-perk-desc">Copies the chosen review text instantly to the clipboard and directly opens the Google Maps review popup with 5 stars pre-checked.</div>
               </div>
             </li>
-            <li class="mockup-perk">
-              <div class="mockup-perk-icon">
+
+            <li class="sim-perk">
+              <div class="sim-perk-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
               </div>
-              <div class="mockup-perk-text">
-                <h5>Unhappy Customer Interception</h5>
-                <p>1, 2, and 3-star ratings open your private WhatsApp channel instead of posting public damage on Google.</p>
+              <div>
+                <div class="sim-perk-title">Proactive Negative Rating Interceptor</div>
+                <div class="sim-perk-desc">Tap 1 or 2 stars above! Dissatisfied feedback is captured privately on WhatsApp, giving management the chance to resolve issues before a bad review goes public.</div>
               </div>
             </li>
           </ul>
@@ -1390,72 +1674,72 @@ h1, h2, h3, h4 {
   </div>
 </section>
 
-<!-- Before vs After Comparison (Revgro Inspired) -->
+<!-- Before vs After Comparison Matrix -->
 <section class="section section-alt" id="comparison">
   <div class="container">
     <div class="section-head">
-      <span class="section-tag">Direct Impact Comparison</span>
-      <h2 class="section-title">The Difference is Night and Day</h2>
-      <p class="section-sub">See how traditional review collection compares to the Kiziee AI system.</p>
+      <span class="section-tag">Performance Comparison</span>
+      <h2 class="section-title">The Real Cost of Traditional Review Methods</h2>
+      <p class="section-sub">Why standard Google Maps review links fail to rank your business locally.</p>
     </div>
 
-    <div class="comparison-grid">
-      <!-- The Old Way -->
-      <div class="comp-card comp-card-bad">
-        <div class="comp-header">
-          <div class="comp-title">
+    <div class="comp-grid">
+      <!-- Old Way -->
+      <div class="comp-card comp-bad">
+        <div class="comp-head-row">
+          <div class="comp-label">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
             <span>The Old Way</span>
           </div>
           <span class="comp-badge-bad">High Friction & Risk</span>
         </div>
 
-        <ul class="comp-list">
+        <ul class="comp-items">
           <li class="comp-item comp-item-bad">
-            <svg class="comp-icon-bad" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-            <span><strong>Generic 1-word text:</strong> Customers just write “good” or leave blank star ratings. Google learns zero product keywords.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            <span><strong>Generic 1-word text:</strong> Customers just write “nice” or leave blank star ratings. Google learns zero product keywords.</span>
           </li>
           <li class="comp-item comp-item-bad">
-            <svg class="comp-icon-bad" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-            <span><strong>High customer friction:</strong> Customers stare at a blank box, feel awkward writing a paragraph, and abandon the page.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            <span><strong>High writer fatigue:</strong> Customers stare at an empty text box, feel awkward writing a paragraph, and abandon the page.</span>
           </li>
           <li class="comp-item comp-item-bad">
-            <svg class="comp-icon-bad" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-            <span><strong>Unshielded 1-star ratings:</strong> Disgruntled visitors post complaints directly on Google Maps, pulling down your average star score.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            <span><strong>Unshielded public 1-stars:</strong> Disgruntled visitors post complaints directly on Google Maps, permanently lowering your overall average score.</span>
           </li>
           <li class="comp-item comp-item-bad">
-            <svg class="comp-icon-bad" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-            <span><strong>Unanswered reviews:</strong> Owners don’t have time to write replies, reducing Google Maps algorithm authority.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            <span><strong>Ignored customer reviews:</strong> Business owners lack the time to draft responses, signalling inactivity to Google’s algorithm.</span>
           </li>
         </ul>
       </div>
 
-      <!-- With Kiziee AI -->
-      <div class="comp-card comp-card-good">
-        <div class="comp-header">
-          <div class="comp-title">
+      <!-- Kiziee AI -->
+      <div class="comp-card comp-good">
+        <div class="comp-head-row">
+          <div class="comp-label">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
-            <span>With Kiziee AI</span>
+            <span>With Kiziee Media</span>
           </div>
-          <span class="comp-badge-good">Max Conversion & Safety</span>
+          <span class="comp-badge-good">Max Ranking & Protection</span>
         </div>
 
-        <ul class="comp-list">
+        <ul class="comp-items">
           <li class="comp-item comp-item-good">
-            <svg class="comp-icon-good" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
-            <span><strong>Rich keyword reviews:</strong> AI generates 5 diverse, natural reviews packed with the specific products customers purchased.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span><strong>Product-rich reviews:</strong> AI generates 5 diverse, natural reviews packed with the specific products customers actually purchased.</span>
           </li>
           <li class="comp-item comp-item-good">
-            <svg class="comp-icon-good" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
-            <span><strong>10-second completion:</strong> Customer selects rating + product, chooses their preferred AI draft, and taps copy. Complete ease.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span><strong>10-second completion:</strong> Customers pick what they bought, choose their favorite AI draft, and tap copy. 65%+ review completion rate.</span>
           </li>
           <li class="comp-item comp-item-good">
-            <svg class="comp-icon-good" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
-            <span><strong>Private WhatsApp shield:</strong> 1-3 star ratings are caught instantly and redirected to your management chat for private resolution.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span><strong>WhatsApp shield:</strong> 1–3 star ratings are caught before they reach Google, routing customers directly to private management chat.</span>
           </li>
           <li class="comp-item comp-item-good">
-            <svg class="comp-icon-good" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
-            <span><strong>Automated AI replies:</strong> 1-click SEO-optimized owner responses that build trust and signal active business engagement.</span>
+            <svg class="comp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span><strong>1-click AI replies:</strong> Generate grateful, contextual, and SEO-optimized owner replies in seconds to boost profile authority.</span>
           </li>
         </ul>
       </div>
@@ -1467,109 +1751,109 @@ h1, h2, h3, h4 {
 <section class="section" id="features">
   <div class="container">
     <div class="section-head">
-      <span class="section-tag">Platform Capabilities</span>
-      <h2 class="section-title">Engineered to Maximize Your Google Maps Authority</h2>
-      <p class="section-sub">Every feature is designed to increase review volume, keyword richness, and customer satisfaction.</p>
+      <span class="section-tag">Platform Features</span>
+      <h2 class="section-title">Engineered for Google Maps Local Dominance</h2>
+      <p class="section-sub">Every feature is designed to increase review volume, keyword richness, and customer trust.</p>
     </div>
 
-    <div class="bento-grid">
-      <!-- Feature 1 -->
+    <div class="features-bento">
+      <!-- Bento 1 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
           </div>
-          <h3 class="bento-title">Product-Oriented AI Reviews</h3>
-          <p class="bento-desc">
-            Train the AI on your exact inventory. When customers review, they can choose from your actual products, producing authentic reviews with vital SEO keywords.
+          <h3 class="bento-heading">Product-Targeted AI Reviews</h3>
+          <p class="bento-text">
+            Upload your product catalog. When customers leave feedback, they select the specific item they bought, producing authentic reviews packed with essential local SEO keywords.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          <span>Increases Local 3-Pack Rankings</span>
+          <span>Triggers High-Intent Google 3-Pack Rankings</span>
         </div>
       </div>
 
-      <!-- Feature 2 -->
+      <!-- Bento 2 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path><path d="m9 12 2 2 4-4"></path></svg>
           </div>
-          <h3 class="bento-title">Negative Review Shield</h3>
-          <p class="bento-desc">
+          <h3 class="bento-heading">Negative Rating Shield</h3>
+          <p class="bento-text">
             Protect your hard-earned star rating. If a customer selects 1, 2, or 3 stars, they are seamlessly guided to a private WhatsApp feedback channel to resolve issues before going public.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          <span>Guards Your 5.0 Star Reputation</span>
+          <span>Preserves Your 5.0 Star Reputation</span>
         </div>
       </div>
 
-      <!-- Feature 3 -->
+      <!-- Bento 3 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="m10 9 2 2 4-4"></path></svg>
           </div>
-          <h3 class="bento-title">Automated AI Reply Generator</h3>
-          <p class="bento-desc">
+          <h3 class="bento-heading">Automated AI Reply Generator</h3>
+          <p class="bento-text">
             Google rewards businesses that reply promptly. Generate thoughtful, grateful, and keyword-rich owner replies with a single click inside your dashboard.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
           <span>Signals Active Management to Google</span>
         </div>
       </div>
 
-      <!-- Feature 4 -->
+      <!-- Bento 4 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
           </div>
-          <h3 class="bento-title">1-Tap Review Bridge</h3>
-          <p class="bento-desc">
-            No typing, no grammar struggles, no login hoops. The selected review is automatically copied to the customer’s clipboard while opening the official Google Maps review dialogue.
+          <h3 class="bento-heading">1-Tap Review Bridge</h3>
+          <p class="bento-text">
+            No typing, no awkward grammar struggles. The selected review is automatically copied to the customer’s clipboard while opening the official Google Maps review dialogue.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          <span>Removes 90% of Customer Dropoff</span>
+          <span>Eliminates 90% of Customer Dropoff</span>
         </div>
       </div>
 
-      <!-- Feature 5 -->
+      <!-- Bento 5 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
           </div>
-          <h3 class="bento-title">Instant Catalog Excel/CSV Import</h3>
-          <p class="bento-desc">
-            Upload your entire catalog in seconds. Whether you have 5 products or 500, our system extracts keywords and descriptions to feed the review engine instantly.
+          <h3 class="bento-heading">Catalog Excel/CSV Importer</h3>
+          <p class="bento-text">
+            Import your complete product or service catalog in seconds. Whether you have 5 offerings or 500, our system extracts keywords and descriptions to feed the review engine instantly.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          <span>Zero Manual Entry Required</span>
+          <span>Zero Manual Catalog Typing</span>
         </div>
       </div>
 
-      <!-- Feature 6 -->
+      <!-- Bento 6 -->
       <div class="bento-card">
         <div>
-          <div class="bento-icon-wrap">
+          <div class="bento-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
           </div>
-          <h3 class="bento-title">Branded QR Standees & Links</h3>
-          <p class="bento-desc">
-            Download print-ready high-resolution QR codes for counter standees, packaging inserts, or send direct review links via WhatsApp, SMS, or digital invoices.
+          <h3 class="bento-heading">Branded QR Standees & Links</h3>
+          <p class="bento-text">
+            Download print-ready high-resolution QR standees for your counter or packaging inserts, or send direct review links via WhatsApp, SMS, or digital invoices.
           </p>
         </div>
-        <div class="bento-tag">
+        <div class="bento-benefit">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
           <span>Omnichannel Review Collection</span>
         </div>
@@ -1578,7 +1862,7 @@ h1, h2, h3, h4 {
   </div>
 </section>
 
-<!-- How It Works Flow -->
+<!-- Simple 3-Step Flow -->
 <section class="section section-alt" id="how-it-works">
   <div class="container">
     <div class="section-head">
@@ -1587,27 +1871,27 @@ h1, h2, h3, h4 {
       <p class="section-sub">Get your business live in 2 minutes and start collecting 5-star reviews immediately.</p>
     </div>
 
-    <div class="flow-grid">
-      <div class="flow-step-card">
-        <div class="flow-number-badge">1</div>
-        <h3 class="flow-step-title">Register & Connect Profile</h3>
-        <p class="flow-step-desc">
+    <div class="flow-cards">
+      <div class="flow-box">
+        <div class="flow-step-num">1</div>
+        <h3 class="flow-box-title">Register & Connect Profile</h3>
+        <p class="flow-box-desc">
           Enter your business name, Google Maps review link, and upload your product catalog using our Excel/CSV importer.
         </p>
       </div>
 
-      <div class="flow-step-card">
-        <div class="flow-number-badge">2</div>
-        <h3 class="flow-step-title">Display QR or Share Link</h3>
-        <p class="flow-step-desc">
+      <div class="flow-box">
+        <div class="flow-step-num">2</div>
+        <h3 class="flow-box-title">Display QR or Share Link</h3>
+        <p class="flow-box-desc">
           Place your branded QR standee on the counter, print it on receipts, or send your personalized link via WhatsApp after purchase.
         </p>
       </div>
 
-      <div class="flow-step-card">
-        <div class="flow-number-badge">3</div>
-        <h3 class="flow-step-title">Watch Google Rankings Grow</h3>
-        <p class="flow-step-desc">
+      <div class="flow-box">
+        <div class="flow-step-num">3</div>
+        <h3 class="flow-box-title">Watch Google Rankings Grow</h3>
+        <p class="flow-box-desc">
           Customers select their rating & product. AI writes the review, copies it in 1 tap, and pushes your Google Business Profile to #1 in local search.
         </p>
       </div>
@@ -1615,62 +1899,62 @@ h1, h2, h3, h4 {
   </div>
 </section>
 
-<!-- Industry Solutions -->
+<!-- Supported Industry Solutions -->
 <section class="section" id="solutions">
   <div class="container">
     <div class="section-head">
-      <span class="section-tag">Tailored for Every Industry</span>
+      <span class="section-tag">Built for Every Trade</span>
       <h2 class="section-title">Designed for Businesses That Depend on Local Search</h2>
-      <p class="section-sub">Custom AI prompt domains ensure every review sounds authentic to your specific trade.</p>
+      <p class="section-sub">Custom AI prompt domains ensure every review sounds authentic to your specific field.</p>
     </div>
 
     <div class="solutions-grid">
-      <div class="sol-card">
-        <div class="sol-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2Z"></path><path d="M12 6v6l4 2"></path></svg>
-        </div>
-        <h4 class="sol-title">Herbal & Ayurvedic Brands</h4>
-        <p class="sol-desc">Highlight pure botanical extracts, cruelty-free formulas, natural tooth powders, and hair care efficacy without chemical jargon.</p>
-      </div>
-
-      <div class="sol-card">
-        <div class="sol-icon">
+      <div class="solution-card">
+        <div class="solution-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
         </div>
-        <h4 class="sol-title">Clinics & Healthcare</h4>
-        <p class="sol-desc">Dental clinics, dermatologists, and wellness centers. Reviews emphasize sterilization, gentle treatments, and compassionate care.</p>
+        <h4 class="solution-title">Clinics & Healthcare</h4>
+        <p class="solution-desc">Dental clinics, dermatologists, and wellness centers. Reviews emphasize sterilization, gentle treatments, and compassionate bedside care.</p>
       </div>
 
-      <div class="sol-card">
-        <div class="sol-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <div class="solution-card">
+        <div class="solution-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2Z"></path><path d="M12 6v6l4 2"></path></svg>
         </div>
-        <h4 class="sol-title">Recruitment & Staffing</h4>
-        <p class="sol-desc">Employment agencies and HR consultants. Reviews focus on verified job openings, interview transparency, and fast placement calls.</p>
+        <h4 class="solution-title">Herbal & Ayurvedic Brands</h4>
+        <p class="solution-desc">Highlight pure botanical extracts, cruelty-free formulas, natural tooth powders, and hair care efficacy without chemical jargon.</p>
       </div>
 
-      <div class="sol-card">
-        <div class="sol-icon">
+      <div class="solution-card">
+        <div class="solution-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>
         </div>
-        <h4 class="sol-title">Restaurants & Cafes</h4>
-        <p class="sol-desc">Fine dining, cloud kitchens, and cafes. Reviews highlight signature menu items, fresh ingredients, quick service, and cozy ambience.</p>
+        <h4 class="solution-title">Restaurants & Cafes</h4>
+        <p class="solution-desc">Fine dining, cloud kitchens, and cafes. Reviews highlight signature menu items, fresh ingredients, quick service, and cozy ambience.</p>
       </div>
 
-      <div class="sol-card">
-        <div class="sol-icon">
+      <div class="solution-card">
+        <div class="solution-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <h4 class="solution-title">Recruitment & Staffing</h4>
+        <p class="solution-desc">Employment agencies and HR consultants. Reviews focus on verified job openings, interview transparency, and fast placement calls.</p>
+      </div>
+
+      <div class="solution-card">
+        <div class="solution-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
         </div>
-        <h4 class="sol-title">Retail Stores & Showrooms</h4>
-        <p class="sol-desc">Apparel, electronics, and specialty outlets. Reviews emphasize authentic stock, reasonable pricing, helpful staff, and easy checkout.</p>
+        <h4 class="solution-title">Retail Stores & Showrooms</h4>
+        <p class="solution-desc">Apparel, electronics, and specialty outlets. Reviews emphasize authentic stock, reasonable pricing, helpful staff, and easy checkout.</p>
       </div>
 
-      <div class="sol-card">
-        <div class="sol-icon">
+      <div class="solution-card">
+        <div class="solution-icon-box">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="m9 8 6 4-6 4Z"></path></svg>
         </div>
-        <h4 class="sol-title">IT & Digital Services</h4>
-        <p class="sol-desc">Web developers, software consultants, and digital agencies. Reviews validate on-time delivery, clear milestones, and strong return on investment.</p>
+        <h4 class="solution-title">IT & Digital Services</h4>
+        <p class="solution-desc">Web developers, software consultants, and digital agencies. Reviews validate on-time delivery, clear milestones, and strong return on investment.</p>
       </div>
     </div>
   </div>
@@ -1680,59 +1964,59 @@ h1, h2, h3, h4 {
 <section class="section section-alt" id="faq">
   <div class="container">
     <div class="section-head">
-      <span class="section-tag">Common Questions</span>
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-sub">Everything you need to know about setting up and scaling your reviews.</p>
+      <span class="section-tag">Frequently Asked Questions</span>
+      <h2 class="section-title">Everything You Need to Know</h2>
+      <p class="section-sub">Clear answers on setting up, AI prompt tuning, and ranking acceleration.</p>
     </div>
 
-    <div class="faq-wrap">
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>How does Kiziee AI know what specific products my business sells?</span>
-          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+    <div class="faq-list">
+      <div class="faq-row">
+        <button class="faq-header" onclick="toggleFaq(this)">
+          <span>How does product-targeted review generation improve Google Maps ranking?</span>
+          <svg class="faq-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-        <div class="faq-content">
-          You can upload your product catalog using a standard Excel (.xlsx) or CSV file during registration or anytime via your dashboard. The AI parses product names, descriptions, and keywords to produce authentic review options that sound like genuine customer experiences.
+        <div class="faq-body">
+          Google's local search algorithm indexes keywords inside customer reviews. When reviews mention your exact products, menu dishes, or medical services, your profile triggers for high-intent local 'near me' queries.
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>How does the negative review shield work?</span>
-          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+      <div class="faq-row">
+        <button class="faq-header" onclick="toggleFaq(this)">
+          <span>How does the negative review shield work in practice?</span>
+          <svg class="faq-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-        <div class="faq-content">
+        <div class="faq-body">
           When a reviewer taps 1, 2, or 3 stars, the platform does not redirect them to Google Maps. Instead, it displays a friendly feedback form and a direct one-tap button to message your management team on WhatsApp. This allows you to resolve grievances privately before any damage is done to your public rating.
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
+      <div class="faq-row">
+        <button class="faq-header" onclick="toggleFaq(this)">
           <span>Does this comply with Google Business Profile policies?</span>
-          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+          <svg class="faq-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-        <div class="faq-content">
+        <div class="faq-body">
           Yes, completely. The customer writes or chooses their own review, and the submission takes place directly on the official Google Maps platform under their own Google account. We provide an assistive drafting bridge and clipboard automation that reduces friction without posting unauthorized or fake reviews.
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
+      <div class="faq-row">
+        <button class="faq-header" onclick="toggleFaq(this)">
           <span>Can I customize the review generation prompt for my brand?</span>
-          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+          <svg class="faq-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-        <div class="faq-content">
+        <div class="faq-body">
           Yes! You can specify brand keywords, USPs, category tags, and website URLs in your business settings. Our Groq AI engine incorporates this context to ensure tone, product vocabulary, and brand voice match your company identity.
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
+      <div class="faq-row">
+        <button class="faq-header" onclick="toggleFaq(this)">
           <span>How soon can my business start collecting reviews?</span>
-          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+          <svg class="faq-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
         </button>
-        <div class="faq-content">
-          Immediately! Registration takes less than 2 minutes. Once registered, you instantly receive your unique branded link (e.g. <code>kiziee.ai/review/your-brand</code>) and your printable QR standee code.
+        <div class="faq-body">
+          Immediately! Registration takes less than 2 minutes. Once registered, you instantly receive your unique branded link and your printable QR standee code.
         </div>
       </div>
     </div>
@@ -1742,12 +2026,12 @@ h1, h2, h3, h4 {
 <!-- Bottom High-Impact CTA -->
 <section class="section">
   <div class="container">
-    <div class="cta-box">
-      <h2 class="cta-title">Ready to Dominate Your Local Search Results?</h2>
-      <p class="cta-desc">
-        Join hundreds of businesses that use Kiziee Media to collect 5-star Google reviews, shield against negative ratings, and climb to the top of Google Maps.
+    <div class="cta-banner">
+      <h2 class="cta-heading">Ready to Dominate Your Local Google Maps Rankings?</h2>
+      <p class="cta-text">
+        Join leading businesses using Kiziee Media to collect 5-star Google reviews, shield against negative ratings, and climb to the top of Google Maps.
       </p>
-      <div class="cta-actions">
+      <div class="cta-btn-group">
         <a href="/register" class="btn btn-white btn-lg">
           <span>Claim Your Free Business Link</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
@@ -1759,44 +2043,187 @@ h1, h2, h3, h4 {
     </div>
   </div>
 </section>
+</main>
 
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img src="/static/kiziee_logo.png" alt="Kiziee Media" class="footer-logo">
+    <div class="footer-top-row">
+      <div class="footer-brand-wrap">
+        <img src="/static/kiziee_logo.png" alt="Kiziee Media" class="footer-logo-img">
         <div>
-          <div class="footer-brand-title">Kiziee Media</div>
+          <div class="footer-brand-name">Kiziee Media</div>
           <div style="font-size:12px; color:var(--text-muted)">AI Reputation & Review Acceleration Suite</div>
         </div>
       </div>
 
-      <div class="footer-links">
-        <a href="/login" class="footer-link">Business Login</a>
-        <a href="/register" class="footer-link">Register Business</a>
-        <a href="/review/gir-natural" class="footer-link" target="_blank">Live Demo</a>
-        <a href="#features" class="footer-link">Features</a>
-        <a href="#faq" class="footer-link">FAQ</a>
+      <div class="footer-nav">
+        <a href="/login">Business Login</a>
+        <a href="/register">Register Business</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <div>&copy; 2026 Kiziee Media. All rights reserved. Google Business Profile & AI Review Suite.</div>
-      <div>Designed for Maximum Local SEO Authority</div>
+    <div class="footer-bottom-row">
+      <div>&copy; 2026 Kiziee Media. All rights reserved. Google Business Profile & Local SEO Acceleration.</div>
+      <div>Engineered for Local Search Authority</div>
     </div>
   </div>
 </footer>
 
 <script>
-function toggleFaq(btn) {
-  const item = btn.parentElement;
-  const wasOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
-  if (!wasOpen) {
-    item.classList.add('open');
+// Mobile Drawer Toggle
+function toggleMobileDrawer() {
+  const d = document.getElementById('mobileDrawer');
+  d.classList.toggle('open');
+}
+
+// Interactive Simulator State & Engine
+const industryData = {
+  dental: {
+    name: "Apex Dental Care & Implant Clinic",
+    sub: "Certified Multi-Specialty Dental Clinic",
+    avatarIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>',
+    products: [
+      { name: "Laser Teeth Whitening", review: "Had an amazing experience with laser teeth whitening at Apex Dental Care! Dr. Sharma and team were so gentle, clinic hygiene was spotless, and my smile is noticeably 4 shades brighter. Best dental clinic in town!", tags: ["#TeethWhitening", "#CleanClinic", "#GentleCare"] },
+      { name: "Root Canal & Ceramic Crown", review: "Completely painless root canal treatment and ceramic crown fitting at Apex Dental Care. Advanced digital equipment, honest pricing, and compassionate staff. Highly recommend!", tags: ["#PainlessRCT", "#DentalCrown", "#ExpertDentist"] },
+      { name: "Dental Alignment & Braces", review: "Very satisfied with my smile correction treatment at Apex Dental. Clear treatment timeline, transparent costs, and friendly follow-ups. Very happy with the results!", tags: ["#SmileMakeover", "#Aligners", "#TopDentist"] }
+    ]
+  },
+  ayurveda: {
+    name: "Prana Botanical Wellness",
+    sub: "100% Certified Organic & Herbal Formulations",
+    avatarIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2Z"></path><path d="M12 6v6l4 2"></path></svg>',
+    products: [
+      { name: "Charcoal Dental Manjan", review: "Been using Prana Botanicals Charcoal Dental Manjan for a month. Thoroughly cleans tea stains without chemical harshness and leaves breath fresh all morning. Pure Ayurvedic care!", tags: ["#CharcoalManjan", "#EnamelSafe", "#AyurvedicCare"] },
+      { name: "Herbal Bhringraj Hair Oil", review: "Noticed a significant reduction in hair fall within 3 weeks of using Prana’s Bhringraj Hair Oil. Pure herbal scent, non-sticky, and strengthens roots. Truly genuine botanical quality!", tags: ["#HairfallControl", "#PureBhringraj", "#NoChemicals"] },
+      { name: "Kumkumadi Face Glow Oil", review: "The Kumkumadi Face Glow Oil gave my skin a healthy, natural radiance. No artificial fragrance or mineral oils. Wonderful authentic Ayurvedic formulation!", tags: ["#NaturalGlow", "#KumkumadiOil", "#OrganicSkincare"] }
+    ]
+  },
+  dining: {
+    name: "Artisan Woodfire Bistro",
+    sub: "Italian & Continental Cuisine • Fresh Farm Ingredients",
+    avatarIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>',
+    products: [
+      { name: "Truffle Mushroom Risotto", review: "Exceptional dining at Artisan Woodfire Bistro! The Truffle Mushroom Risotto was rich, creamy, and bursting with authentic flavor. Cozy ambience and attentive hospitality. 10/10!", tags: ["#TruffleRisotto", "#ItalianDining", "#CozyAmbience"] },
+      { name: "Neapolitan Sourdough Pizza", review: "Hands down the best sourdough woodfire pizza in the city. The crust was blistered to perfection and the buffalo mozzarella tasted so fresh. Will definitely return!", tags: ["#WoodfirePizza", "#SourdoughCrust", "#BestCafe"] },
+      { name: "Classic Pistachio Tiramisu", review: "Finished our dinner with the Pistachio Tiramisu and it was divine! Light, perfectly balanced sweetness, and exquisite presentation. Great staff service!", tags: ["#Tiramisu", "#ArtisanDesserts", "#FineDining"] }
+    ]
+  },
+  staffing: {
+    name: "Apex Talent Partners",
+    sub: "Executive Tech Recruitment & Verified Hiring",
+    avatarIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+    products: [
+      { name: "Senior Full-Stack Placement", review: "Secured a great Senior Tech role through Apex Talent Partners! The recruitment team communicated transparently, scheduled interviews smoothly, and negotiated a great package. Truly professional staffing agency!", tags: ["#TechJobs", "#FastPlacement", "#VerifiedAgency"] },
+      { name: "Executive Leadership Hiring", review: "Apex Talent helped our startup hire a stellar VP of Engineering within 18 days. Thorough candidate screening and excellent market understanding. Highly recommend for corporate recruitment!", tags: ["#ExecutiveSearch", "#LeadershipHiring", "#TopRecruiter"] },
+      { name: "Resume & Interview Coaching", review: "The personalized interview prep and mock technical screening gave me the exact confidence needed for my interviews. Got selected on the first attempt!", tags: ["#InterviewPrep", "#CareerGrowth", "#RecruitmentPro"] }
+    ]
+  }
+};
+
+let currentIndustry = 'dental';
+let currentProductIndex = 0;
+let currentStars = 5;
+
+function selectIndustry(key) {
+  currentIndustry = key;
+  currentProductIndex = 0;
+  
+  // Update Tab active state
+  document.querySelectorAll('.sim-tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', Object.keys(industryData)[idx] === key);
+  });
+
+  renderSimulator();
+}
+
+function setSimStars(val) {
+  currentStars = val;
+  const stars = document.querySelectorAll('#starGroup svg');
+  stars.forEach((s, idx) => {
+    if (idx < val) {
+      s.classList.remove('star-unfilled');
+      s.classList.add('star-interactive');
+    } else {
+      s.classList.remove('star-interactive');
+      s.classList.add('star-unfilled');
+    }
+  });
+
+  const shieldBox = document.getElementById('simShieldBox');
+  const prodSec = document.getElementById('simProductSection');
+
+  if (val <= 3) {
+    shieldBox.classList.add('active');
+    prodSec.style.display = 'none';
+  } else {
+    shieldBox.classList.remove('active');
+    prodSec.style.display = 'block';
+    renderReviewText();
   }
 }
+
+function selectProduct(idx) {
+  currentProductIndex = idx;
+  document.querySelectorAll('.product-chip').forEach((c, i) => {
+    c.classList.toggle('active', i === idx);
+  });
+  renderReviewText();
+}
+
+function renderReviewText() {
+  const data = industryData[currentIndustry];
+  const prod = data.products[currentProductIndex];
+  const revEl = document.getElementById('simReviewText');
+  revEl.innerHTML = `
+    "${prod.review}"
+    <div class="review-tags">
+      ${prod.tags.map(t => `<span class="review-tag">${t}</span>`).join('')}
+    </div>
+  `;
+}
+
+function renderSimulator() {
+  const data = industryData[currentIndustry];
+  document.getElementById('simBizName').textContent = data.name;
+  document.getElementById('simBizSub').textContent = data.sub;
+  document.getElementById('simAvatar').innerHTML = data.avatarIcon;
+
+  // Render product chips
+  const chipsContainer = document.getElementById('simProductChips');
+  chipsContainer.innerHTML = data.products.map((p, i) => `
+    <div class="product-chip ${i === currentProductIndex ? 'active' : ''}" onclick="selectProduct(${i})">${p.name}</div>
+  `).join('');
+
+  setSimStars(currentStars);
+  renderReviewText();
+}
+
+function simulateCopyBridge() {
+  const btnText = document.getElementById('bridgeBtnText');
+  btnText.textContent = "Copied to Clipboard! Launching Google Maps...";
+  setTimeout(() => {
+    btnText.textContent = "Copy & Open Google Maps";
+  }, 2200);
+}
+
+// FAQ Accordion Toggle
+function toggleFaq(btn) {
+  const row = btn.parentElement;
+  const wasOpen = row.classList.contains('open');
+  document.querySelectorAll('.faq-row').forEach(el => el.classList.remove('open'));
+  if (!wasOpen) {
+    row.classList.add('open');
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderSimulator();
+});
 </script>
 
 </body>
