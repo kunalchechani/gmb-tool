@@ -986,6 +986,9 @@ def get_fallback_suggestions(business, stars, product=None):
 
 @app.route('/static/uploads/<filename>')
 def uploaded_file(filename):
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    if not os.path.exists(file_path):
+        return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'), 'kiziee_logo.png')
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 # ─────────────────────────────────────────
@@ -1179,6 +1182,7 @@ def dashboard():
     )
 
 @app.route("/api/business/update", methods=["POST"])
+@app.route("/api/business/settings", methods=["POST"])
 @business_required
 def update_business():
     data = request.json or {}
@@ -1203,14 +1207,22 @@ def update_business():
 @app.route("/api/business/upload-pic", methods=["POST"])
 @business_required
 def upload_profile_pic():
-    if 'profile_pic' not in request.files:
+    file = None
+    for key in ['profile_pic', 'pic', 'file', 'image']:
+        if key in request.files:
+            file = request.files[key]
+            break
+    if not file and request.files:
+        file = next(iter(request.files.values()))
+
+    if not file:
         return jsonify({"ok": False, "error": "No file uploaded"}), 400
     
-    file = request.files['profile_pic']
     if file.filename == '':
         return jsonify({"ok": False, "error": "No file selected"}), 400
     
     if file and allowed_file(file.filename):
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
         ext = file.filename.rsplit('.', 1)[1].lower()
         filename = f"{session['business_id']}_{secrets.token_hex(4)}.{ext}"
         filename = secure_filename(filename)
